@@ -1,1 +1,134 @@
-/* You can add global styles to this file, and also import other style files */
+/* FILEPATH: /home/knotten/Coding/hobby/WeatherFrontend/src/styles.css */
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set a base font size and family */
+body {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    width: 60%;
+    min-width: 800px;
+    margin: auto;
+}
+
+/* Add some spacing and center the content */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Style the header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Style the weather card */
+.weather-card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weather-card .location {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.weather-card .temperature {
+    font-size: 48px;
+    font-weight: bold;
+    color: #333;
+}
+
+.weather-card .description {
+    font-size: 16px;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* Style the forecast section */
+.forecast {
+    margin-top: 20px;
+}
+
+.forecast .day {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.forecast .day .icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.forecast .day .temperature {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.forecast .day .description {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Add media queries for mobile-first design */
+@media (min-width: 768px) {
+    .container {
+        max-width: 960px;
+    }
+
+    .weather-card {
+        display: flex;
+        align-items: center;
+        padding: 30px;
+    }
+
+    .weather-card .location {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .weather-card .temperature {
+        font-size: 72px;
+    }
+
+    .forecast .day {
+        margin-bottom: 20px;
+    }
+
+    .forecast .day .icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 20px;
+    }
+
+    .forecast .day .temperature {
+        font-size: 18px;
+    }
+
+    .forecast .day .description {
+        font-size: 16px;
+    }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

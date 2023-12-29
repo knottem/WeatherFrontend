@@ -1,2 +1,12 @@
 <!-- app-header-comp.component.html -->
-<p>Current Time: {{currentTime}}</p>
+<form class="example-form">
+    <input type="text" placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto" 
+    (keyup.enter)="onEnterPress()" #searchInput class="example-input" #trigger="matAutocompleteTrigger">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)">
+        <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+            {{ city }}
+        </mat-option>
+    </mat-autocomplete>
+</form>
+
+<h1 class="header">Current Time: {{currentTime}}</h1>

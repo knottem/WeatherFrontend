@@ -1,1 +1,135 @@
-<p>weather-display works!</p>
+<div class="weather-widget" *ngIf="isLoaded">
+  
+  <table class="weather-table" >
+    <thead (click)="toggleWeatherToday()">
+      <h2>Todays weather in {{location}}</h2>
+      <tr>
+        <th>Time</th>
+        <th>Temperature</th>
+        <th>Weather Code</th>
+        <th>Precipitation</th>
+      </tr>
+    </thead>
+    <tbody (click)="toggleWeatherToday()" *ngIf="!showTodaysWeather">
+      <!-- Current Weather Row -->
+      <tr>
+        <td>{{ currentTimestamp }}</td>
+        <td>{{ currentWeather.temperature }}°</td>
+        <td>{{ currentWeather.weatherCode }}</td>
+        <td>{{ currentWeather.precipitation }}</td>
+      </tr>
+    </tbody>
+      <!-- Today's Weather Rows -->
+    <tbody *ngIf="showTodaysWeather" [@fadeInStagger]>
+       <ng-template ngFor let-hour [ngForOf]="timestampsToday" let-i="index">
+         <!-- Data Row -->
+         <tr (click)="toggleDetailRow(i)" *ngIf="!expandedRow[i]">
+           <td>{{ hour.substring(11,16) }}</td>
+           <td>{{ weather.weatherData[hour].temperature }}°</td>
+           <td>{{ weather.weatherData[hour].weatherCode }}</td>
+           <td>{{ weather.weatherData[hour].precipitation }}</td>
+         </tr>
+         <!-- Detail Row -->
+         <tr *ngIf="expandedRow[i]" class="detail-row" [@fadeInExpand] (@fadeInExpand.done)="onAnimationDone(i)" (click)="toggleDetailRow(i)">
+           <td colspan="6">
+             <div class="detailed-info">
+               <h3>Weather Information for {{ hour.substring(11,16) }}</h3>
+               <div class="detail-item">
+                 <strong>Temperature:</strong> {{ weather.weatherData[hour].temperature }}°C
+               </div>
+               <div class="detail-item">
+                 <strong>Weather Code:</strong> {{ weather.weatherData[hour].weatherCode }}
+               </div>
+               <div class="detail-item">
+                 <strong>Precipitation:</strong> {{ weather.weatherData[hour].precipitation }} {{weather.information.precipitation.substring(0,5)}}
+               </div>
+               <div class="detail-item">
+                 <strong>Wind Speed:</strong> {{ weather.weatherData[hour].windSpeed }} {{weather.information.windSpeed}}
+               </div>
+               <div class="detail-item">
+                 <strong>Wind Direction:</strong> {{ weather.weatherData[hour].windDirection }}°
+               </div>
+             </div>
+           </td>
+         </tr>
+        </ng-template>
+      </tbody>
+      
+  </table>
+  
+  <br>
+
+  <h2>Tomorrows weather in {{location}}</h2>
+  <table class="weather-table" (click)="toggleWeatherTomorrow()">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Temperature</th>
+        <th>Weather Code</th>
+        <th>Precipitation</th>
+        <th>Wind Speed</th>
+        <th>Wind Direction</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Current Weather Row -->
+      <tr *ngIf="!showTomorrowsWeather">
+        <td>{{ timestampsTomorrow[11].substring(11,16) }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[11]].temperature }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[11]].weatherCode }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[11]].precipitation }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[11]].windSpeed }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[11]].windDirection }}°</td>
+      </tr>
+    </tbody>
+    <tbody *ngIf="showTomorrowsWeather" [@fadeInStagger]>
+        <tr *ngFor="let hour of timestampsTomorrow">
+          <td>{{ hour.substring(11,16) }}</td>
+          <td>{{ weather.weatherData[hour].temperature }}</td>
+          <td>{{ weather.weatherData[hour].weatherCode }}</td>
+          <td>{{ weather.weatherData[hour].precipitation }}</td>
+          <td>{{ weather.weatherData[hour].windSpeed }}</td>
+          <td>{{ weather.weatherData[hour].windDirection }}°</td>
+        </tr>
+    </tbody>
+  </table>
+  <br>
+  <h2>Weather for {{dayAfterTomorrow}} in {{location}}</h2>
+
+  <table class="weather-table" (click)="toggleWeatherDayAfterTomorrow()">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Temperature</th>
+        <th>Weather Code</th>
+        <th>Precipitation</th>
+        <th>Wind Speed</th>
+        <th>Wind Direction</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Current Weather Row -->
+      <tr *ngIf="!showDayAfterTomorrow">
+        <td>{{ timestampsDayAfterTomorrow[11].substring(11,16) }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].temperature }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].weatherCode }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].precipitation }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].windSpeed }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].windDirection }}°</td>
+      </tr>
+    </tbody>
+    <tbody *ngIf="showDayAfterTomorrow" [@fadeInStagger]>
+        <tr *ngFor="let hour of timestampsDayAfterTomorrow">
+          <td>{{ hour.substring(11,16) }}</td>
+          <td>{{ weather.weatherData[hour].temperature }}</td>
+          <td>{{ weather.weatherData[hour].weatherCode }}</td>
+          <td>{{ weather.weatherData[hour].precipitation }}</td>
+          <td>{{ weather.weatherData[hour].windSpeed }}</td>
+          <td>{{ weather.weatherData[hour].windDirection }}°</td>
+        </tr>
+    </tbody>
+  </table>
+  <br>
+   <p>Weather Updated at {{updatedTime}} (Updates around once an hour)</p>
+</div>
+
