@@ -54,21 +54,53 @@ export class WeatherDisplayComponent {
 
   public expandedRow: boolean[] = [];
   public collapsingIndex: number | null = null;
-  
-
 
   constructor(private weatherService: WeatherService, private searchService: SearchService) {
     this.weather = new WeatherData();
     this.currentWeather = {};
     this.currentTimestamp = "";
     this.location = "";
-    this.getWeather("skogen");
+    const cachedData = this.getWeatherFromLocalStorage();
+    const city = localStorage.getItem("city");
+    if(city != null){
+      if(cachedData != null){
+        this.processWeatherData(city, cachedData);
+        this.isLoaded = true;
+      } else {
+        this.getWeather(city);
+      }
+    } else {
+      this.getWeather("stockholm");
+    }
   }
 
   ngOnInit() {
     this.searchService.searchQuery$.subscribe((query) => {
       this.getWeather(query);
     });
+  }
+
+  private saveWeatherToLocalStorage(data: any): void {
+    const dataWithTimestamp = {
+      weatherData: data,
+      timestamp: new Date().getTime()
+    };
+    localStorage.setItem(`weather`, JSON.stringify(dataWithTimestamp));
+  }
+  
+  private getWeatherFromLocalStorage(): any | null {
+    const item = localStorage.getItem(`weather`);
+    if (item) {
+      const dataWithTimestamp = JSON.parse(item);
+      const tenMinutes = 10 * 60 * 1000;
+      const currentTime = new Date().getTime();
+  
+      if (currentTime - dataWithTimestamp.timestamp < tenMinutes) {
+        console.log("Using cached data for: " + dataWithTimestamp.weatherData.message)
+        return dataWithTimestamp.weatherData;
+      }
+    }
+    return null;
   }
 
   toggleWeatherToday() {
@@ -96,24 +128,36 @@ export class WeatherDisplayComponent {
       return;
     }
     this.weatherService.getWeather(str).subscribe((data) => {
-      if(data.message === "Mock data"){
-        this.location = data.message;
-      } else {
-        this.location = str.charAt(0).toUpperCase() + str.slice(1);
-      }
-      this.weather = this.convertToLocaleTime(data);
-      this.availableTimestamps = this.filterTimestamps(Object.keys(this.weather.weatherData));
-      this.timestampsToday = this.getTimeStamps(this.availableTimestamps, "today");
-      this.timestampsTomorrow = this.getTimeStamps(this.availableTimestamps, "tomorrow");
-      this.timestampsDayAfterTomorrow = this.getTimeStamps(this.availableTimestamps, "dayAfterTomorrow");
-      this.currentWeather = this.weather.weatherData[this.availableTimestamps[0]];
-      this.currentTimestamp = this.availableTimestamps[0].substring(11, 16);
-      this.updatedTime = this.convertTimestampToLocale(this.weather.timeStamp).substring(11, 16);
-      this.dayAfterTomorrow = this.getDayAfterTomorrow();
-      this.isLoaded = true;
+      this.processWeatherData(str, data)
+      this.saveWeatherToLocalStorage(data)
     });
-    return this.weather;
   }
+
+  private processWeatherData(str: string, data: any): void {
+    if(data.message === "Mock data"){
+      this.location = data.message;
+    } else {
+      this.location = str.charAt(0).toUpperCase() + str.slice(1);
+      localStorage.setItem("city", str);
+    }
+    this.weather = this.convertToLocaleTime(data);
+    this.availableTimestamps = this.filterTimestamps(Object.keys(this.weather.weatherData));
+    
+    this.processTimestamps(this.availableTimestamps);
+
+    this.currentWeather = this.weather.weatherData[this.availableTimestamps[0]];
+    this.currentTimestamp = this.availableTimestamps[0].substring(11, 16);
+    this.updatedTime = this.convertTimestampToLocale(this.weather.timeStamp).substring(11, 16);
+    this.dayAfterTomorrow = this.getDayAfterTomorrow();
+    this.isLoaded = true;
+  }
+
+  private processTimestamps(timestamps: string[]): void {
+    this.timestampsToday = this.getTimeStamps(timestamps, "today");
+    this.timestampsTomorrow = this.getTimeStamps(timestamps, "tomorrow");
+    this.timestampsDayAfterTomorrow = this.getTimeStamps(timestamps, "dayAfterTomorrow");
+  }
+
 
   toggleDetailRow(index: number): void {
     this.expandedRow[index] = !this.expandedRow[index];
@@ -127,18 +171,13 @@ export class WeatherDisplayComponent {
 
   getTimeStamps(timestamps: string[], day: string): string[] {
     const now = new Date();
-    var today = new Date().getDate();
-    if(day === "today") {
-      today = now.getDate();
-    } else if(day === "tomorrow") {
-      today = now.getDate() + 1;
+    if(day === "tomorrow") {
+      now.setDate(now.getDate() + 1);
     } else  if(day === "dayAfterTomorrow") {
-      today = now.getDate() + 2;
+      now.setDate(now.getDate() + 2);
     }
     const timestampsDay = timestamps.filter(timestamp => {
-      const timestampDate = new Date(timestamp);
-      const timestampDay = timestampDate.getDate();
-      return timestampDay === today;
+      return new Date(timestamp).getDate() === now.getDate();
     }
     );
     return timestampsDay;
@@ -167,8 +206,6 @@ export class WeatherDisplayComponent {
     return timestamps.filter(timestamp => {
       const timestampDate = new Date(timestamp);
       const timestampHour = timestampDate.getHours();
-      
-      // Filter timestamps that are in the current hour or in the future
       return timestampHour >= currentHour || timestampDate > now;
     });
   }

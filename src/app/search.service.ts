@@ -11,7 +11,6 @@ export class SearchService {
 
 
   setSearchQuery(query: string) {
-    // TODO: if the query contains a city that is not in the list of cities, do not update the search query
     this.searchQuerySubject.next(query.toLocaleLowerCase());
   }
 

@@ -62,11 +62,8 @@ export class HeaderCompComponent implements OnInit {
 
   public updateSearchQuery(city : string) {
     if(this.cityList.includes(city)) {
-      console.log("City found");
       this.searchService.setSearchQuery(city);
-    } else {
-      console.log("City not found");
-    }
+    } 
   }
 
   public onCitySelected(event: MatAutocompleteSelectedEvent) {

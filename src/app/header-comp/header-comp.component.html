@@ -1,12 +1,21 @@
 <!-- app-header-comp.component.html -->
-<form class="example-form">
-    <input type="text" placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto" 
-    (keyup.enter)="onEnterPress()" #searchInput class="example-input" #trigger="matAutocompleteTrigger">
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)">
-        <mat-option *ngFor="let city of filteredCities | async" [value]="city">
-            {{ city }}
-        </mat-option>
-    </mat-autocomplete>
-</form>
-
-<h1 class="header">Current Time: {{currentTime}}</h1>
+<div class="header-container">
+    <div class="logo-container">
+        <h2>WeatherApp</h2>
+    </div>
+    <div class="search-container">
+        <form class="example-form">
+            <input type="text" placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto"
+                (keyup.enter)="onEnterPress()" (keyup.tab)="onEnterPress()" #searchInput class="example-input"
+                #trigger="matAutocompleteTrigger">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)">
+                <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+                    {{ city }}
+                </mat-option>
+            </mat-autocomplete>
+        </form>
+    </div>
+    <div class="time-container">
+        <h2>Time: {{currentTime}}</h2>
+    </div>
+</div>

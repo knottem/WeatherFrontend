@@ -74,12 +74,12 @@
     <tbody>
       <!-- Current Weather Row -->
       <tr *ngIf="!showTomorrowsWeather">
-        <td>{{ timestampsTomorrow[11].substring(11,16) }}</td>
-        <td>{{ weather.weatherData[timestampsTomorrow[11]].temperature }}</td>
-        <td>{{ weather.weatherData[timestampsTomorrow[11]].weatherCode }}</td>
-        <td>{{ weather.weatherData[timestampsTomorrow[11]].precipitation }}</td>
-        <td>{{ weather.weatherData[timestampsTomorrow[11]].windSpeed }}</td>
-        <td>{{ weather.weatherData[timestampsTomorrow[11]].windDirection }}°</td>
+        <td>{{ timestampsTomorrow[12].substring(11,16) }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[12]].temperature }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[12]].weatherCode }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[12]].precipitation }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[12]].windSpeed }}</td>
+        <td>{{ weather.weatherData[timestampsTomorrow[12]].windDirection }}°</td>
       </tr>
     </tbody>
     <tbody *ngIf="showTomorrowsWeather" [@fadeInStagger]>
@@ -110,12 +110,12 @@
     <tbody>
       <!-- Current Weather Row -->
       <tr *ngIf="!showDayAfterTomorrow">
-        <td>{{ timestampsDayAfterTomorrow[11].substring(11,16) }}</td>
-        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].temperature }}</td>
-        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].weatherCode }}</td>
-        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].precipitation }}</td>
-        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].windSpeed }}</td>
-        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[11]].windDirection }}°</td>
+        <td>{{ timestampsDayAfterTomorrow[12].substring(11,16) }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[12]].temperature }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[12]].weatherCode }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[12]].precipitation }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[12]].windSpeed }}</td>
+        <td>{{ weather.weatherData[timestampsDayAfterTomorrow[12]].windDirection }}°</td>
       </tr>
     </tbody>
     <tbody *ngIf="showDayAfterTomorrow" [@fadeInStagger]>
@@ -130,6 +130,6 @@
     </tbody>
   </table>
   <br>
-   <p>Weather Updated at {{updatedTime}} (Updates around once an hour)</p>
+  <p>Weather data last updated at {{updatedTime}}. Sources: SMHI and Yr.</p>
 </div>
 

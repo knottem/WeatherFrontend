@@ -34,7 +34,11 @@ export class WeatherService {
   }
 
   getCityList(): Observable<string[]> {
-    return this.http.get<any>(`${this.baseUrl}/city/names`, { headers: this.headers });
+    if(this.mockAPi) {
+      return this.http.get<any>('assets/cityNames.json');
+    } else {
+      return this.http.get<any>(`${this.baseUrl}/city/names`, { headers: this.headers });
+    }
   }
 
 
