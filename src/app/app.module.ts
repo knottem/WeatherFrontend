@@ -11,6 +11,14 @@ import { CityManagementComponent } from './city-management/city-management.compo
 import { HeaderCompComponent } from './header-comp/header-comp.component';
 import { ErrorCompComponent } from './error-comp/error-comp.component';
 import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator.component';
+import { FormsModule } from '@angular/forms';
+import { WeatherService } from './weather.service';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -26,9 +34,15 @@ import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [WeatherService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
