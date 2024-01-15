@@ -1,0 +1,11 @@
+/* Component styles */ 
+
+/* Center the content */
+:host {
+    display: block;
+    width: 90%;
+    min-width: 400px;
+    max-width: 1024px;
+    margin: 0 auto; 
+    box-sizing: border-box; 
+}

@@ -49,3 +49,28 @@
     font-weight: bold;
 }
   
+
+.weather-table th, .weather-table td {
+    text-align: left;
+    padding: 10px;
+}
+
+.weather-table th.time-column,
+.weather-table td.time-column {
+    width: 20%; 
+}
+
+.weather-table th.temperature-column,
+.weather-table td.temperature-column {
+    width: 30%;
+}
+
+.weather-table th.weather-column,
+.weather-table td.weather-column {
+    width: 30%;
+}
+
+.weather-table th.precipitation-column,
+.weather-table td.precipitation-column {
+    width: 20%;
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DateTime } from 'luxon';
@@ -13,23 +13,51 @@ export class WeatherService {
   private mockAPi = false;
 
   private baseUrl = environment.apiUrl;
-  private headers = new HttpHeaders({ 'Authorization': environment.Auth });
   
   public cityList: string[] = [];
 
+  private weatherConditions: { [key: number]: string } = {
+    1: 'Clear sky',
+    2: 'Nearly clear sky',
+    3: 'Variable cloudiness',
+    4: 'Halfclear sky',
+    5: 'Cloudy sky',
+    6: 'Overcast',
+    7: 'Fog',
+    8: 'Light rain showers',
+    9: 'Moderate rain showers',
+    10: 'Heavy rain showers',
+    11: 'Thunderstorm',
+    12: 'Light sleet showers',
+    13: 'Moderate sleet showers',
+    14: 'Heavy sleet showers',
+    15: 'Light snow showers',
+    16: 'Moderate snow showers',
+    17: 'Heavy snow showers',
+    18: 'Light rain',
+    19: 'Moderate rain',
+    20: 'Heavy rain',
+    21: 'Thunder',
+    22: 'Light sleet',
+    23: 'Moderate sleet',
+    24: 'Heavy sleet',
+    25: 'Light snowfall',
+    26: 'Moderate snowfall',
+    27: 'Heavy snowfall'
+  }
+
   constructor(private http: HttpClient) { }
 
-  getWeather(city: string): Observable<any> {
+  getWeather(city: string): Observable<any> { 
     if (this.mockAPi) {
       console.log("Using mock API");
       return this.http.get<any>('assets/stockholm.json').pipe(
         map(data => {
-          // Adjust dates in the response to match today, tomorrow, etc.
           return this.adjustDatesInMockData(data);
         })
       );
     } else {
-      return this.http.get<any>(`${this.baseUrl}/weather/merged/${city}`, { headers: this.headers });
+      return this.http.get<any>(`${this.baseUrl}/weather/${city}`);
     }
   }
 
@@ -37,7 +65,7 @@ export class WeatherService {
     if(this.mockAPi) {
       return this.http.get<any>('assets/cityNames.json');
     } else {
-      return this.http.get<any>(`${this.baseUrl}/city/names`, { headers: this.headers });
+      return this.http.get<any>(`${this.baseUrl}/city/names`);
     }
   }
 
@@ -66,5 +94,9 @@ export class WeatherService {
     data.message = "Mock data";
     data.weatherData = adjustedWeatherData;
     return data;
+  }
+
+  getWeatherCondition(code: number): string {
+    return this.weatherConditions[code] || 'Unknown condition';
   }
 }                                                                                 

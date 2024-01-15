@@ -4,9 +4,9 @@
         <h2>WeatherApp</h2>
     </div>
     <div class="search-container">
-        <form class="example-form">
+        <form>
             <input type="text" placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto"
-                (keyup.enter)="onEnterPress()" (keyup.tab)="onEnterPress()" #searchInput class="example-input"
+                (keyup.enter)="onEnterPress()" (keyup.tab)="onEnterPress()" #searchInput
                 #trigger="matAutocompleteTrigger">
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)">
                 <mat-option *ngFor="let city of filteredCities | async" [value]="city">

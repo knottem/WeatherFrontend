@@ -14,13 +14,13 @@ import { trigger, style, animate, transition, query, stagger } from '@angular/an
       transition('* => *', [
         query(':enter', [
           style({ opacity: 0, transform: 'translateY(-20px)' }),
-          stagger('75ms', [
-            animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+          stagger('5ms', [
+            animate('100ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
           ])
         ], { optional: true }),
         query(':leave', [
-          stagger('-75ms', [
-          animate('200ms ease-in', style({ opacity: 0, height: '0px' }))
+          stagger('-5ms', [
+          animate('100ms ease-in', style({ opacity: 0, height: '0px' }))
           ])
         ], { optional: true })
       ])
@@ -133,6 +133,10 @@ export class WeatherDisplayComponent {
     });
   }
 
+  getWeatherConditionDescription(code: number): string {
+    return this.weatherService.getWeatherCondition(code);
+  }
+
   private processWeatherData(str: string, data: any): void {
     if(data.message === "Mock data"){
       this.location = data.message;
@@ -157,7 +161,6 @@ export class WeatherDisplayComponent {
     this.timestampsTomorrow = this.getTimeStamps(timestamps, "tomorrow");
     this.timestampsDayAfterTomorrow = this.getTimeStamps(timestamps, "dayAfterTomorrow");
   }
-
 
   toggleDetailRow(index: number): void {
     this.expandedRow[index] = !this.expandedRow[index];

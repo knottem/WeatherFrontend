@@ -4,19 +4,29 @@
     justify-content: space-between; /* Spaces out children */
 }
 
-.logo-container, .time-container {
+.logo-container {
     display: flex;
-    align-items: center; /* Ensures content inside is vertically centered */
+    align-items: center; 
+    margin-right: 20px; 
 }
 
+.time-container {
+    display: flex;
+    align-items: center; 
+    margin-left: 20px; 
+}
 .search-container {
-    flex-grow: 1; /* Allows the search bar to take up remaining space */
-    margin: 0 20px; /* Adds some spacing around the search bar, adjust as needed */
+    flex-grow: 1; 
+    margin: 0 20px;
 }
 
-.example-input {
+.search-container input {
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 0px 10px; 
+    font-size: 16px;
     width: 100%;
-    height: 40px; /* Adjust the height of the input field */
+    height: 40px;
 }
 
 .logo-container h2, .time-container h2 {

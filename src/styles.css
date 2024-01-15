@@ -1,19 +1,16 @@
 /* FILEPATH: /home/knotten/Coding/hobby/WeatherFrontend/src/styles.css */
 
-/* Reset default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 /* Set a base font size and family */
 body {
     font-size: 16px;
     font-family: Arial, sans-serif;
-    width: 60%;
-    min-width: 800px;
-    margin: auto;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 /* Add some spacing and center the content */

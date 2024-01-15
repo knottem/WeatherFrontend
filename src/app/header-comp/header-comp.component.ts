@@ -3,7 +3,7 @@ import { SearchService } from '../search.service';
 import { WeatherService } from '../weather.service';
 import { FormControl } from '@angular/forms';
 import { Observable, of} from 'rxjs';
-import { startWith, map} from 'rxjs/operators';
+import { startWith, map, last} from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 
@@ -21,6 +21,8 @@ export class HeaderCompComponent implements OnInit {
   public searchQuery: FormControl = new FormControl('');
   public cityList: string[] = [];
   filteredCities: Observable<string[]> = of([]);
+  public lastSearched: string[] = [];
+
   
   constructor(public searchService: SearchService, private weatherService: WeatherService) { }
 
@@ -37,6 +39,8 @@ export class HeaderCompComponent implements OnInit {
       );
     });
 
+    this.loadlastSearched();
+
     // check every second to see if we need to update the time
     setInterval(() => {
       const newTime = this.updateCurrentTime();
@@ -47,9 +51,28 @@ export class HeaderCompComponent implements OnInit {
 
   }
 
+  private loadlastSearched() {
+    const storedFavorites = localStorage.getItem('lastSearched');
+    if (storedFavorites) {
+      this.lastSearched = JSON.parse(storedFavorites);
+    }
+  }
+
+  public addCityToLastSearched(city: string) {
+    const index = this.lastSearched.indexOf(city);
+    if (index > -1) {
+      this.lastSearched.splice(index, 1);
+    }
+    this.lastSearched.push(city);
+    while (this.lastSearched.length > 3) {
+      this.lastSearched.shift();
+    }
+    localStorage.setItem('lastSearched', JSON.stringify(this.lastSearched));
+  }
+
   private _filter(value: string): string[] {
     if (value.length < 1) {
-      return [];
+      return [...this.lastSearched].reverse();
     }
     return this.cityList.filter(city => city.toLowerCase().includes(value.toLowerCase()));
   }
@@ -62,6 +85,7 @@ export class HeaderCompComponent implements OnInit {
 
   public updateSearchQuery(city : string) {
     if(this.cityList.includes(city)) {
+      this.addCityToLastSearched(city);
       this.searchService.setSearchQuery(city);
     } 
   }
