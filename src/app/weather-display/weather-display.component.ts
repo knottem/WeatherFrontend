@@ -119,6 +119,13 @@ export class WeatherDisplayComponent {
     this.expandedRow = [];
   }
 
+  closeAllWeather(){
+    this.showTodaysWeather = false;
+    this.showTomorrowsWeather = false;
+    this.showDayAfterTomorrow = false;
+    this.expandedRow = [];
+  }
+
   getDayAfterTomorrow(){
     return DateTime.local().plus({ days: 2 }).toFormat('cccc');
   }
@@ -138,6 +145,7 @@ export class WeatherDisplayComponent {
   }
 
   private processWeatherData(str: string, data: any): void {
+    this.closeAllWeather();
     if(data.message === "Mock data"){
       this.location = data.message;
     } else {
