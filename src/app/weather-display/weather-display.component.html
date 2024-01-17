@@ -1,6 +1,6 @@
 <div class="weather-widget" *ngIf="isLoaded">
 
-  <h2>Todays weather in {{location}}</h2>
+  <h2 class="weatherH2">Todays weather in {{location}}</h2>
   <table class="weather-table" >
     <thead (click)="toggleWeatherToday()">
       <tr>
@@ -29,7 +29,7 @@
          <tr *ngIf="expandedRow[i]" class="detail-row" [@fadeInExpand] (@fadeInExpand.done)="onAnimationDone(i)" (click)="toggleDetailRow(i)">
            <td colspan="4">
              <div class="detailed-info">
-               <h3>Weather Information for {{ hour.substring(11,16) }}</h3>
+               <h1>Weather Information for {{ hour.substring(11,16) }}</h1>
                <div class="detail-item">
                  <strong>Temperature:</strong> {{ weather.weatherData[hour].temperature }}°C
                </div>
@@ -54,7 +54,7 @@
   
   <br>
 
-  <h2>Tomorrows weather in {{location}}</h2>
+  <h2 class="weatherH2">Tomorrows weather in {{location}}</h2>
   <table class="weather-table">
     <thead (click)="toggleWeatherTomorrow()">
       <tr>
@@ -83,7 +83,7 @@
         <tr *ngIf="expandedRow[i]" class="detail-row" [@fadeInExpand] (@fadeInExpand.done)="onAnimationDone(i)" (click)="toggleDetailRow(i)">
           <td colspan="4">
             <div class="detailed-info">
-              <h3>Weather Information for {{ hour.substring(11,16) }}</h3>
+              <h1>Weather Information for {{ hour.substring(11,16) }}</h1>
               <div class="detail-item">
                 <strong>Temperature:</strong> {{ weather.weatherData[hour].temperature }}°C
               </div>
@@ -108,7 +108,7 @@
 
   <br>
 
-  <h2>Weather for {{dayAfterTomorrow}} in {{location}}</h2>
+  <h2 class="weatherH2">Weather for {{dayAfterTomorrow}} in {{location}}</h2>
   <table class="weather-table">
     <thead (click)="toggleWeatherDayAfterTomorrow()">
       <tr>
@@ -137,7 +137,7 @@
         <tr *ngIf="expandedRow[i]" class="detail-row" [@fadeInExpand] (@fadeInExpand.done)="onAnimationDone(i)" (click)="toggleDetailRow(i)">
           <td colspan="4">
             <div class="detailed-info">
-              <h3>Weather Information for {{ hour.substring(11,16) }}</h3>
+              <h1>Weather Information for {{ hour.substring(11,16) }}</h1>
               <div class="detail-item">
                 <strong>Temperature:</strong> {{ weather.weatherData[hour].temperature }}°C
               </div>

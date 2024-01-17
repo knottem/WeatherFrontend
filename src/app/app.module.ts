@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WeatherDisplayComponent } from './weather-display/weather-display.component';
-import { CitySearchComponent } from './city-search/city-search.component';
 import { WeatherListComponent } from './weather-list/weather-list.component';
 import { UserAuthComponent } from './user-auth/user-auth.component';
 import { CityManagementComponent } from './city-management/city-management.component';
@@ -24,7 +23,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     WeatherDisplayComponent,
-    CitySearchComponent,
     WeatherListComponent,
     UserAuthComponent,
     CityManagementComponent,

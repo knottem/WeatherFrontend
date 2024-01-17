@@ -159,7 +159,7 @@ export class WeatherDisplayComponent {
 
     this.currentWeather = this.weather.weatherData[this.availableTimestamps[0]];
     this.currentTimestamp = this.availableTimestamps[0].substring(11, 16);
-    this.updatedTime = this.convertTimestampToLocale(this.weather.timeStamp).substring(11, 16);
+    this.updatedTime = this.convertTimestampToLocale(this.weather.timestamp).substring(11, 16);
     this.dayAfterTomorrow = this.getDayAfterTomorrow();
     this.isLoaded = true;
   }
@@ -247,7 +247,6 @@ export class WeatherDisplayComponent {
         }
       }
     });
-  
     weatherDataCopy.weatherData = convertedWeatherData;
     return weatherDataCopy;
   }

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HeaderCompComponent } from './header-comp.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('HeaderCompComponent', () => {
   let component: HeaderCompComponent;
@@ -8,7 +10,11 @@ describe('HeaderCompComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderCompComponent]
+      declarations: [HeaderCompComponent],
+      imports: [MatAutocompleteModule, 
+                HttpClientTestingModule,
+                ReactiveFormsModule],
+      providers: [HeaderCompComponent]
     });
     fixture = TestBed.createComponent(HeaderCompComponent);
     component = fixture.componentInstance;

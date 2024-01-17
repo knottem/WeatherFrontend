@@ -1,11 +1,13 @@
 # Angular Weather App
 
-This is an Angular-based web application that allows users to check weather information for various cities. Users can also log in to manage their list of favorite cities.
+This is an Angular-based web application that allows users to check weather information for various cities in Sweden. 
+This front-end application will be used in conjunction with a back-end API that provides merged weather data from multiple sources. 
+The API is available at [https://github.com/knottem/weatherapi](https://github.com/knottem/WeatherApi)
 
 ## Table of Contents
 
-- [Features](#features)
-- [Components](#components)
+- [Features](#Planned-Features)
+- [Components](#Components)
 
 ## Planned Features
 
@@ -21,7 +23,6 @@ This is an Angular-based web application that allows users to check weather info
 The following Angular components will be used in this project:
 
 - `weather-display`: Display weather information.
-- `city-search`: Search for cities.
 - `weather-list`: List of cities with weather data.
 - `user-auth`: User authentication.
 - `city-management`: Manage favorite cities.

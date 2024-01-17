@@ -1,6 +1,6 @@
 export class WeatherData {
     message: string;
-    timeStamp: string;
+    timestamp: string;
     city: null;
     information: {
       time: string;
@@ -20,7 +20,7 @@ export class WeatherData {
 
     constructor() {
         this.message = '';
-        this.timeStamp = '';
+        this.timestamp = '';
         this.city = null;
         this.information = {
           time: '',

@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { SearchService } from '../search.service';
 import { WeatherService } from '../weather.service';
 import { FormControl } from '@angular/forms';
-import { Observable, of} from 'rxjs';
-import { startWith, map, last} from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
-
 
 @Component({
   selector: 'app-header-comp',
@@ -14,26 +13,24 @@ import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/m
 })
 export class HeaderCompComponent implements OnInit {
 
-  public currentTime: string = this.updateCurrentTime();
-
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChild('trigger') autocompleteTrigger!: MatAutocompleteTrigger;
+
+  public currentTime: string = this.updateCurrentTime();
   public searchQuery: FormControl = new FormControl('');
   public cityList: string[] = [];
-  filteredCities: Observable<string[]> = of([]);
+  public filteredCities: Observable<string[]> = of([]);
   public lastSearched: string[] = [];
 
-  
   constructor(public searchService: SearchService, private weatherService: WeatherService) { }
 
   ngOnInit() {
-
     // Get the list of cities
     this.weatherService.getCityList().subscribe((data: string[]) => {
       this.cityList = data;
-
-      // Filter the list of cities based on the search query
-      this.filteredCities = this.searchQuery.valueChanges.pipe(
+      
+       // Filter the list of cities based on the search query
+       this.filteredCities = this.searchQuery.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value))
       );
@@ -49,6 +46,14 @@ export class HeaderCompComponent implements OnInit {
       }
     }, 1000);
 
+  }
+
+  // Listen for the tab key to be pressed while the search input is focused
+  @HostListener('document:keydown.Tab', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    if (document.activeElement?.id === 'searchForm') {
+        event.preventDefault();
+        this.onEnterPress();
+    }
   }
 
   private loadlastSearched() {
@@ -98,6 +103,8 @@ export class HeaderCompComponent implements OnInit {
     this.resetSearchQuery();
   }
 
+  // Update the search query if city is selected from the autocomplete list
+  // For now we show error message in the placerholder if no results are found
   public onEnterPress() {
     const currentValue = this.searchQuery.value.toLowerCase();
     const matchingCities = this.cityList.filter(city => 
@@ -105,6 +112,9 @@ export class HeaderCompComponent implements OnInit {
     );
     if (matchingCities.length === 1 || this.cityList.map(c => c.toLowerCase()).includes(currentValue)) {
       this.updateSearchQuery(matchingCities.length === 1 ? matchingCities[0] : currentValue);
+      document.getElementById('searchForm')?.setAttribute('placeholder', 'Search for a city');
+    } else {
+      document.getElementById('searchForm')?.setAttribute('placeholder', 'No results found');
     }
     this.resetSearchQuery();
   }
