@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WeatherDisplayComponent } from './weather-display.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('WeatherDisplayComponent', () => {
   let component: WeatherDisplayComponent;
@@ -8,7 +9,9 @@ describe('WeatherDisplayComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WeatherDisplayComponent]
+      imports: [HttpClientTestingModule],
+      declarations: [WeatherDisplayComponent],
+      providers: [WeatherDisplayComponent]
     });
     fixture = TestBed.createComponent(WeatherDisplayComponent);
     component = fixture.componentInstance;
@@ -30,5 +33,8 @@ describe('WeatherDisplayComponent', () => {
     ];
     const filteredTimestamps = component.filterTimestamps(timestamps);
     expect(filteredTimestamps.length).toEqual(3);
+    expect(filteredTimestamps[0]).toEqual(timestamps[2]);
+    expect(filteredTimestamps[1]).toEqual(timestamps[3]);
+    expect(filteredTimestamps[2]).toEqual(timestamps[4]);
   });
 });

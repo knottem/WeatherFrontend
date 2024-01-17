@@ -10,10 +10,8 @@ import { WeatherData } from 'src/models/weather-data';
 })
 export class WeatherService {
 
-  private mockAPi = false;
-
+  public mockApi = false;
   private baseUrl = environment.apiUrl;
-  
   public cityList: string[] = [];
 
   private weatherConditions: { [key: number]: string } = {
@@ -46,11 +44,10 @@ export class WeatherService {
     27: 'Heavy snowfall'
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getWeather(city: string): Observable<any> { 
-    if (this.mockAPi) {
-      console.log("Using mock API");
+    if (this.mockApi) {
       return this.http.get<any>('assets/stockholm.json').pipe(
         map(data => {
           return this.adjustDatesInMockData(data);
@@ -62,7 +59,7 @@ export class WeatherService {
   }
 
   getCityList(): Observable<string[]> {
-    if(this.mockAPi) {
+    if(this.mockApi) {
       return this.http.get<any>('assets/cityNames.json');
     } else {
       return this.http.get<any>(`${this.baseUrl}/city/names`);

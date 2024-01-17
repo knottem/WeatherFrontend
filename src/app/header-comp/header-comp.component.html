@@ -5,8 +5,8 @@
     </div>
     <div class="search-container">
         <form>
-            <input type="text" placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto"
-                (keyup.enter)="onEnterPress()" (keyup.tab)="onEnterPress()" #searchInput
+            <input id="searchForm" type="text" placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto"
+                (keyup.enter)="onEnterPress()" #searchInput
                 #trigger="matAutocompleteTrigger">
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)">
                 <mat-option *ngFor="let city of filteredCities | async" [value]="city">
@@ -18,4 +18,4 @@
     <div class="time-container">
         <h2>Time: {{currentTime}}</h2>
     </div>
-</div>
+</div>  
