@@ -1,6 +1,6 @@
 <div class="weather-widget" *ngIf="isLoaded">
 
-  <h2 class="weatherH2">Todays weather in {{location}}</h2>
+  <h2 class="weatherH2">Todays weather in {{weather.city.name}}</h2>
   <table class="weather-table" >
     <thead (click)="toggleWeatherToday()">
       <tr>
@@ -54,7 +54,7 @@
   
   <br>
 
-  <h2 class="weatherH2">Tomorrows weather in {{location}}</h2>
+  <h2 class="weatherH2">Tomorrows weather in {{weather.city.name}}</h2>
   <table class="weather-table">
     <thead (click)="toggleWeatherTomorrow()">
       <tr>
@@ -108,7 +108,7 @@
 
   <br>
 
-  <h2 class="weatherH2">Weather for {{dayAfterTomorrow}} in {{location}}</h2>
+  <h2 class="weatherH2">Weather for {{dayAfterTomorrow}} in {{weather.city.name}}</h2>
   <table class="weather-table">
     <thead (click)="toggleWeatherDayAfterTomorrow()">
       <tr>

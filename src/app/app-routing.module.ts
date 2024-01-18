@@ -9,7 +9,6 @@ import { CityManagementComponent } from './city-management/city-management.compo
 
 const routes: Routes = [
   { path: '', component: WeatherDisplayComponent }, // Default route
-  { path: 'weather', component: WeatherDisplayComponent },
   { path: 'list', component: WeatherListComponent },
   { path: 'login', component: UserAuthComponent },
   { path: 'manage-cities', component: CityManagementComponent },

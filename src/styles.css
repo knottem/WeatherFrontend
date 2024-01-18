@@ -10,10 +10,3 @@ body {
     scrollbar-width: none;  /* Firefox */
     font-family: 'Courier New', Courier, monospace;
 }
-
-/* Add media queries for mobile-first design */
-@media (min-width: 768px) {
-    .container {
-        max-width: 960px;
-    }
-}

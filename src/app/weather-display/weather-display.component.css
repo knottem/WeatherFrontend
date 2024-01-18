@@ -83,3 +83,30 @@ p {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+/* Media queries for mobile */
+@media (max-width: 768px) {
+    .weather-table th, .weather-table td {
+        padding: 5px;
+    }
+
+    .weather-table th {
+        font-size: 16px;
+    }
+
+    .weather-table td {
+        font-size: 16px;
+    }
+
+    .weatherH2 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 16px;
+    }  
+
+    .detailed-info {
+        font-size: 16px;
+    }
+}

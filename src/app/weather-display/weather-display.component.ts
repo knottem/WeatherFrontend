@@ -38,7 +38,6 @@ export class WeatherDisplayComponent {
   public weather: WeatherData;
   public currentWeather: any;
   public currentTimestamp: string;
-  public location: string;
   public availableTimestamps: string[] = [];
   public timestampsToday: string[] = [];
   public timestampsTomorrow: string[] = [];
@@ -59,18 +58,11 @@ export class WeatherDisplayComponent {
     this.weather = new WeatherData();
     this.currentWeather = {};
     this.currentTimestamp = "";
-    this.location = "";
     const cachedData = this.getWeatherFromLocalStorage();
-    const city = localStorage.getItem("city");
-    if(city != null){
-      if(cachedData != null){
-        this.processWeatherData(city, cachedData);
-        this.isLoaded = true;
-      } else {
-        this.getWeather(city);
-      }
+    if(cachedData != null){
+      this.processWeatherData(cachedData);
     } else {
-      this.getWeather("stockholm");
+      this.getWeather("Stockholm");
     }
   }
 
@@ -135,8 +127,7 @@ export class WeatherDisplayComponent {
       return;
     }
     this.weatherService.getWeather(str).subscribe((data) => {
-      this.processWeatherData(str, data)
-      this.saveWeatherToLocalStorage(data)
+      this.processWeatherData(data)
     });
   }
 
@@ -144,14 +135,8 @@ export class WeatherDisplayComponent {
     return this.weatherService.getWeatherCondition(code);
   }
 
-  private processWeatherData(str: string, data: any): void {
+  private processWeatherData(data: any): void {
     this.closeAllWeather();
-    if(data.message === "Mock data"){
-      this.location = data.message;
-    } else {
-      this.location = str.charAt(0).toUpperCase() + str.slice(1);
-      localStorage.setItem("city", str);
-    }
     this.weather = this.convertToLocaleTime(data);
     this.availableTimestamps = this.filterTimestamps(Object.keys(this.weather.weatherData));
     
@@ -161,6 +146,10 @@ export class WeatherDisplayComponent {
     this.currentTimestamp = this.availableTimestamps[0].substring(11, 16);
     this.updatedTime = this.convertTimestampToLocale(this.weather.timestamp).substring(11, 16);
     this.dayAfterTomorrow = this.getDayAfterTomorrow();
+
+    if(this.weather.message !== "Mock data") {
+      this.saveWeatherToLocalStorage(data);
+    }
     this.isLoaded = true;
   }
 
