@@ -26,7 +26,8 @@ export class HeaderCompComponent implements OnInit {
   constructor(
     public searchService: SearchService, 
     private weatherService: WeatherService,
-    private router: Router) { }
+    private router: Router
+    ) { }
 
   ngOnInit() {
     // Get the list of cities
@@ -43,7 +44,7 @@ export class HeaderCompComponent implements OnInit {
     this.loadlastSearched();
 
     // check every second to see if we need to update the time
-    setInterval(() => {
+    setInterval(() => {  
       const newTime = this.updateCurrentTime();
       if (this.currentTime !== newTime) {
         this.currentTime = newTime;
@@ -51,6 +52,13 @@ export class HeaderCompComponent implements OnInit {
     }, 1000);
 
   }
+
+    // Updates the current time in HH:MM format
+    public updateCurrentTime() {
+      const now = new Date();
+      return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    }
+  
 
   // Listen for the tab key to be pressed while the search input is focused
   @HostListener('document:keydown.Tab', ['$event']) onKeydownHandler(event: KeyboardEvent) {
@@ -60,44 +68,11 @@ export class HeaderCompComponent implements OnInit {
     }
   }
 
-  private loadlastSearched() {
-    const storedFavorites = localStorage.getItem('lastSearched');
-    if (storedFavorites) {
-      this.lastSearched = JSON.parse(storedFavorites);
-    }
-  }
-
-  public addCityToLastSearched(city: string) {
-    const index = this.lastSearched.indexOf(city);
-    if (index > -1) {
-      this.lastSearched.splice(index, 1);
-    }
-    this.lastSearched.push(city);
-    while (this.lastSearched.length > 3) {
-      this.lastSearched.shift();
-    }
-    localStorage.setItem('lastSearched', JSON.stringify(this.lastSearched));
-  }
-
   private _filter(value: string): string[] {
     if (value.length < 1) {
       return [...this.lastSearched].reverse();
     }
     return this.cityList.filter(city => city.toLowerCase().includes(value.toLowerCase()));
-  }
-
-  // Updates the current time in HH:MM format
-  public updateCurrentTime() {
-    const now = new Date();
-    return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-  }
-
-  public updateSearchQuery(city : string) {
-    if(this.cityList.includes(city)) {
-      this.addCityToLastSearched(city);
-      this.searchService.setSearchQuery(city);
-      this.router.navigate(['/']);
-    } 
   }
 
   public onCitySelected(event: MatAutocompleteSelectedEvent) {
@@ -124,10 +99,40 @@ export class HeaderCompComponent implements OnInit {
     this.resetSearchQuery();
   }
 
+  // Update the search query and navigate to the home page
+  public updateSearchQuery(city : string) {
+    if(this.cityList.includes(city)) {
+      this.addCityToLastSearched(city);
+      this.searchService.setSearchQuery(city);
+      this.router.navigate(['/']);
+    } 
+  }
+
   private resetSearchQuery() {
     this.searchInput.nativeElement.blur();
     this.autocompleteTrigger.closePanel();
     this.searchQuery.reset('');
+  }
+
+  // Load the last searched cities from local storage
+  private loadlastSearched() {
+    const searched = localStorage.getItem('lastSearched');
+    if (searched) {
+      this.lastSearched = JSON.parse(searched);
+    }
+  }
+
+  // Add the city to the last searched list and save to local storage, with a max of 3 cities
+  public addCityToLastSearched(city: string) {
+    const index = this.lastSearched.indexOf(city);
+    if (index > -1) {
+      this.lastSearched.splice(index, 1);
+    }
+    this.lastSearched.push(city);
+    while (this.lastSearched.length > 3) {
+      this.lastSearched.shift();
+    }
+    localStorage.setItem('lastSearched', JSON.stringify(this.lastSearched));
   }
  
 }
