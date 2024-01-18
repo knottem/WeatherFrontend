@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-comp',
@@ -22,7 +23,10 @@ export class HeaderCompComponent implements OnInit {
   public filteredCities: Observable<string[]> = of([]);
   public lastSearched: string[] = [];
 
-  constructor(public searchService: SearchService, private weatherService: WeatherService) { }
+  constructor(
+    public searchService: SearchService, 
+    private weatherService: WeatherService,
+    private router: Router) { }
 
   ngOnInit() {
     // Get the list of cities
@@ -92,6 +96,7 @@ export class HeaderCompComponent implements OnInit {
     if(this.cityList.includes(city)) {
       this.addCityToLastSearched(city);
       this.searchService.setSearchQuery(city);
+      this.router.navigate(['/']);
     } 
   }
 
