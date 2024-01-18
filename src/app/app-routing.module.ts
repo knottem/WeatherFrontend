@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'list', component: WeatherListComponent },
   { path: 'login', component: UserAuthComponent },
   { path: 'manage-cities', component: CityManagementComponent },
+  { path: '**', redirectTo: '' }, // Wildcard route
 ];
 
 @NgModule({

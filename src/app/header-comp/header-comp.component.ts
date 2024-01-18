@@ -60,8 +60,9 @@ export class HeaderCompComponent implements OnInit {
     }
   
 
-  // Listen for the tab key to be pressed while the search input is focused
-  @HostListener('document:keydown.Tab', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+  // Listens for the tab key to be pressed while the search input is focused
+  @HostListener('document:keydown.Tab', ['$event'])
+  public onKeydownHandler(event: KeyboardEvent) {
     if (document.activeElement?.id === 'searchForm') {
         event.preventDefault();
         this.onEnterPress();

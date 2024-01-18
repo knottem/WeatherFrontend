@@ -28,7 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CityManagementComponent,
     HeaderCompComponent,
     ErrorCompComponent,
-    LoadingIndicatorComponent
+    LoadingIndicatorComponent,
   ],
   imports: [
     BrowserModule,
