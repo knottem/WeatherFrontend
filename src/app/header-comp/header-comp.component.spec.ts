@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HeaderCompComponent } from './header-comp.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('HeaderCompComponent', () => {
   let component: HeaderCompComponent;
@@ -8,7 +10,11 @@ describe('HeaderCompComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderCompComponent]
+      declarations: [HeaderCompComponent],
+      imports: [MatAutocompleteModule, 
+                HttpClientTestingModule,
+                ReactiveFormsModule],
+      providers: [HeaderCompComponent]
     });
     fixture = TestBed.createComponent(HeaderCompComponent);
     component = fixture.componentInstance;
@@ -18,4 +24,17 @@ describe('HeaderCompComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('#updateCurrentTime should return a string in HH:MM format', () => {
+    const time = component.updateCurrentTime();
+    expect(time).toMatch(/^\d{2}:\d{2}$/);
+  });
+
+  it('#updateCurrentTime should return current time', () => {
+    const time = component.updateCurrentTime();
+    const now = new Date();
+    const expected = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    expect(time).toEqual(expected);
+  });
+
 });

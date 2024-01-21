@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+/* FILEPATH: /home/knotten/Coding/hobby/WeatherFrontend/src/styles.css */
+
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    font-family: 'Courier New', Courier, monospace;
+}

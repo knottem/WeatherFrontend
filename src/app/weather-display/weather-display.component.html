@@ -1,1 +1,12 @@
-<p>weather-display works!</p>
+<app-loading-indicator *ngIf="!isLoaded"></app-loading-indicator>
+<div class="weather" *ngIf="isLoaded">
+  <div *ngFor="let i of [].constructor(amountOfDays); let index = index">
+    <app-weather-table 
+      [dayLabel]="currentDays[index]"
+      [weather]="getWeatherDataForDay(timestamps[index])"
+      [currentWeather]="index === 0 ? currentWeather : getWeatherClosestToNoon(timestamps[index])">
+    </app-weather-table>
+    <br>
+    </div>
+  <p>Weather data last updated at {{updatedTime}}. Sources: SMHI and Yr.</p>
+</div>
