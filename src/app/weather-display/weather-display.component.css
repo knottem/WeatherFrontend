@@ -1,31 +1,38 @@
+.weather {
+    margin-top: 20px;
+}
+
+.weather-card {
+    margin-bottom: 5px;
+}
+
+.weather-card h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: normal;
+}
+
 .weather-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
 }
 
-.weather-table th, .weather-table td {
-    padding: 20px;
-    text-align: center;
-}
-
 .weather-table th {
     background-color: #e9e9e9;
     color: #333;
     font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
 }
 
 .weather-table td {
     background-color: #f2f2f2;
     font-size: 24px;
-}
-
-.weather-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.weather-table tbody tr:hover {
-    background-color: #ddd; /* For hover effect */
+    font-weight: normal;
+    text-align: center;
+    padding: 20px;
 }
 
 .weather-table .detail-row td {
@@ -72,12 +79,6 @@
     width: 20%;
 }
 
-.weatherH2 {
-    font-size: 30px;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-
 p {
     font-size: 20px;
     margin-top: 20px;
@@ -88,6 +89,8 @@ p {
 @media (max-width: 768px) {
     .weather-table th, .weather-table td {
         padding: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 
     .weather-table th {
@@ -98,7 +101,7 @@ p {
         font-size: 16px;
     }
 
-    .weatherH2 {
+    .weather-card h2 {
         font-size: 20px;
     }
 

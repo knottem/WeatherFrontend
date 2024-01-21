@@ -13,8 +13,6 @@ The API is available at [https://github.com/knottem/weatherapi](https://github.c
 
 - Display weather information for multiple cities.
 - Search for cities to get weather data.
-- User authentication for managing favorite cities.
-- Add and remove cities from the list of favorites.
 - Error handling for API requests and user feedback.
 - Loading indicators during data fetching.
 
@@ -23,9 +21,6 @@ The API is available at [https://github.com/knottem/weatherapi](https://github.c
 The following Angular components will be used in this project:
 
 - `weather-display`: Display weather information.
-- `weather-list`: List of cities with weather data.
-- `user-auth`: User authentication.
-- `city-management`: Manage favorite cities.
 - `header-comp`: Header and navigation.
 - `error-comp`: Error handling and messages.
 - `loading-indicator`: Loading indicators.
