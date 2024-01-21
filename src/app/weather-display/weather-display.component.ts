@@ -17,11 +17,8 @@ export class WeatherDisplayComponent {
   public weather: WeatherData = new WeatherData();
 
   public currentWeather: any;
-  public tomorrowWeather: any;
-  public dayAfterTomorrowWeather: any;
-  
   public dayAfterTomorrow: string = "";
-  
+
   public currentTimestamp: string = "";
   public availableTimestamps: string[] = [];
   public timestampsToday: string[] = [];
@@ -70,20 +67,12 @@ export class WeatherDisplayComponent {
   private processWeatherData(data: any): void {
     this.weather = this.convertToLocaleTime(data);
     this.availableTimestamps = this.filterTimestamps(Object.keys(this.weather.weatherData));
-
     this.timestampsToday = this.getTimeStamps(this.availableTimestamps, "today");
     this.timestampsTomorrow = this.getTimeStamps(this.availableTimestamps, "tomorrow");
     this.timestampsDayAfterTomorrow = this.getTimeStamps(this.availableTimestamps, "dayAfterTomorrow");
-
     this.currentWeather = {...this.weather.weatherData[this.availableTimestamps[0]], timestamp: this.availableTimestamps[0].substring(11, 16)};
-
-    this.tomorrowWeather = this.getWeatherClosestToNoon(this.timestampsTomorrow);
-
     this.dayAfterTomorrow = DateTime.local().plus({ days: 2 }).toFormat('cccc');
-    this.dayAfterTomorrowWeather = this.getWeatherClosestToNoon(this.timestampsDayAfterTomorrow);
-
     this.updatedTime = this.convertTimestampToLocale(this.weather.timestamp).substring(11, 16);
-
     if (this.weather.message !== "Mock data") {
       localStorage.setItem(`weather`, JSON.stringify(data));
     }
@@ -140,7 +129,7 @@ export class WeatherDisplayComponent {
     return weatherDataCopy;
   }
 
-  private getWeatherClosestToNoon(timestamps: string[]): any {
+  public getWeatherClosestToNoon(timestamps: string[]): any {
     let closestTime = timestamps.reduce((prev, curr) => {
       let currHour = parseInt(curr.split(' ')[1].split(':')[0], 10);
       let prevHour = parseInt(prev.split(' ')[1].split(':')[0], 10);
@@ -154,7 +143,7 @@ export class WeatherDisplayComponent {
   }
 
   // return a weather object for the timestamps starting with a copy of the original weather
-  getWeatherDataForDay(timestamps: string[]): WeatherData {
+  public getWeatherDataForDay(timestamps: string[]): WeatherData {
     const weatherDataForDay: WeatherData = { ...this.weather };
     weatherDataForDay.weatherData = timestamps.reduce((filteredData, timestamp) => {
       filteredData[timestamp] = this.weather.weatherData[timestamp];

@@ -9,13 +9,13 @@
   <app-weather-table 
     [dayLabel]="'Tomorrow'"
     [weather]="getWeatherDataForDay(timestampsTomorrow)"
-    [currentWeather]="tomorrowWeather">
+    [currentWeather]="getWeatherClosestToNoon(timestampsTomorrow)">
   </app-weather-table>
   <br>
   <app-weather-table 
     [dayLabel]="dayAfterTomorrow"
     [weather]="getWeatherDataForDay(timestampsDayAfterTomorrow)"
-    [currentWeather]="dayAfterTomorrowWeather">
+    [currentWeather]="getWeatherClosestToNoon(timestampsDayAfterTomorrow)">
   </app-weather-table>
 
   <p>Weather data last updated at {{updatedTime}}. Sources: SMHI and Yr.</p>
