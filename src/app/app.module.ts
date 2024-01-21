@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { WeatherTableComponent } from './weather-table/weather-table.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HeaderCompComponent,
     ErrorCompComponent,
     LoadingIndicatorComponent,
+    WeatherTableComponent,
   ],
   imports: [
     BrowserModule,

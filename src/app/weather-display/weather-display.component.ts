@@ -3,35 +3,11 @@ import { WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { SearchService } from '../search.service';
 import { DateTime } from 'luxon';
-import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-weather-display',
   templateUrl: './weather-display.component.html',
-  styleUrls: ['./weather-display.component.css'],
-  animations: [
-    trigger('fadeInStagger', [
-      transition('* => *', [
-        query(':enter', [
-          style({ opacity: 0, transform: 'translateY(-20px)' }),
-          stagger('5ms', [
-            animate('100ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-          ])
-        ], { optional: true }),
-        query(':leave', [
-          stagger('-5ms', [
-            animate('100ms ease-in', style({ opacity: 0, height: '0px' }))
-          ])
-        ], { optional: true })
-      ])
-    ]),
-    trigger('fadeInExpand', [
-      transition(':enter', [
-        style({ opacity: 0, height: '0px', overflow: 'hidden' }),
-        animate('300ms ease-out', style({ opacity: 1, height: '*' }))
-      ])
-    ])
-  ]
+  styleUrls: ['./weather-display.component.css']
 })
 
 export class WeatherDisplayComponent {
@@ -39,9 +15,12 @@ export class WeatherDisplayComponent {
   private defaultCity: string = "stockholm";
 
   public weather: WeatherData = new WeatherData();
+
   public currentWeather: any;
   public tomorrowWeather: any;
   public dayAfterTomorrowWeather: any;
+  
+  public dayAfterTomorrow: string = "";
   
   public currentTimestamp: string = "";
   public availableTimestamps: string[] = [];
@@ -49,16 +28,8 @@ export class WeatherDisplayComponent {
   public timestampsTomorrow: string[] = [];
   public timestampsDayAfterTomorrow: string[] = [];
 
-  public showTodaysWeather: boolean = false;
-  public showTomorrowsWeather: boolean = false;
-  public showDayAfterTomorrow: boolean = false;
-
   public isLoaded: boolean = false;
-  public updatedTime: string = "";
-  public dayAfterTomorrow: string = "";
-
-  public expandedRow: boolean[] = [];
-  public collapsingIndex: number | null = null;
+  public updatedTime: string = ""
 
   constructor(
     private weatherService: WeatherService,
@@ -86,18 +57,6 @@ export class WeatherDisplayComponent {
     }
   }
 
-  public getWeatherConditionDescription(code: number): string {
-    return this.weatherService.getWeatherCondition(code);
-  }
-
-  // Toggles the visibility of the weather for a specific day
-  public toggleWeather(day: 'today' | 'tomorrow' | 'dayAfterTomorrow'): void {
-    this.showTodaysWeather = day === 'today' ? !this.showTodaysWeather : false;
-    this.showTomorrowsWeather = day === 'tomorrow' ? !this.showTomorrowsWeather : false;
-    this.showDayAfterTomorrow = day === 'dayAfterTomorrow' ? !this.showDayAfterTomorrow : false;
-    this.expandedRow = [];
-  }
-
   private getWeather(str: string) {
     if (str === "") {
       return;
@@ -109,11 +68,6 @@ export class WeatherDisplayComponent {
   }
 
   private processWeatherData(data: any): void {
-    this.showTodaysWeather = false;
-    this.showTomorrowsWeather = false;
-    this.showDayAfterTomorrow = false;
-    this.expandedRow = [];
-
     this.weather = this.convertToLocaleTime(data);
     this.availableTimestamps = this.filterTimestamps(Object.keys(this.weather.weatherData));
 
@@ -121,28 +75,19 @@ export class WeatherDisplayComponent {
     this.timestampsTomorrow = this.getTimeStamps(this.availableTimestamps, "tomorrow");
     this.timestampsDayAfterTomorrow = this.getTimeStamps(this.availableTimestamps, "dayAfterTomorrow");
 
-    this.currentWeather = this.weather.weatherData[this.availableTimestamps[0]];
+    this.currentWeather = {...this.weather.weatherData[this.availableTimestamps[0]], timestamp: this.availableTimestamps[0].substring(11, 16)};
+
     this.tomorrowWeather = this.getWeatherClosestToNoon(this.timestampsTomorrow);
-    this.dayAfterTomorrowWeather = this.getWeatherClosestToNoon(this.timestampsDayAfterTomorrow);
-    this.currentTimestamp = this.availableTimestamps[0].substring(11, 16);
-    this.updatedTime = this.convertTimestampToLocale(this.weather.timestamp).substring(11, 16);
+
     this.dayAfterTomorrow = DateTime.local().plus({ days: 2 }).toFormat('cccc');
+    this.dayAfterTomorrowWeather = this.getWeatherClosestToNoon(this.timestampsDayAfterTomorrow);
+
+    this.updatedTime = this.convertTimestampToLocale(this.weather.timestamp).substring(11, 16);
 
     if (this.weather.message !== "Mock data") {
       localStorage.setItem(`weather`, JSON.stringify(data));
     }
     this.isLoaded = true;
-  }
-
-  public toggleDetailRow(index: number, event: Event): void {
-    event.stopPropagation();
-    this.expandedRow[index] = !this.expandedRow[index];
-  }
-
-  public onAnimationDone(index: number): void {
-    if (this.collapsingIndex === index) {
-      this.collapsingIndex = null;
-    }
   }
 
   private getTimeStamps(timestamps: string[], day: string): string[] {
@@ -204,8 +149,19 @@ export class WeatherDisplayComponent {
 
     return {
       ...this.weather.weatherData[closestTime],
-      timestamp: closestTime
+      timestamp: closestTime.substring(11, 16)
     };
+  }
+
+  // return a weather object for the timestamps starting with a copy of the original weather
+  getWeatherDataForDay(timestamps: string[]): WeatherData {
+    const weatherDataForDay: WeatherData = { ...this.weather };
+    weatherDataForDay.weatherData = timestamps.reduce((filteredData, timestamp) => {
+      filteredData[timestamp] = this.weather.weatherData[timestamp];
+      return filteredData;
+    }, {} as Record<string, any>);
+  
+    return weatherDataForDay;
   }
 
 }
