@@ -25,8 +25,7 @@
                     <td>{{ getWeatherConditionDescription(weather.weatherData[hour].weatherCode) }}</td>
                     <td>{{ weather.weatherData[hour].precipitation }}</td>
                 </tr>
-                <tr *ngIf="expandedRows[i]" class="detail-row" [@fadeInExpand] (@fadeInExpand.done)="onAnimationDone(i)"
-                    (click)="toggleDetailRow(i, $event)">
+                <tr *ngIf="expandedRows[i]" class="detail-row" [@fadeInExpand] (click)="toggleDetailRow(i, $event)">
                     <td colspan="4">
                         <div class="detailed-info">
                             <h1>Weather Information for {{ hour.substring(11,16) }}</h1>

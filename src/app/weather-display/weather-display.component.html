@@ -1,22 +1,12 @@
 <app-loading-indicator *ngIf="!isLoaded"></app-loading-indicator>
 <div class="weather" *ngIf="isLoaded">
-  <app-weather-table 
-    [dayLabel]="'Today'"
-    [weather]="getWeatherDataForDay(timestampsToday)"
-    [currentWeather]="currentWeather">
-  </app-weather-table>
-  <br>
-  <app-weather-table 
-    [dayLabel]="'Tomorrow'"
-    [weather]="getWeatherDataForDay(timestampsTomorrow)"
-    [currentWeather]="getWeatherClosestToNoon(timestampsTomorrow)">
-  </app-weather-table>
-  <br>
-  <app-weather-table 
-    [dayLabel]="dayAfterTomorrow"
-    [weather]="getWeatherDataForDay(timestampsDayAfterTomorrow)"
-    [currentWeather]="getWeatherClosestToNoon(timestampsDayAfterTomorrow)">
-  </app-weather-table>
-
+  <div *ngFor="let i of [].constructor(amountOfDays); let index = index">
+    <app-weather-table 
+      [dayLabel]="currentDays[index]"
+      [weather]="getWeatherDataForDay(timestamps[index])"
+      [currentWeather]="index === 0 ? currentWeather : getWeatherClosestToNoon(timestamps[index])">
+    </app-weather-table>
+    <br>
+    </div>
   <p>Weather data last updated at {{updatedTime}}. Sources: SMHI and Yr.</p>
 </div>

@@ -1,5 +1,5 @@
 import { Component, Input} from '@angular/core';
-import { WeatherData } from '../../models/weather-data';
+import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 
@@ -36,14 +36,13 @@ export class WeatherTableComponent {
   @Input() dayLabel: string = "";
   @Input() cityName: string = "";
   @Input() weather: WeatherData = new WeatherData();
-  @Input() currentWeather: any;
+  @Input() currentWeather: CurrentWeather = new CurrentWeather("", 0, 0, 0, 0, 0);
 
-  public collapsingIndex: number | null = null;
   public showWeather: boolean = false;
-  public showDetail: boolean = false;
   public expandedRows: boolean[] = [];
 
-  constructor(private weatherService: WeatherService) { }
+  constructor(private weatherService: WeatherService) {
+   }
 
   public getTimestamps(): string[] {
     return Object.keys(this.weather.weatherData);
@@ -61,12 +60,6 @@ export class WeatherTableComponent {
 
   public getWeatherConditionDescription(code: number): string {
     return this.weatherService.getWeatherCondition(code);
-  }
-
-  public onAnimationDone(index: number): void {
-    if (this.collapsingIndex === index) {
-      this.collapsingIndex = null;
-    }
   }
 
 }

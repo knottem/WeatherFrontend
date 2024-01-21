@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { WeatherData } from '../../models/weather-data';
+import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { SearchService } from '../search.service';
 import { DateTime } from 'luxon';
@@ -13,18 +13,12 @@ import { DateTime } from 'luxon';
 export class WeatherDisplayComponent {
 
   private defaultCity: string = "stockholm";
+  public amountOfDays: number = 3;
 
   public weather: WeatherData = new WeatherData();
-
-  public currentWeather: any;
-  public dayAfterTomorrow: string = "";
-
-  public currentTimestamp: string = "";
-  public availableTimestamps: string[] = [];
-  public timestampsToday: string[] = [];
-  public timestampsTomorrow: string[] = [];
-  public timestampsDayAfterTomorrow: string[] = [];
-
+  public currentWeather: CurrentWeather = new CurrentWeather("", 0, 0, 0, 0, 0);
+  public currentDays: string[] = [];
+  public timestamps: string[][] = [];
   public isLoaded: boolean = false;
   public updatedTime: string = ""
 
@@ -66,12 +60,17 @@ export class WeatherDisplayComponent {
 
   private processWeatherData(data: any): void {
     this.weather = this.convertToLocaleTime(data);
-    this.availableTimestamps = this.filterTimestamps(Object.keys(this.weather.weatherData));
-    this.timestampsToday = this.getTimeStamps(this.availableTimestamps, "today");
-    this.timestampsTomorrow = this.getTimeStamps(this.availableTimestamps, "tomorrow");
-    this.timestampsDayAfterTomorrow = this.getTimeStamps(this.availableTimestamps, "dayAfterTomorrow");
-    this.currentWeather = {...this.weather.weatherData[this.availableTimestamps[0]], timestamp: this.availableTimestamps[0].substring(11, 16)};
-    this.dayAfterTomorrow = DateTime.local().plus({ days: 2 }).toFormat('cccc');
+    const availableTimestamps = this.filterTimestamps(Object.keys(this.weather.weatherData));
+    this.timestamps = this.getTimeStamps(availableTimestamps);
+    this.currentDays = this.getDay()
+    this.currentWeather = new CurrentWeather(
+      availableTimestamps[0].substring(11, 16), 
+      this.weather.weatherData[availableTimestamps[0]].temperature, 
+      this.weather.weatherData[availableTimestamps[0]].weatherCode, 
+      this.weather.weatherData[availableTimestamps[0]].windSpeed, 
+      this.weather.weatherData[availableTimestamps[0]].windDirection, 
+      this.weather.weatherData[availableTimestamps[0]].precipitation);
+    
     this.updatedTime = this.convertTimestampToLocale(this.weather.timestamp).substring(11, 16);
     if (this.weather.message !== "Mock data") {
       localStorage.setItem(`weather`, JSON.stringify(data));
@@ -79,18 +78,31 @@ export class WeatherDisplayComponent {
     this.isLoaded = true;
   }
 
-  private getTimeStamps(timestamps: string[], day: string): string[] {
-    const now = new Date();
-    if (day === "tomorrow") {
-      now.setDate(now.getDate() + 1);
-    } else if (day === "dayAfterTomorrow") {
-      now.setDate(now.getDate() + 2);
+  private getDay(): string[] {
+    const days: string[] = [];
+    for (let i = 0; i < 10; i++) {
+      if(i === 0) {
+        days.push("Today");
+        continue;
+      } else if (i === 1) {
+        days.push("Tomorrow");
+        continue;
+      }
+      days.push(DateTime.local().plus({ days: i }).toFormat('cccc'));
     }
-    const timestampsDay = timestamps.filter(timestamp => {
-      return new Date(timestamp).getDate() === now.getDate();
+    return days;
+  }
+
+  private getTimeStamps(timestamps: string[]): string[][] {
+    const timestampsSets: string[][] = [];
+    for (let day = 0; day < 10; day++) {
+      const now = new Date();
+      now.setDate(now.getDate() + day);
+      timestampsSets.push(timestamps.filter(timestamp => {
+        return new Date(timestamp).getDate() === now.getDate();
+      }));
     }
-    );
-    return timestampsDay;
+    return timestampsSets;
   }
 
   public filterTimestamps(timestamps: string[]): string[] {
@@ -129,7 +141,7 @@ export class WeatherDisplayComponent {
     return weatherDataCopy;
   }
 
-  public getWeatherClosestToNoon(timestamps: string[]): any {
+  public getWeatherClosestToNoon(timestamps: string[]): CurrentWeather {
     let closestTime = timestamps.reduce((prev, curr) => {
       let currHour = parseInt(curr.split(' ')[1].split(':')[0], 10);
       let prevHour = parseInt(prev.split(' ')[1].split(':')[0], 10);
