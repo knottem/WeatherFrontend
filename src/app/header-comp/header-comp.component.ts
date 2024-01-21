@@ -24,27 +24,18 @@ export class HeaderCompComponent implements OnInit {
   public lastSearched: string[] = [];
 
   constructor(
-    public searchService: SearchService, 
+    public searchService: SearchService,
     private weatherService: WeatherService,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit() {
-    // Get the list of cities
-    this.weatherService.getCityList().subscribe((data: string[]) => {
-      this.cityList = data;
-      
-       // Filter the list of cities based on the search query
-       this.filteredCities = this.searchQuery.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
-    });
-
-    this.loadlastSearched();
+    this.getCityList();
+    const item = localStorage.getItem('lastSearched');
+    this.lastSearched = item ? JSON.parse(item) : [];
 
     // check every second to see if we need to update the time
-    setInterval(() => {  
+    setInterval(() => {
       const newTime = this.updateCurrentTime();
       if (this.currentTime !== newTime) {
         this.currentTime = newTime;
@@ -53,19 +44,18 @@ export class HeaderCompComponent implements OnInit {
 
   }
 
-    // Updates the current time in HH:MM format
-    public updateCurrentTime() {
-      const now = new Date();
-      return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-    }
-  
+  // Updates the current time in HH:MM format
+  public updateCurrentTime() {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  }
 
   // Listens for the tab key to be pressed while the search input is focused
   @HostListener('document:keydown.Tab', ['$event'])
   public onKeydownHandler(event: KeyboardEvent) {
     if (document.activeElement?.id === 'searchForm') {
-        event.preventDefault();
-        this.onEnterPress();
+      event.preventDefault();
+      this.onEnterPress();
     }
   }
 
@@ -88,7 +78,7 @@ export class HeaderCompComponent implements OnInit {
   // For now we show error message in the placerholder if no results are found
   public onEnterPress() {
     const currentValue = this.searchQuery.value.toLowerCase();
-    const matchingCities = this.cityList.filter(city => 
+    const matchingCities = this.cityList.filter(city =>
       city.toLowerCase().includes(currentValue)
     );
     if (matchingCities.length === 1 || this.cityList.map(c => c.toLowerCase()).includes(currentValue)) {
@@ -101,12 +91,12 @@ export class HeaderCompComponent implements OnInit {
   }
 
   // Update the search query and navigate to the home page
-  public updateSearchQuery(city : string) {
-    if(this.cityList.includes(city)) {
+  public updateSearchQuery(city: string) {
+    if (this.cityList.includes(city)) {
       this.addCityToLastSearched(city);
       this.searchService.setSearchQuery(city);
       this.router.navigate(['/']);
-    } 
+    }
   }
 
   private resetSearchQuery() {
@@ -115,16 +105,8 @@ export class HeaderCompComponent implements OnInit {
     this.searchQuery.reset('');
   }
 
-  // Load the last searched cities from local storage
-  private loadlastSearched() {
-    const searched = localStorage.getItem('lastSearched');
-    if (searched) {
-      this.lastSearched = JSON.parse(searched);
-    }
-  }
-
   // Add the city to the last searched list and save to local storage, with a max of 3 cities
-  public addCityToLastSearched(city: string) {
+  private addCityToLastSearched(city: string) {
     const index = this.lastSearched.indexOf(city);
     if (index > -1) {
       this.lastSearched.splice(index, 1);
@@ -135,5 +117,32 @@ export class HeaderCompComponent implements OnInit {
     }
     localStorage.setItem('lastSearched', JSON.stringify(this.lastSearched));
   }
- 
+
+  private getCityList() {
+    const cityList = localStorage.getItem('cityList');
+    let fetchNew = true;
+    if (cityList) {
+      const { time, cityList: cities } = JSON.parse(cityList);
+      if (new Date().getTime() - time < 86400000) {
+        this.cityList = cities;
+        this.filteredCities = this.searchQuery.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+        fetchNew = false;
+      } 
+    } 
+
+    if(fetchNew) {
+      this.weatherService.getCityList().subscribe((data: string[]) => {
+        this.cityList = data;
+        const time = new Date().getTime();
+        localStorage.setItem('cityList', JSON.stringify({ time, cityList: this.cityList }));
+        this.filteredCities = this.searchQuery.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+      });
+    }
+  }
 }
