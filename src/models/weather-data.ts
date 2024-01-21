@@ -39,3 +39,23 @@ export class WeatherData {
         this.weatherData = {};
       }
   }
+
+export class CurrentWeather {
+    timestamp: string;
+    temperature: number;
+    weatherCode: number;
+    windSpeed: number;
+    windDirection: number;
+    precipitation: number;
+
+    constructor(timestamp: string, temperature: number, weatherCode: number, windSpeed: number, windDirection: number, precipitation: number) {
+        this.timestamp = timestamp;
+        this.temperature = temperature;
+        this.weatherCode = weatherCode;
+        this.windSpeed = windSpeed;
+        this.windDirection = windDirection;
+        this.precipitation = precipitation;
+      } 
+}
+
+

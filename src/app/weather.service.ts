@@ -58,6 +58,7 @@ export class WeatherService {
     return this.weatherConditions[code] || 'Unknown condition';
   }
 
+
   loadCityListFromAssets(): Observable<string[]> {
     return this.http.get<any>('assets/cityNames.json').pipe(
       catchError(assetsError => {
