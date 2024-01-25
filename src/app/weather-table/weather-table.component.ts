@@ -37,7 +37,6 @@ export class WeatherTableComponent {
   @Input() cityName: string = "";
   @Input() weather: WeatherData = new WeatherData();
   @Input() currentWeather: CurrentWeather = new CurrentWeather("", 0, 0, 0, 0, 0);
-  @Input() today: boolean = false;
 
   public showWeather: boolean = false;
   public expandedRows: boolean[] = [];

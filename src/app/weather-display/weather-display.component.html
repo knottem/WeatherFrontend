@@ -4,31 +4,43 @@
   <!-- Buttons to switch between 3 days and 10 days-->
   <div class="flex">
     <button
-      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-white md:mr-4"
+      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4"
       [ngClass]="{
-      'bg-neutral-100 text-primary-700 hover:bg-neutral-300': amountOfDays !== 3,
-      'bg-neutral-300 text-black': amountOfDays === 3
+      'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium dark:bg-neutral-700': amountOfDays !== 3,
+      'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900': amountOfDays === 3
     }" (click)="amountOfDaysChanged(3)">
       Show 3 days
     </button>
 
     <button
-      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-white md:mr-4"
+      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4"
       [ngClass]="{
-    'bg-neutral-100 text-primary-700 hover:bg-neutral-300': amountOfDays !== 10,
-    'bg-neutral-300 text-black': amountOfDays == 10
+    'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium dark:bg-neutral-700': amountOfDays !== 10,
+    'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900': amountOfDays == 10
   }" (click)="amountOfDaysChanged(10)">
       Show 10 days
     </button>
   </div>
+
+  <!-- Current Weather Display -->
+  <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-semibold">Current Weather in {{ weather.city.name }}</h2>
+    </div>
+    <div class="p-4 bg-neutral-200 rounded flex justify-between text-xl">
+        <div>Temperature: {{ currentWeather.temperature }}°C</div>
+        <div>Weather: {{ getWeatherConditionDescription(currentWeather.weatherCode) }}</div>
+        <div>Precipitation: {{ currentWeather.precipitation }} mm</div>
+    </div>
+</div>
+
 
   <!-- Weather Data Display -->
   <div *ngFor="let i of [].constructor(amountOfDays); let index = index">
     <app-weather-table 
     [dayLabel]="currentDays[index]" 
     [weather]="getWeatherDataForDay(timestamps[index])"
-    [currentWeather]="index === 0 ? currentWeather : getWeatherClosestToNoon(timestamps[index])"
-    [today]="index === 0 ? true : false">
+    [currentWeather]="getWeatherClosestToNoon(timestamps[index])">
     </app-weather-table>
     <br>
   </div>

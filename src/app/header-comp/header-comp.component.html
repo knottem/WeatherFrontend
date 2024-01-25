@@ -31,14 +31,19 @@
     <!-- Navigation Bar -->
     <nav class="flex mt-3">
         <div class="flex flex-row">
-            <a class="px-4 py-2 mt-2 text-sm font-semibold text-gray-500 rounded-lg sm:mt-0 hover:bg-gray-300"
-               routerLink="/"
-               routerLinkActive="text-blue-500"
-               [routerLinkActiveOptions]="{exact: true}">Weather</a>
-            <a class="px-4 py-2 mt-2 text-sm font-semibold text-gray-500 rounded-lg sm:mt-0 hover:bg-gray-300"
-               routerLink="/about"
-               routerLinkActive="text-blue-500"
-               [routerLinkActiveOptions]="{exact: true}">About</a>
+            <a class="my-2 px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4 rounded-3xl"
+            routerLink="/"
+            [ngClass]="{
+              'bg-neutral-100 text-neutral-500 hover:bg-neutral-300 font-medium dark:bg-neutral-700': !isRouteActive('/'),
+              'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900': isRouteActive('/')
+            }">Weather</a>
+         
+         <a class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4 rounded-3xl"
+            routerLink="/about"
+            [ngClass]="{
+              'bg-neutral-100 text-neutral-500 hover:bg-neutral-300 font-medium dark:bg-neutral-700': !isRouteActive('/about'),
+              'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900': isRouteActive('/about')
+            }">About</a>
         </div>
     </nav>
 </div>

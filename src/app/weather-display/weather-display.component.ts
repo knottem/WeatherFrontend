@@ -176,4 +176,8 @@ export class WeatherDisplayComponent {
     return weatherDataForDay;
   }
 
+  public getWeatherConditionDescription(code: number): string {
+    return this.weatherService.getWeatherCondition(code);
+  }
+
 }

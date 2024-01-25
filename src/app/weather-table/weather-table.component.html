@@ -1,27 +1,19 @@
-<div class="weather-card p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather();">
+<div class="p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather();">
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather in {{ weather.city.name }}</h2>
+        <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather</h2>
         <p class="text-sm font-medium text-gray-600">
             Click anywhere to {{showWeather ? "minimize" : "maximize"}}
         </p>
     </div>
     <div *ngIf="!showWeather" class="p-4 bg-neutral-200 rounded hover:bg-gray-300">
-        <div *ngIf="today">
-            <div class="font-bold">Current Weather at : {{ currentWeather.timestamp }}</div>
-            <div>Temperature: {{ currentWeather.temperature }}°C</div>
-            <div>Weather: {{ getWeatherConditionDescription(currentWeather.weatherCode) }}</div>
-            <div>Precipitation: {{ currentWeather.precipitation }}</div>
-        </div>
-        <div *ngIf="!today">
             <div>Temperature high/low: {{highTemp}}° / {{lowTemp}}° </div>
-            <div>Night: {{ nightWeather }}</div>
-            <div>Morning: {{ morningWeather }}</div>
-            <div>Afternoon: {{ afternoonWeather }}</div>
-            <div>Evening: {{ eveningWeather }}</div>
+            <div *ngIf="nightWeather !== ''">Night: {{ nightWeather }}</div>
+            <div *ngIf="morningWeather !== ''">Morning: {{ morningWeather }}</div>
+            <div *ngIf="afternoonWeather !== ''">Afternoon: {{ afternoonWeather }}</div>
+            <div *ngIf="eveningWeather !== ''">Evening: {{ eveningWeather }}</div>
             <div>Precipitation: {{ totalPrecipitation }} mm</div>
             <div>Max Wind speed: {{ maxWindSpeed }} m/s</div>
             <div>WindDirection: {{ averageWindDirection }}°</div>
-        </div>
     </div>
 
 
