@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-comp',
-  templateUrl: './header-comp.component.html',
-  styleUrls: ['./header-comp.component.css']
+  templateUrl: './header-comp.component.html'
+  //styleUrls: ['./header-comp.component.css']
 })
 export class HeaderCompComponent implements OnInit {
 
@@ -130,10 +130,10 @@ export class HeaderCompComponent implements OnInit {
           map(value => this._filter(value))
         );
         fetchNew = false;
-      } 
-    } 
+      }
+    }
 
-    if(fetchNew) {
+    if (fetchNew) {
       this.weatherService.getCityList().subscribe((data: string[]) => {
         this.cityList = data;
         const time = new Date().getTime();

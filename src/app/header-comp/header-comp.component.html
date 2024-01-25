@@ -1,13 +1,18 @@
 <!-- app-header-comp.component.html -->
-<div class="header-container">
-    <div class="logo-container">
-        <h2>WeatherApp</h2>
+<div class="container mx-auto px-6 py-4 bg-white shadow-md flex flex-col sm:flex-row justify-between items-center">
+    <!-- Logo Container -->
+    <div class="flex items-center sm:mt-3">
+        <!-- Replace with <img> tag for logo image in the future -->
+        <h2 class="text-xl font-semibold text-gray-800">WeatherApp</h2>
     </div>
-    <div class="search-container">
-        <form>
-            <input id="searchForm" type="text" placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto"
-                (keyup.enter)="onEnterPress()" #searchInput
-                #trigger="matAutocompleteTrigger">
+
+    <!-- Search Container -->
+    <div class="flex-grow w-full sm:mx-6 sm:w-0">
+        <form class="flex">
+            <input id="searchForm" type="text"
+                class="flex-grow px-4 py-2 border rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                placeholder="Search for a City" [formControl]="searchQuery" [matAutocomplete]="auto"
+                (keyup.enter)="onEnterPress()" #searchInput #trigger="matAutocompleteTrigger">
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCitySelected($event)">
                 <mat-option *ngFor="let city of filteredCities | async" [value]="city">
                     {{ city }}
@@ -15,7 +20,10 @@
             </mat-autocomplete>
         </form>
     </div>
-    <div class="time-container">
-        <h2>Time: {{currentTime}}</h2>
+
+    <!-- Time Container -->
+    <div class="flex items-center mt-3">
+        <h2 class="text-xl font-semibold text-gray-800">Time: {{ currentTime }}</h2>
     </div>
-</div>  
+
+</div>

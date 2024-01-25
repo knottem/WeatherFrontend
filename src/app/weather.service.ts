@@ -42,7 +42,9 @@ export class WeatherService {
   constructor(private http: HttpClient) {}
 
   getWeather(city: string): Observable<any> { 
-      return this.http.get<any>(`${environment.apiUrl}/weather/${city}`);
+      return this.http.get<any>(`${environment.apiUrl}/weather/${city}`).pipe(
+        //delay(1000)
+      );
   }
 
   getCityList(): Observable<string[]> {
