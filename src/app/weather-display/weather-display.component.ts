@@ -4,6 +4,7 @@ import { WeatherService } from '../weather.service';
 import { SearchService } from '../search.service';
 import { WeatherTableComponent } from '../weather-table/weather-table.component';
 import { DateTime } from 'luxon';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-weather-display',
@@ -24,11 +25,14 @@ export class WeatherDisplayComponent {
   public isLoaded: boolean = false;
   public updatedTime: string = ""
 
+  public version: string = "";
+
   constructor(
     private weatherService: WeatherService,
     private searchService: SearchService) { }
 
   ngOnInit() {
+    this.version = environment.apiVersion;
     this.searchService.searchQuery$.subscribe((query) => {
       this.getWeather(query);
     });

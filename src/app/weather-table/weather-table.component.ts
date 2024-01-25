@@ -76,6 +76,7 @@ export class WeatherTableComponent {
 
       this.totalPrecipitation += weather.precipitation;
     }
+    this.totalPrecipitation = Math.round(this.totalPrecipitation * 10) / 10;
     this.calculateCommonWeather();
     this.calculateAverageWindDirection();
   }

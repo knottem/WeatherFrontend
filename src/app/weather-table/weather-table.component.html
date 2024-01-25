@@ -36,6 +36,8 @@
                 <div>Temperature: {{ weather.weatherData[hour].temperature }}°C</div>
                 <div>Weather: {{ getWeatherConditionDescription(weather.weatherData[hour].weatherCode) }}</div>
                 <div>Precipitation: {{ weather.weatherData[hour].precipitation }}</div>
+                <div>Wind Speed: {{weather.weatherData[hour].windSpeed}} m/s</div>
+                <div>Wind Direction: {{ weather.weatherData[hour].windDirection }}°</div>
             </div>
 
             <!-- Detailed Weather Info (Hidden by Default) -->
