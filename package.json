@@ -1,6 +1,6 @@
 {
   "name": "weather-frontend",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -27,17 +27,20 @@
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.1.0",
+    "@angular-devkit/build-angular": "^17.1.1",
     "@angular/cli": "^17.1.0",
     "@angular/compiler-cli": "^17.1.0",
     "@types/jasmine": "~4.3.0",
     "@types/luxon": "^3.3.7",
+    "autoprefixer": "^10.4.17",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
     "typescript": "5.2"
   }
 }

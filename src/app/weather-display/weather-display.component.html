@@ -1,12 +1,40 @@
 <app-loading-indicator *ngIf="!isLoaded"></app-loading-indicator>
-<div class="weather" *ngIf="isLoaded">
+<div class="weather mt-4" *ngIf="isLoaded">
+
+  <!-- Buttons to switch between 3 days and 10 days-->
+  <div class="flex">
+    <button
+      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-white md:mr-4"
+      [ngClass]="{
+      'bg-neutral-100 text-primary-700 hover:bg-neutral-300': amountOfDays !== 3,
+      'bg-neutral-300 text-black': amountOfDays === 3
+    }" (click)="amountOfDaysChanged(3)">
+      Show 3 days
+    </button>
+
+    <button
+      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-white md:mr-4"
+      [ngClass]="{
+    'bg-neutral-100 text-primary-700 hover:bg-neutral-300': amountOfDays !== 10,
+    'bg-neutral-300 text-black': amountOfDays == 10
+  }" (click)="amountOfDaysChanged(10)">
+      Show 10 days
+    </button>
+  </div>
+
+  <!-- Weather Data Display -->
   <div *ngFor="let i of [].constructor(amountOfDays); let index = index">
     <app-weather-table 
-      [dayLabel]="currentDays[index]"
-      [weather]="getWeatherDataForDay(timestamps[index])"
-      [currentWeather]="index === 0 ? currentWeather : getWeatherClosestToNoon(timestamps[index])">
+    [dayLabel]="currentDays[index]" 
+    [weather]="getWeatherDataForDay(timestamps[index])"
+    [currentWeather]="index === 0 ? currentWeather : getWeatherClosestToNoon(timestamps[index])"
+    [today]="index === 0 ? true : false">
     </app-weather-table>
     <br>
-    </div>
-  <p>Weather data last updated at {{updatedTime}}. Sources: SMHI and Yr.</p>
+  </div>
+
+  <!-- Footer Text -->
+  <p class="text-gray-600 text-sm mt-4">
+    Weather data last updated at {{updatedTime}}. Sources: SMHI and Yr.
+  </p>
 </div>

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { SearchService } from '../search.service';
+import { WeatherTableComponent } from '../weather-table/weather-table.component';
 import { DateTime } from 'luxon';
 
 @Component({
@@ -12,6 +13,7 @@ import { DateTime } from 'luxon';
 
 export class WeatherDisplayComponent {
 
+  @ViewChildren(WeatherTableComponent) private weatherTableComponent!: QueryList<WeatherTableComponent>;
   private defaultCity: string = "stockholm";
   public amountOfDays: number = 3;
 
@@ -24,7 +26,7 @@ export class WeatherDisplayComponent {
 
   constructor(
     private weatherService: WeatherService,
-    private searchService: SearchService) {}
+    private searchService: SearchService) { }
 
   ngOnInit() {
     this.searchService.searchQuery$.subscribe((query) => {
@@ -48,6 +50,14 @@ export class WeatherDisplayComponent {
     }
   }
 
+  public amountOfDaysChanged(num: number): void {
+    this.amountOfDays = num;
+    this.weatherTableComponent.forEach((table) => {
+      table.showWeather = false;
+      table.expandedRows = [];
+    });
+  }
+
   private getWeather(str: string) {
     if (str === "") {
       return;
@@ -64,35 +74,32 @@ export class WeatherDisplayComponent {
     this.timestamps = this.getTimeStamps(availableTimestamps);
     this.currentDays = this.getDay()
     this.currentWeather = new CurrentWeather(
-      availableTimestamps[0].substring(11, 16), 
-      this.weather.weatherData[availableTimestamps[0]].temperature, 
-      this.weather.weatherData[availableTimestamps[0]].weatherCode, 
-      this.weather.weatherData[availableTimestamps[0]].windSpeed, 
-      this.weather.weatherData[availableTimestamps[0]].windDirection, 
+      availableTimestamps[0].substring(11, 16),
+      this.weather.weatherData[availableTimestamps[0]].temperature,
+      this.weather.weatherData[availableTimestamps[0]].weatherCode,
+      this.weather.weatherData[availableTimestamps[0]].windSpeed,
+      this.weather.weatherData[availableTimestamps[0]].windDirection,
       this.weather.weatherData[availableTimestamps[0]].precipitation);
-    
-    this.updatedTime = this.convertTimestampToLocale(this.weather.timestamp).substring(11, 16);
+
+    this.updatedTime = this.weather.timestamp.substring(11, 16);
     if (this.weather.message !== "Mock data") {
       localStorage.setItem(`weather`, JSON.stringify(data));
     }
     this.isLoaded = true;
   }
 
+  // return a list of days starting with today, tomorrow and then the next 8 days as weekdays
   private getDay(): string[] {
     const days: string[] = [];
-    for (let i = 0; i < 10; i++) {
-      if(i === 0) {
-        days.push("Today");
-        continue;
-      } else if (i === 1) {
-        days.push("Tomorrow");
-        continue;
-      }
+    days.push("Today");
+    days.push("Tomorrow");
+    for (let i = 2; i < 10; i++) {
       days.push(DateTime.local().plus({ days: i }).toFormat('cccc'));
     }
     return days;
   }
 
+  // return a list of timestamps for the next 10 days
   private getTimeStamps(timestamps: string[]): string[][] {
     const timestampsSets: string[][] = [];
     for (let day = 0; day < 10; day++) {
@@ -105,6 +112,7 @@ export class WeatherDisplayComponent {
     return timestampsSets;
   }
 
+  // return a list of timestamps that are later than the current hour
   public filterTimestamps(timestamps: string[]): string[] {
     const now = new Date();
     const currentHour = now.getHours();
@@ -116,12 +124,7 @@ export class WeatherDisplayComponent {
     });
   }
 
-  private convertTimestampToLocale(timestamp: string): string {
-    const utcDateTime = DateTime.fromISO(timestamp, { zone: 'utc' });
-    return utcDateTime.isValid ? utcDateTime.toLocal().toFormat('yyyy-MM-dd HH:mm:ss') : "";
-  }
-
-
+  // Converts all timestamps in the WeatherData object to local time
   private convertToLocaleTime(weatherData: WeatherData): WeatherData {
     const weatherDataCopy: WeatherData = { ...weatherData };
     const convertedWeatherData: { [key: string]: any } = {};
@@ -129,18 +132,22 @@ export class WeatherDisplayComponent {
     Object.keys(weatherDataCopy.weatherData).forEach((key) => {
       const utcDateTime = DateTime.fromISO(key, { zone: 'utc' });
       if (utcDateTime.isValid) {
-        const localDateTime = utcDateTime.toLocal();
-        const formattedDateTime = localDateTime.toFormat('yyyy-MM-dd HH:mm:ss');
+        const formattedDateTime = utcDateTime.toLocal().toFormat('yyyy-MM-dd HH:mm:ss');
         const value = weatherDataCopy.weatherData[key];
         if (value !== null && value !== undefined) {
           convertedWeatherData[formattedDateTime] = value;
         }
       }
     });
+    const utcDateTime = DateTime.fromISO(weatherDataCopy.timestamp, { zone: 'utc' });
+    if (utcDateTime.isValid) {
+      weatherDataCopy.timestamp = utcDateTime.toLocal().toFormat('yyyy-MM-dd HH:mm:ss');
+    }
     weatherDataCopy.weatherData = convertedWeatherData;
     return weatherDataCopy;
   }
 
+  // returns a CurrentWeather object for the timestamp closest to noon
   public getWeatherClosestToNoon(timestamps: string[]): CurrentWeather {
     let closestTime = timestamps.reduce((prev, curr) => {
       let currHour = parseInt(curr.split(' ')[1].split(':')[0], 10);
@@ -154,14 +161,14 @@ export class WeatherDisplayComponent {
     };
   }
 
-  // return a weather object for the timestamps starting with a copy of the original weather
+  // returns a weather object for the timestamps starting with a copy of the original weather
   public getWeatherDataForDay(timestamps: string[]): WeatherData {
     const weatherDataForDay: WeatherData = { ...this.weather };
     weatherDataForDay.weatherData = timestamps.reduce((filteredData, timestamp) => {
       filteredData[timestamp] = this.weather.weatherData[timestamp];
       return filteredData;
     }, {} as Record<string, any>);
-  
+
     return weatherDataForDay;
   }
 

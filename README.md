@@ -20,7 +20,8 @@ The API is available at [https://github.com/knottem/weatherapi](https://github.c
 
 The following Angular components will be used in this project:
 
-- `weather-display`: Display weather information.
+- `weather-display`: Display weather information, using other components.
+- `weather-table`: Display weather information in a table.
 - `header-comp`: Header and navigation.
 - `error-comp`: Error handling and messages.
 - `loading-indicator`: Loading indicators.

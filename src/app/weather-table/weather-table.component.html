@@ -1,56 +1,54 @@
-<div class="weather-card" (click)="toggleWeather()">
-    <h2>{{ dayLabel }}'s weather in {{ weather.city.name }}</h2>
-    <table class="weather-table">
-        <thead>
-            <tr>
-                <th class="time-column">Time</th>
-                <th class="temperature-column">Temperature</th>
-                <th class="weather-column">Weather</th>
-                <th class="precipitation-column">Precipitation</th>
-            </tr>
-        </thead>
-        <tbody *ngIf="!showWeather">
-            <tr>
-                <td>{{ currentWeather.timestamp }}</td>
-                <td>{{ currentWeather.temperature }}°C</td>
-                <td>{{ getWeatherConditionDescription(currentWeather.weatherCode) }}</td>
-                <td>{{ currentWeather.precipitation }}</td>
-            </tr>
-        </tbody>
-        <tbody *ngIf="showWeather" [@fadeInStagger]>
-            <ng-template ngFor let-hour [ngForOf]="getTimestamps()" let-i="index">
-                <tr (click)="toggleDetailRow(i, $event)" *ngIf="!expandedRows[i]">
-                    <td>{{ hour.substring(11,16) }}</td>
-                    <td>{{ weather.weatherData[hour].temperature }}°C</td>
-                    <td>{{ getWeatherConditionDescription(weather.weatherData[hour].weatherCode) }}</td>
-                    <td>{{ weather.weatherData[hour].precipitation }}</td>
-                </tr>
-                <tr *ngIf="expandedRows[i]" class="detail-row" [@fadeInExpand] (click)="toggleDetailRow(i, $event)">
-                    <td colspan="4">
-                        <div class="detailed-info">
-                            <h1>Weather Information for {{ hour.substring(11,16) }}</h1>
-                            <div class="detail-item">
-                                <strong>Temperature:</strong> {{ weather.weatherData[hour].temperature }}°C
-                            </div>
-                            <div class="detail-item">
-                                <strong>Weather:</strong> {{
-                                getWeatherConditionDescription(weather.weatherData[hour].weatherCode) }}
-                            </div>
-                            <div class="detail-item">
-                                <strong>Precipitation:</strong> {{ weather.weatherData[hour].precipitation }}
-                                {{weather.information.precipitation.substring(0,5)}}
-                            </div>
-                            <div class="detail-item">
-                                <strong>Wind Speed:</strong> {{ weather.weatherData[hour].windSpeed }}
-                                {{weather.information.windSpeed}}
-                            </div>
-                            <div class="detail-item">
-                                <strong>Wind Direction:</strong> {{ weather.weatherData[hour].windDirection }}°
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </tbody>
-    </table>
+<div class="weather-card p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather();">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather in {{ weather.city.name }}</h2>
+        <p class="text-sm font-medium text-gray-600">
+            Click anywhere to {{showWeather ? "minimize" : "maximize"}}
+        </p>
+    </div>
+    <div *ngIf="!showWeather" class="p-4 bg-neutral-200 rounded hover:bg-gray-300">
+        <div *ngIf="today">
+            <div class="font-bold">Current Weather at : {{ currentWeather.timestamp }}</div>
+            <div>Temperature: {{ currentWeather.temperature }}°C</div>
+            <div>Weather: {{ getWeatherConditionDescription(currentWeather.weatherCode) }}</div>
+            <div>Precipitation: {{ currentWeather.precipitation }}</div>
+        </div>
+        <div *ngIf="!today">
+            <div>Temperature high/low: {{highTemp}}° / {{lowTemp}}° </div>
+            <div>Night: {{ nightWeather }}</div>
+            <div>Morning: {{ morningWeather }}</div>
+            <div>Afternoon: {{ afternoonWeather }}</div>
+            <div>Evening: {{ eveningWeather }}</div>
+            <div>Precipitation: {{ totalPrecipitation }} mm</div>
+            <div>Max Wind speed: {{ maxWindSpeed }} m/s</div>
+            <div>WindDirection: {{ averageWindDirection }}°</div>
+        </div>
+    </div>
+
+
+    <!-- Full Day Hourly Weather (Expanded View) -->
+    <div *ngIf="showWeather" class="mt-4">
+        <ng-template ngFor let-hour [ngForOf]="getTimestamps()" let-i="index">
+            <!-- Hourly Weather Card -->
+            <div (click)="toggleDetailRow(i, $event)"
+                class="p-4 bg-neutral-200 rounded hover:bg-gray-300 mb-2 cursor-pointer hover:select-text"
+                *ngIf="!expandedRows[i]">
+                <div class="font-bold">{{ hour.substring(11,16) }}</div>
+                <div>Temperature: {{ weather.weatherData[hour].temperature }}°C</div>
+                <div>Weather: {{ getWeatherConditionDescription(weather.weatherData[hour].weatherCode) }}</div>
+                <div>Precipitation: {{ weather.weatherData[hour].precipitation }}</div>
+            </div>
+
+            <!-- Detailed Weather Info (Hidden by Default) -->
+            <div *ngIf="expandedRows[i]" class="p-4 bg-gray-300 rounded mb-2" (click)="toggleDetailRow(i, $event)">
+                <h3 class="font-bold mb-2">Detailed Weather at {{ hour.substring(11,16) }}</h3>
+                <div><strong>Temperature:</strong> {{ weather.weatherData[hour].temperature }}°C</div>
+                <div><strong>Weather:</strong> {{ getWeatherConditionDescription(weather.weatherData[hour].weatherCode)
+                    }}</div>
+                <div><strong>Precipitation:</strong> {{ weather.weatherData[hour].precipitation }}</div>
+                <div><strong>Wind Speed:</strong> {{ weather.weatherData[hour].windSpeed }} m/s</div>
+                <div><strong>Wind Direction:</strong> {{ weather.weatherData[hour].windDirection }}°</div>
+                <!-- Add more detailed info here as needed -->
+            </div>
+        </ng-template>
+    </div>
 </div>
