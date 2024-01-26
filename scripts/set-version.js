@@ -12,5 +12,5 @@ const currentVersion = currentVersionMatch ? currentVersionMatch[1] : null;
 if (currentVersion !== version) {
     const newContent = envFileContent.replace(/apiVersion: '.*'/, `apiVersion: '${version}'`);
     fs.writeFileSync(environmentFilePath, newContent, 'utf8');
-    console.log(`Version updated to ${version}`);
+    console.log(`Version updated to ${version} in ${environmentFilePath}`);
 }

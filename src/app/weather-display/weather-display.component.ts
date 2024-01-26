@@ -18,6 +18,8 @@ export class WeatherDisplayComponent {
   private defaultCity: string = "stockholm";
   public amountOfDays: number = 3;
 
+  private imageCache = new Map<number, string>();
+
   public weather: WeatherData = new WeatherData();
   public currentWeather: CurrentWeather = new CurrentWeather("", 0, 0, 0, 0, 0);
   public currentDays: string[] = [];
@@ -89,26 +91,44 @@ export class WeatherDisplayComponent {
     if (this.weather.message !== "Mock data") {
       localStorage.setItem(`weather`, JSON.stringify(data));
     }
+    document.title = `${this.weather.city.name} - Weather`;
     this.isLoaded = true;
   }
 
   // return a list of days starting with today, tomorrow and then the next 8 days as weekdays
+  // if the current time is after 23:00, the first day will be tomorrow, otherwise today
   private getDay(): string[] {
     const days: string[] = [];
-    days.push("Today");
-    days.push("Tomorrow");
-    for (let i = 2; i < 10; i++) {
-      days.push(DateTime.local().plus({ days: i }).toFormat('cccc'));
+    if(new Date().getHours() >= 23){
+      days.push("Tomorrow");
+      for (let i = 2; i < 11; i++) {
+        days.push(DateTime.local().plus({ days: i }).toFormat('cccc'));
+      }
+    } else {
+      days.push("Today");
+      days.push("Tomorrow");
+      for (let i = 2; i < 10; i++) {
+        days.push(DateTime.local().plus({ days: i }).toFormat('cccc'));
+      }
     }
+    
     return days;
   }
 
   // return a list of timestamps for the next 10 days
   private getTimeStamps(timestamps: string[]): string[][] {
     const timestampsSets: string[][] = [];
+    let lasthour = false;
+    if(new Date().getHours() >= 23){
+      lasthour = true;
+    }
     for (let day = 0; day < 10; day++) {
       const now = new Date();
-      now.setDate(now.getDate() + day);
+      if(lasthour){
+        now.setDate(now.getDate() + day + 1);
+      } else {
+        now.setDate(now.getDate() + day);
+      }
       timestampsSets.push(timestamps.filter(timestamp => {
         return new Date(timestamp).getDate() === now.getDate();
       }));
@@ -151,20 +171,6 @@ export class WeatherDisplayComponent {
     return weatherDataCopy;
   }
 
-  // returns a CurrentWeather object for the timestamp closest to noon
-  public getWeatherClosestToNoon(timestamps: string[]): CurrentWeather {
-    let closestTime = timestamps.reduce((prev, curr) => {
-      let currHour = parseInt(curr.split(' ')[1].split(':')[0], 10);
-      let prevHour = parseInt(prev.split(' ')[1].split(':')[0], 10);
-      return (Math.abs(currHour - 12) < Math.abs(prevHour - 12) ? curr : prev);
-    });
-
-    return {
-      ...this.weather.weatherData[closestTime],
-      timestamp: closestTime.substring(11, 16)
-    };
-  }
-
   // returns a weather object for the timestamps starting with a copy of the original weather
   public getWeatherDataForDay(timestamps: string[]): WeatherData {
     const weatherDataForDay: WeatherData = { ...this.weather };
@@ -178,6 +184,15 @@ export class WeatherDisplayComponent {
 
   public getWeatherConditionDescription(code: number): string {
     return this.weatherService.getWeatherCondition(code);
+  }
+
+  public getWeatherConditionImage(code: number): string {
+    if(!this.imageCache.has(code)){
+      const image = this.weatherService.getWeatherConditionImage(code);
+      this.imageCache.set(code, image);
+      return image;
+    }
+    return this.imageCache.get(code) as string;
   }
 
 }
