@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
+import { SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-weather-table',
@@ -36,8 +37,8 @@ export class WeatherTableComponent {
   @Input() dayLabel: string = "";
   @Input() cityName: string = "";
   @Input() weather: WeatherData = new WeatherData();
-  @Input() currentWeather: CurrentWeather = new CurrentWeather("", 0, 0, 0, 0, 0);
-  @Input() today: boolean = false;
+
+  private imageCache = new Map<number, string>();
 
   public showWeather: boolean = false;
   public expandedRows: boolean[] = [];
@@ -47,10 +48,10 @@ export class WeatherTableComponent {
   public lowTemp: number = 0;
   public totalPrecipitation: number = 0;
 
-  public morningWeather: string = "";
-  public afternoonWeather: string = "";
-  public eveningWeather: string = "";
-  public nightWeather: string = "";
+  public morningWeather: number = -1;
+  public afternoonWeather: number = -1;
+  public eveningWeather: number = -1;
+  public nightWeather: number = -1;
   public maxWindSpeed: number = 0;
   public averageWindDirection: number = 0;
 
@@ -76,6 +77,7 @@ export class WeatherTableComponent {
 
       this.totalPrecipitation += weather.precipitation;
     }
+    this.totalPrecipitation = Math.round(this.totalPrecipitation * 10) / 10;
     this.calculateCommonWeather();
     this.calculateAverageWindDirection();
   }
@@ -108,8 +110,8 @@ export class WeatherTableComponent {
 
   }
 
-  private getMostCommonCode(codes: number[]): string {
-    if (codes.length === 0) return ""; // or other default value
+  private getMostCommonCode(codes: number[]): number {
+    if (codes.length === 0) return -1;
 
     const modeMap = new Map();
     let maxEl = codes[0], maxCount = 1;
@@ -126,7 +128,7 @@ export class WeatherTableComponent {
         }
       }
     });
-    return this.getWeatherConditionDescription(maxEl);
+    return maxEl;
   }
 
   private calculateAverageWindDirection(): void {
@@ -169,6 +171,16 @@ export class WeatherTableComponent {
 
   public getWeatherConditionDescription(code: number): string {
     return this.weatherService.getWeatherCondition(code);
+  }
+
+  // should return an image path depending on weather code and timestamp
+  public getWeatherConditionImage(code: number): string {
+    if(!this.imageCache.has(code)){
+      const image = this.weatherService.getWeatherConditionImage(code);
+      this.imageCache.set(code, image);
+      return image;
+    }
+    return this.imageCache.get(code) as string;
   }
 
 }

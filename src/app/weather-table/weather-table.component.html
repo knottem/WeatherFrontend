@@ -1,26 +1,66 @@
-<div class="weather-card p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather();">
+<div class="p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather();">
     <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather in {{ weather.city.name }}</h2>
+        <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather</h2>
         <p class="text-sm font-medium text-gray-600">
             Click anywhere to {{showWeather ? "minimize" : "maximize"}}
         </p>
     </div>
-    <div *ngIf="!showWeather" class="p-4 bg-neutral-200 rounded hover:bg-gray-300">
-        <div *ngIf="today">
-            <div class="font-bold">Current Weather at : {{ currentWeather.timestamp }}</div>
-            <div>Temperature: {{ currentWeather.temperature }}°C</div>
-            <div>Weather: {{ getWeatherConditionDescription(currentWeather.weatherCode) }}</div>
-            <div>Precipitation: {{ currentWeather.precipitation }}</div>
+
+    <div *ngIf="!showWeather"
+        class="p-4 bg-neutral-200 rounded hover:bg-gray-300 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+            <div class="font-semibold">Temperature high/low:</div>
+            <div class="flex justify-center text-3xl">
+                <div class="text-red-500">{{highTemp}}°</div>
+                /
+                <div class="text-blue-500">{{lowTemp}}°</div>
+            </div>
         </div>
-        <div *ngIf="!today">
-            <div>Temperature high/low: {{highTemp}}° / {{lowTemp}}° </div>
-            <div>Night: {{ nightWeather }}</div>
-            <div>Morning: {{ morningWeather }}</div>
-            <div>Afternoon: {{ afternoonWeather }}</div>
-            <div>Evening: {{ eveningWeather }}</div>
-            <div>Precipitation: {{ totalPrecipitation }} mm</div>
-            <div>Max Wind speed: {{ maxWindSpeed }} m/s</div>
-            <div>WindDirection: {{ averageWindDirection }}°</div>
+        <!-- Other weather condition divs -->
+        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+            <div class="font-semibold ">Precipitation:</div>
+            <div class="flex justify-center text-3xl">{{ totalPrecipitation }} mm</div>
+        </div>
+        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+            <div class="font-semibold">Max Wind speed:</div>
+            <div class="flex justify-center text-3xl">{{ maxWindSpeed }} m/s</div>
+        </div>
+        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+            <div class="font-semibold">Wind Direction:</div>
+            <div class="flex justify-center text-3xl">{{ averageWindDirection }}°</div>
+        </div>
+        <div *ngIf="nightWeather !== -1"
+            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
+            <span class="font-semibold">Night:</span>
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <img [src]="getWeatherConditionImage(nightWeather)"
+                    [title]="getWeatherConditionDescription(nightWeather)" alt="Weather Condition" class="h-16 w-16">
+            </div>
+        </div>
+        <div *ngIf="morningWeather !== -1"
+            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
+            <span class="font-semibold">Morning:</span>
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <img [src]="getWeatherConditionImage(morningWeather)"
+                    [title]="getWeatherConditionDescription(morningWeather)" alt="Weather Condition" class="h-16 w-16">
+            </div>
+        </div>
+        <div *ngIf="afternoonWeather !== -1"
+            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
+            <span class="font-semibold">Afternoon:</span>
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <img [src]="getWeatherConditionImage(afternoonWeather)"
+                    [title]="getWeatherConditionDescription(afternoonWeather)" alt="Weather Condition"
+                    class="h-16 w-16">
+            </div>
+        </div>
+        <div *ngIf="eveningWeather !== -1"
+            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
+            <span class="font-semibold">Evening:</span>
+            <div class="absolute left-1/2 transform -translate-x-1/2">
+                <img [src]="getWeatherConditionImage(eveningWeather)"
+                    [title]="getWeatherConditionDescription(eveningWeather)" alt="Weather Condition" class="h-16 w-16">
+            </div>
         </div>
     </div>
 
@@ -34,8 +74,12 @@
                 *ngIf="!expandedRows[i]">
                 <div class="font-bold">{{ hour.substring(11,16) }}</div>
                 <div>Temperature: {{ weather.weatherData[hour].temperature }}°C</div>
-                <div>Weather: {{ getWeatherConditionDescription(weather.weatherData[hour].weatherCode) }}</div>
+                <div>Weather: <img [src]="getWeatherConditionImage(weather.weatherData[hour].weatherCode)"
+                        [title]="getWeatherConditionDescription(weather.weatherData[hour].weatherCode)"
+                        alt="Weather Condition" class="h-16 w-16"></div>
                 <div>Precipitation: {{ weather.weatherData[hour].precipitation }}</div>
+                <div>Wind Speed: {{weather.weatherData[hour].windSpeed}} m/s</div>
+                <div>Wind Direction: {{ weather.weatherData[hour].windDirection }}°</div>
             </div>
 
             <!-- Detailed Weather Info (Hidden by Default) -->
@@ -47,7 +91,6 @@
                 <div><strong>Precipitation:</strong> {{ weather.weatherData[hour].precipitation }}</div>
                 <div><strong>Wind Speed:</strong> {{ weather.weatherData[hour].windSpeed }} m/s</div>
                 <div><strong>Wind Direction:</strong> {{ weather.weatherData[hour].windDirection }}°</div>
-                <!-- Add more detailed info here as needed -->
             </div>
         </ng-template>
     </div>

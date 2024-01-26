@@ -39,6 +39,35 @@ export class WeatherService {
     27: 'Heavy snowfall'
   }
 
+  private weatherImagesDay: { [key: number]: string } = {
+    1: './assets/images/lightmode/01d.svg', // clear sky
+    2: './assets/images/lightmode/02d.svg', // nearly clear sky
+    3: './assets/images/lightmode/02d.svg', // variable cloudiness
+    4: './assets/images/lightmode/03d.svg', // halfclear sky
+    5: './assets/images/lightmode/03d.svg', // cloudy sky
+    6: './assets/images/lightmode/04.svg',
+    7: './assets/images/lightmode/15.svg',
+    8: './assets/images/lightmode/40d.svg',
+    9: './assets/images/lightmode/05d.svg',
+    10: './assets/images/lightmode/41d.svg',
+    11: './assets/images/lightmode/11.svg', // thunderstorm - not really accurate picture
+    12: './assets/images/lightmode/42d.svg',
+    13: './assets/images/lightmode/07d.svg',
+    14: './assets/images/lightmode/43d.svg',
+    15: './assets/images/lightmode/44d.svg',
+    16: './assets/images/lightmode/49.svg',
+    17: './assets/images/lightmode/45d.svg',
+    18: './assets/images/lightmode/46.svg',
+    19: './assets/images/lightmode/09.svg',
+    20: './assets/images/lightmode/10.svg',
+    21: './assets/images/lightmode/33.svg', // thunder - not really accurate picture
+    22: './assets/images/lightmode/47.svg',
+    23: './assets/images/lightmode/12.svg',
+    25: './assets/images/lightmode/44d.svg',
+    26: './assets/images/lightmode/49.svg',
+    27: './assets/images/lightmode/50.svg'
+  }
+
   constructor(private http: HttpClient) {}
 
   getWeather(city: string): Observable<any> { 
@@ -58,6 +87,13 @@ export class WeatherService {
 
   getWeatherCondition(code: number): string {
     return this.weatherConditions[code] || 'Unknown condition';
+  }
+
+  getWeatherConditionImage(code: number): string {
+    if(this.weatherImagesDay[code] === undefined){
+      console.log('Unknown condition image', code);
+    }
+    return this.weatherImagesDay[code];
   }
 
 
