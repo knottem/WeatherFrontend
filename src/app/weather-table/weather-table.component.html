@@ -1,97 +1,208 @@
-<div class="p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather();">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather</h2>
-        <p class="text-sm font-medium text-gray-600">
-            Click anywhere to {{showWeather ? "minimize" : "maximize"}}
-        </p>
+<div class="p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather()">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather</h2>
+    <p class="text-sm font-medium text-gray-600">
+      Click anywhere to {{ showWeather ? "minimize" : "maximize" }}
+    </p>
+  </div>
+
+  <div
+    *ngIf="!showWeather"
+    class="p-4 bg-neutral-200 rounded-xl hover:bg-gray-300 grid grid-cols-2 lg:grid-cols-4 gap-4"
+  >
+    <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+      <div class="font-semibold">Temperature high/low:</div>
+      <div class="flex justify-center text-2xl sm:text-3xl">
+        <div
+          [ngClass]="{
+            'text-red-500': highTemp >= 0,
+            'text-blue-500': highTemp < 0
+          }"
+        >
+          {{ highTemp }}°C
+        </div>
+        <div class="mx-1">/</div>
+        <div
+          [ngClass]="{
+            'text-red-500': lowTemp >= 0,
+            'text-blue-500': lowTemp < 0
+          }"
+        >
+          {{ lowTemp }}°C
+        </div>
+      </div>
     </div>
-
-    <div *ngIf="!showWeather"
-        class="p-4 bg-neutral-200 rounded hover:bg-gray-300 sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
-            <div class="font-semibold">Temperature high/low:</div>
-            <div class="flex justify-center text-3xl">
-                <div class="text-red-500">{{highTemp}}°</div>
-                /
-                <div class="text-blue-500">{{lowTemp}}°</div>
-            </div>
-        </div>
-        <!-- Other weather condition divs -->
-        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
-            <div class="font-semibold ">Precipitation:</div>
-            <div class="flex justify-center text-3xl">{{ totalPrecipitation }} mm</div>
-        </div>
-        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
-            <div class="font-semibold">Max Wind speed:</div>
-            <div class="flex justify-center text-3xl">{{ maxWindSpeed }} m/s</div>
-        </div>
-        <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
-            <div class="font-semibold">Wind Direction:</div>
-            <div class="flex justify-center text-3xl">{{ averageWindDirection }}°</div>
-        </div>
-        <div *ngIf="nightWeather !== -1"
-            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
-            <span class="font-semibold">Night:</span>
-            <div class="absolute left-1/2 transform -translate-x-1/2">
-                <img [src]="getWeatherConditionImage(nightWeather)"
-                    [title]="getWeatherConditionDescription(nightWeather)" alt="Weather Condition" class="h-16 w-16">
-            </div>
-        </div>
-        <div *ngIf="morningWeather !== -1"
-            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
-            <span class="font-semibold">Morning:</span>
-            <div class="absolute left-1/2 transform -translate-x-1/2">
-                <img [src]="getWeatherConditionImage(morningWeather)"
-                    [title]="getWeatherConditionDescription(morningWeather)" alt="Weather Condition" class="h-16 w-16">
-            </div>
-        </div>
-        <div *ngIf="afternoonWeather !== -1"
-            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
-            <span class="font-semibold">Afternoon:</span>
-            <div class="absolute left-1/2 transform -translate-x-1/2">
-                <img [src]="getWeatherConditionImage(afternoonWeather)"
-                    [title]="getWeatherConditionDescription(afternoonWeather)" alt="Weather Condition"
-                    class="h-16 w-16">
-            </div>
-        </div>
-        <div *ngIf="eveningWeather !== -1"
-            class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20">
-            <span class="font-semibold">Evening:</span>
-            <div class="absolute left-1/2 transform -translate-x-1/2">
-                <img [src]="getWeatherConditionImage(eveningWeather)"
-                    [title]="getWeatherConditionDescription(eveningWeather)" alt="Weather Condition" class="h-16 w-16">
-            </div>
-        </div>
+    <!-- Other weather condition divs -->
+    <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+      <div class="font-semibold">Precipitation:</div>
+      <div class="flex justify-center text-2xl sm:text-3xl">
+        {{ totalPrecipitation }} mm
+      </div>
     </div>
-
-
-    <!-- Full Day Hourly Weather (Expanded View) -->
-    <div *ngIf="showWeather" class="mt-4">
-        <ng-template ngFor let-hour [ngForOf]="getTimestamps()" let-i="index">
-            <!-- Hourly Weather Card -->
-            <div (click)="toggleDetailRow(i, $event)"
-                class="p-4 bg-neutral-200 rounded hover:bg-gray-300 mb-2 cursor-pointer hover:select-text"
-                *ngIf="!expandedRows[i]">
-                <div class="font-bold">{{ hour.substring(11,16) }}</div>
-                <div>Temperature: {{ weather.weatherData[hour].temperature }}°C</div>
-                <div>Weather: <img [src]="getWeatherConditionImage(weather.weatherData[hour].weatherCode)"
-                        [title]="getWeatherConditionDescription(weather.weatherData[hour].weatherCode)"
-                        alt="Weather Condition" class="h-16 w-16"></div>
-                <div>Precipitation: {{ weather.weatherData[hour].precipitation }}</div>
-                <div>Wind Speed: {{weather.weatherData[hour].windSpeed}} m/s</div>
-                <div>Wind Direction: {{ weather.weatherData[hour].windDirection }}°</div>
-            </div>
-
-            <!-- Detailed Weather Info (Hidden by Default) -->
-            <div *ngIf="expandedRows[i]" class="p-4 bg-gray-300 rounded mb-2" (click)="toggleDetailRow(i, $event)">
-                <h3 class="font-bold mb-2">Detailed Weather at {{ hour.substring(11,16) }}</h3>
-                <div><strong>Temperature:</strong> {{ weather.weatherData[hour].temperature }}°C</div>
-                <div><strong>Weather:</strong> {{ getWeatherConditionDescription(weather.weatherData[hour].weatherCode)
-                    }}</div>
-                <div><strong>Precipitation:</strong> {{ weather.weatherData[hour].precipitation }}</div>
-                <div><strong>Wind Speed:</strong> {{ weather.weatherData[hour].windSpeed }} m/s</div>
-                <div><strong>Wind Direction:</strong> {{ weather.weatherData[hour].windDirection }}°</div>
-            </div>
-        </ng-template>
+    <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+      <div class="font-semibold">Max Wind speed:</div>
+      <div class="flex justify-center text-2xl sm:text-3xl">
+        {{ maxWindSpeed }} m/s
+      </div>
     </div>
+    <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
+      <div class="font-semibold">Wind Direction:</div>
+      <div class="flex justify-center text-2xl sm:text-3xl">
+        {{ averageWindDirection }}°
+      </div>
+    </div>
+    <div
+      *ngIf="nightWeather !== -1"
+      class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20"
+    >
+      <span class="font-semibold flex">Night:</span>
+      <div class="absolute left-1/2 sm:transform sm:-translate-x-1/2">
+        <img
+          [src]="getWeatherConditionImage(nightWeather, false)"
+          [title]="getWeatherConditionDescription(nightWeather)"
+          alt="Weather Condition"
+          class="h-16 w-16"
+        />
+      </div>
+    </div>
+    <div
+      *ngIf="morningWeather !== -1"
+      class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20"
+    >
+      <span class="font-semibold">Morning:</span>
+      <div
+        class="absolute left-1/2 sm:left-1/2 sm:transform sm:-translate-x-1/2"
+      >
+        <img
+          [src]="getWeatherConditionImage(morningWeather, true)"
+          [title]="getWeatherConditionDescription(morningWeather)"
+          alt="Weather Condition"
+          class="h-16 w-16"
+        />
+      </div>
+    </div>
+    <div
+      *ngIf="afternoonWeather !== -1"
+      class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20"
+    >
+      <span class="font-semibold">Afternoon:</span>
+      <div class="absolute left-1/2 sm:transform sm:-translate-x-1/2">
+        <img
+          [src]="getWeatherConditionImage(afternoonWeather, true)"
+          [title]="getWeatherConditionDescription(afternoonWeather)"
+          alt="Weather Condition"
+          class="h-16 w-16"
+        />
+      </div>
+    </div>
+    <div
+      *ngIf="eveningWeather !== -1"
+      class="p-2 bg-white rounded shadow flex items-center relative my-2 sm:my-0 h-20"
+    >
+      <span class="font-semibold">Evening:</span>
+      <div class="absolute left-1/2 sm:transform sm:-translate-x-1/2">
+        <img
+          [src]="getWeatherConditionImage(eveningWeather, false)"
+          [title]="getWeatherConditionDescription(eveningWeather)"
+          alt="Weather Condition"
+          class="h-16 w-16"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Day Hourly Weather (Expanded View) -->
+  <div *ngIf="showWeather" class="mt-4 p-4 bg-neutral-200 rounded-xl">
+    <ng-template ngFor let-hour [ngForOf]="getTimestamps()" let-i="index">
+      <div class="bg-white shadow-2xl rounded-xl my-1">
+        <div class="grid grid-cols-6 grid-rows-1 gap-2 lg:gap-0">
+          <!-- Time Card -->
+          <div class="weather-card">
+            <div class="font-semibold text-xs sm:text-sm">Time:</div>
+            <div class="text-sm sm:text-base lg:text-xl">
+              {{ hour.substring(11, 16) }}
+            </div>
+          </div>
+          <!-- Temperature Card -->
+          <div class="weather-card">
+            <div>
+              <div class="hidden sm:block font-semibold text-xs sm:text-sm">
+                Temperature:
+              </div>
+              <div
+                class="block sm:hidden font-semibold text-xs sm:text-sm"
+                title="Temperature"
+              >
+                Temp:
+              </div>
+            </div>
+            <div
+              class="text-sm sm:text-base lg:text-xl whitespace-nowrap"
+              [ngClass]="{
+                'text-red-500': weather.weatherData[hour].temperature >= 0,
+                'text-blue-500': weather.weatherData[hour].temperature < 0
+              }"
+            >
+              {{ weather.weatherData[hour].temperature }}°C
+            </div>
+          </div>
+          <!-- Precipitation Card -->
+          <div class="weather-card">
+            <div>
+              <div class="hidden sm:block font-semibold text-xs sm:text-sm">
+                Precipitation:
+              </div>
+              <div
+                class="block sm:hidden font-semibold text-xs sm:text-sm"
+                title="Precipitation"
+              >
+                Precip.
+              </div>
+            </div>
+            <div class="text-sm sm:text-base lg:text-xl whitespace-nowrap">
+              {{ weather.weatherData[hour].precipitation }} mm
+            </div>
+          </div>
+          <!-- Wind Speed Card -->
+          <div class="weather-card">
+            <div>
+            <div class="hidden sm:block font-semibold text-xs sm:text-sm">Wind Speed:</div>
+            <div class="block sm:hidden font-semibold text-xs sm:text-sm" title="Wind Speed">Wind:</div>
+          </div>
+            <div class="text-sm sm:text-base lg:text-xl whitespace-nowrap">
+              {{ weather.weatherData[hour].windSpeed }} m/s
+            </div>
+          </div>
+          <!-- Wind Direction Card -->
+          <div class="weather-card">
+            <div>
+            <div class="hidden lg:block font-semibold text-xs sm:text-sm">Wind Direction:</div>
+            <div class="block lg:hidden font-semibold text-xs sm:text-sm" title="Wind Direction">Wdir:</div>
+          </div>
+            <div class="text-sm sm:text-base lg:text-xl">
+              {{ weather.weatherData[hour].windDirection }}°
+            </div>
+          </div>
+          <!-- Weather Image Card -->
+          <div class="weather-card">
+            <img
+              [src]="
+                getWeatherConditionImage(
+                  weather.weatherData[hour].weatherCode,
+                  isDayTime(hour)
+                )
+              "
+              [title]="
+                getWeatherConditionDescription(
+                  weather.weatherData[hour].weatherCode
+                )
+              "
+              alt="Weather Condition"
+              class="h-16 w-16 lg:h-16 lg:w-16 sm:h-16 sm:w-16"
+            />
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>
