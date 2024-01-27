@@ -1,40 +1,114 @@
 <app-loading-indicator *ngIf="!isLoaded"></app-loading-indicator>
-<div class="weather mt-4" *ngIf="isLoaded">
-
+<div *ngIf="isLoaded">
   <!-- Buttons to switch between 3 days and 10 days-->
   <div class="flex">
     <button
-      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-white md:mr-4"
+      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4"
       [ngClass]="{
-      'bg-neutral-100 text-primary-700 hover:bg-neutral-300': amountOfDays !== 3,
-      'bg-neutral-300 text-black': amountOfDays === 3
-    }" (click)="amountOfDaysChanged(3)">
+        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium dark:bg-neutral-700':
+          amountOfDays !== 3,
+        'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900':
+          amountOfDays === 3
+      }"
+      (click)="amountOfDaysChanged(3)"
+    >
       Show 3 days
     </button>
 
     <button
-      class="my-2 block rounded px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 dark:bg-neutral-700 dark:text-white md:mr-4"
+      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4"
       [ngClass]="{
-    'bg-neutral-100 text-primary-700 hover:bg-neutral-300': amountOfDays !== 10,
-    'bg-neutral-300 text-black': amountOfDays == 10
-  }" (click)="amountOfDaysChanged(10)">
+        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium dark:bg-neutral-700':
+          amountOfDays !== 10,
+        'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900':
+          amountOfDays == 10
+      }"
+      (click)="amountOfDaysChanged(10)"
+    >
       Show 10 days
     </button>
   </div>
 
+  <!-- Current Weather Display -->
+  <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-semibold">
+        Weather in {{ weather.city.name }} at {{ currentWeather.timestamp }}
+      </h2>
+    </div>
+    <div
+      class="p-4 bg-neutral-200 rounded sm:grid sm:grid-cols-5 gap-4 relative"
+    >
+      <div
+        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative"
+      >
+        <div class="absolute top-2 font-semibold">Temperature:</div>
+        <div
+          class="text-2xl sm:text-3xl mt-5"
+          [ngClass]="{
+            'text-red-500': currentWeather.temperature >= 0,
+            'text-blue-500': currentWeather.temperature < 0
+          }"
+        >
+          {{ currentWeather.temperature }}°C
+        </div>
+      </div>
+      <div
+        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative"
+      >
+        <div class="absolute top-2 font-semibold">Current Weather:</div>
+        <img
+          class="h-16 w-16 mt-5"
+          [src]="
+            getWeatherConditionImage(
+              currentWeather.weatherCode,
+              isDayTime(currentWeather.timestamp)
+            )
+          "
+          [title]="getWeatherConditionDescription(currentWeather.weatherCode)"
+          alt="Weather Condition"
+        />
+      </div>
+      <div
+        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative"
+      >
+        <div class="absolute top-2 font-semibold">Precipitation:</div>
+        <div class="text-2xl sm:text-3xl mt-5">{{ currentWeather.precipitation }} mm</div>
+      </div>
+      <div
+        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative">
+        <div class="absolute top-2 font-semibold">Wind Speed:</div>
+        <div class="text-2xl sm:text-3xl mt-5">{{ currentWeather.windSpeed }} m/s</div>
+      </div>
+      <div
+        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative">
+      <div class="absolute top-2 font-semibold">Wind Direction:</div>
+      <div class="text-2xl sm:text-3xl mt-5">{{ currentWeather.windDirection }}°</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Weather Data Display -->
   <div *ngFor="let i of [].constructor(amountOfDays); let index = index">
-    <app-weather-table 
-    [dayLabel]="currentDays[index]" 
-    [weather]="getWeatherDataForDay(timestamps[index])"
-    [currentWeather]="index === 0 ? currentWeather : getWeatherClosestToNoon(timestamps[index])"
-    [today]="index === 0 ? true : false">
+    <app-weather-table
+      [dayLabel]="currentDays[index]"
+      [weather]="getWeatherDataForDay(timestamps[index])"
+    >
     </app-weather-table>
-    <br>
+    <br />
   </div>
 
   <!-- Footer Text -->
-  <p class="text-gray-600 text-sm mt-4">
-    Weather data last updated at {{updatedTime}}. Sources: SMHI and Yr.
-  </p>
+  <div class="flex justify-between items-start sm:items-center mb-4 mx-2">
+    <p class="text-gray-600 text-xs mt-4 sm:text-sm">
+      <span class="block sm:inline"
+        >Weather data last updated at {{ updatedTime }}.</span
+      >
+      <span class="block sm:inline">Sources: SMHI and Yr.</span>
+    </p>
+    <p class="text-gray-600 text-xs mt-4 sm:text-sm">
+      <span class="block sm:inline">Version:</span>
+      <span class="block sm:inline">{{ version }}</span>
+    </p>
+  </div>
 </div>

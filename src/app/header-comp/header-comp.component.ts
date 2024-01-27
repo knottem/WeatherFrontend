@@ -145,4 +145,8 @@ export class HeaderCompComponent implements OnInit {
       });
     }
   }
+
+  isRouteActive(route: string): boolean {
+    return this.router.url === route;
+  }
 }

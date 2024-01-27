@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CurrentWeather, WeatherData } from '../../models/weather-data';
+import { WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
 
@@ -36,21 +36,19 @@ export class WeatherTableComponent {
   @Input() dayLabel: string = "";
   @Input() cityName: string = "";
   @Input() weather: WeatherData = new WeatherData();
-  @Input() currentWeather: CurrentWeather = new CurrentWeather("", 0, 0, 0, 0, 0);
-  @Input() today: boolean = false;
+
+  private imageCache = new Map<string, string>();
 
   public showWeather: boolean = false;
-  public expandedRows: boolean[] = [];
-  public singleRow: boolean = false;
 
   public highTemp: number = 0;
   public lowTemp: number = 0;
   public totalPrecipitation: number = 0;
 
-  public morningWeather: string = "";
-  public afternoonWeather: string = "";
-  public eveningWeather: string = "";
-  public nightWeather: string = "";
+  public morningWeather: number = -1;
+  public afternoonWeather: number = -1;
+  public eveningWeather: number = -1;
+  public nightWeather: number = -1;
   public maxWindSpeed: number = 0;
   public averageWindDirection: number = 0;
 
@@ -59,7 +57,6 @@ export class WeatherTableComponent {
   ngOnInit() {
     if (this.getTimestamps().length === 1) {
       this.showWeather = true;
-      this.singleRow = true;
     }
     // go thru weatherData and find the highest and lowest temps
     for (let timestamp in this.weather.weatherData) {
@@ -76,6 +73,7 @@ export class WeatherTableComponent {
 
       this.totalPrecipitation += weather.precipitation;
     }
+    this.totalPrecipitation = Math.round(this.totalPrecipitation * 10) / 10;
     this.calculateCommonWeather();
     this.calculateAverageWindDirection();
   }
@@ -108,8 +106,8 @@ export class WeatherTableComponent {
 
   }
 
-  private getMostCommonCode(codes: number[]): string {
-    if (codes.length === 0) return ""; // or other default value
+  private getMostCommonCode(codes: number[]): number {
+    if (codes.length === 0) return -1;
 
     const modeMap = new Map();
     let maxEl = codes[0], maxCount = 1;
@@ -126,7 +124,7 @@ export class WeatherTableComponent {
         }
       }
     });
-    return this.getWeatherConditionDescription(maxEl);
+    return maxEl;
   }
 
   private calculateAverageWindDirection(): void {
@@ -155,20 +153,35 @@ export class WeatherTableComponent {
     return Object.keys(this.weather.weatherData);
   }
 
-  public toggleDetailRow(index: number, event: Event): void {
-    event.stopPropagation();
-    this.expandedRows[index] = !this.expandedRows[index];
-  }
-
   public toggleWeather(): void {
     if (!(this.getTimestamps().length === 1)) {
       this.showWeather = !this.showWeather;
-      this.expandedRows = [];
     }
   }
 
   public getWeatherConditionDescription(code: number): string {
     return this.weatherService.getWeatherCondition(code);
   }
+
+  // should return an image path depending on weather code and timestamp
+  public getWeatherConditionImage(code: number, day: boolean): string {
+    const cacheKey = `${code}-${day ? 'day' : 'night'}`;
+    if(!this.imageCache.has(cacheKey)){
+      const image = this.weatherService.getWeatherConditionImage(code, day);
+      this.imageCache.set(cacheKey, image);
+      return image;
+    }
+    return this.imageCache.get(cacheKey) as string;
+  }
+
+  // should return a boolean depending on timestamp we'll ignore sunrise/sunset for now
+  // between 18:00 and 6:00 is night
+  // between 6:00 and 18:00 is day
+  public isDayTime(timestamp: string): boolean {
+    const hour = parseInt(timestamp.substring(11, 13));
+    const isDay = hour >= 6 && hour < 18;
+    return isDay;
+  }
+
 
 }
