@@ -159,6 +159,10 @@ export class WeatherTableComponent {
     }
   }
 
+  public isTimeStampLengthOne(): boolean {
+    return this.getTimestamps().length === 1;
+  }
+
   public getWeatherConditionDescription(code: number): string {
     return this.weatherService.getWeatherCondition(code);
   }

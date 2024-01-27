@@ -1,7 +1,7 @@
 <div class="p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather()">
-  <div class="flex justify-between items-center mb-4">
+  <div class="flex justify-between items-center">
     <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather</h2>
-    <p class="text-sm font-medium text-gray-600">
+    <p class="text-sm font-medium text-gray-600" *ngIf="!isTimeStampLengthOne()">
       Click anywhere to {{ showWeather ? "minimize" : "maximize" }}
     </p>
   </div>
@@ -112,10 +112,10 @@
   </div>
 
   <!-- Full Day Hourly Weather (Expanded View) -->
-  <div *ngIf="showWeather" class="mt-4 p-4 bg-neutral-200 rounded-xl">
+  <div *ngIf="showWeather" class="p-4 bg-neutral-200 rounded-xl">
     <!-- Full days weather navigation -->
     <div>
-      <div class="grid grid-cols-6 grid-rows-1 gap-2 mb-3 lg:gap-0">
+      <div class="grid grid-cols-6 grid-rows-1 gap-2 lg:gap-0">
         <!-- Time Card -->
         <div class="flex flex-col justify-center items-center">
           <div class="font-semibold">Time:</div>
