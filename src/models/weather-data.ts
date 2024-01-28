@@ -5,6 +5,8 @@ export class WeatherData {
       name: string;
       lon: number;
       lat: number;
+      sunriseList: string[];
+      sunsetList: string[];
     }
     information: {
       time: string;
@@ -29,6 +31,8 @@ export class WeatherData {
           name: '',
           lon: 0,
           lat: 0,
+          sunriseList: [],
+          sunsetList: [],
         };
         this.information = {
           time: '',

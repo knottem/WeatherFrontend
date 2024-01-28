@@ -3,11 +3,11 @@
   <!-- Buttons to switch between 3 days and 10 days-->
   <div class="flex">
     <button
-      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4"
+      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight md:mr-4"
       [ngClass]="{
-        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium dark:bg-neutral-700':
+        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
           amountOfDays !== 3,
-        'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900':
+        'bg-neutral-300 text-black font-extrabold':
           amountOfDays === 3
       }"
       (click)="amountOfDaysChanged(3)"
@@ -16,11 +16,11 @@
     </button>
 
     <button
-      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4"
+      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight md:mr-4"
       [ngClass]="{
-        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium dark:bg-neutral-700':
+        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
           amountOfDays !== 10,
-        'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900':
+        'bg-neutral-300 text-black font-extrabold':
           amountOfDays == 10
       }"
       (click)="amountOfDaysChanged(10)"
@@ -33,7 +33,7 @@
   <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-2xl font-semibold">
-        Weather in {{ weather.city.name }} at {{ currentWeather.timestamp }}
+        Weather in {{ weather.city.name }} at {{ currentWeather.timestamp.substring(11, 16)}}
       </h2>
     </div>
     <div
@@ -93,6 +93,7 @@
     <app-weather-table
       [dayLabel]="currentDays[index]"
       [weather]="getWeatherDataForDay(timestamps[index])"
+      [sunsetSunrise]="getSunsetSunrise(index)"
     >
     </app-weather-table>
     <br />
