@@ -8,8 +8,7 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-weather-display',
-  templateUrl: './weather-display.component.html',
-  styleUrls: ['./weather-display.component.css'],
+  templateUrl: './weather-display.component.html'
 })
 export class WeatherDisplayComponent {
   @ViewChildren(WeatherTableComponent)
@@ -74,14 +73,15 @@ export class WeatherDisplayComponent {
   }
 
   private processWeatherData(data: any): void {
-    this.weather = this.convertToLocaleTime(data);
+    const copy = JSON.parse(JSON.stringify(data)); // Deep copy
+    this.weather = this.convertToLocaleTime(copy);
     const availableTimestamps = this.filterTimestamps(
       Object.keys(this.weather.weatherData)
     );
     this.timestamps = this.getTimeStamps(availableTimestamps);
     this.currentDays = this.getDay();
     this.currentWeather = new CurrentWeather(
-      availableTimestamps[0].substring(11, 16),
+      availableTimestamps[0],
       this.weather.weatherData[availableTimestamps[0]].temperature,
       this.weather.weatherData[availableTimestamps[0]].weatherCode,
       this.weather.weatherData[availableTimestamps[0]].windSpeed,
@@ -161,27 +161,30 @@ export class WeatherDisplayComponent {
     const convertedWeatherData: { [key: string]: any } = {};
 
     Object.keys(weatherDataCopy.weatherData).forEach((key) => {
-      const utcDateTime = DateTime.fromISO(key, { zone: 'utc' });
-      if (utcDateTime.isValid) {
-        const formattedDateTime = utcDateTime
-          .toLocal()
-          .toFormat('yyyy-MM-dd HH:mm:ss');
+      const formattedDateTime = this.convertTimestampToLocaleTime(key);
         const value = weatherDataCopy.weatherData[key];
         if (value !== null && value !== undefined) {
           convertedWeatherData[formattedDateTime] = value;
         }
       }
-    });
-    const utcDateTime = DateTime.fromISO(weatherDataCopy.timestamp, {
-      zone: 'utc',
-    });
-    if (utcDateTime.isValid) {
-      weatherDataCopy.timestamp = utcDateTime
-        .toLocal()
-        .toFormat('yyyy-MM-dd HH:mm:ss');
+    );
+    weatherDataCopy.timestamp = this.convertTimestampToLocaleTime(weatherDataCopy.timestamp);
+    for (let i = 0; i < weatherDataCopy.city.sunriseList.length; i++) {
+      weatherDataCopy.city.sunriseList[i] = this.convertTimestampToLocaleTime(weatherDataCopy.city.sunriseList[i]);
+      weatherDataCopy.city.sunsetList[i] = this.convertTimestampToLocaleTime(weatherDataCopy.city.sunsetList[i]);
     }
+
     weatherDataCopy.weatherData = convertedWeatherData;
     return weatherDataCopy;
+  }
+
+  private convertTimestampToLocaleTime(timestamp: string): string {
+    const utcDateTime = DateTime.fromISO(timestamp, { zone: 'utc' });
+    if (utcDateTime.isValid) {
+      return utcDateTime.toLocal().toFormat('yyyy-MM-dd HH:mm:ss');
+    } 
+    console.error(`Invalid timestamp: ${timestamp}`);
+    return timestamp;
   }
 
   // returns a weather object for the timestamps starting with a copy of the original weather
@@ -213,11 +216,15 @@ export class WeatherDisplayComponent {
     return image;
   }
 
-  // should return a boolean depending on timestamp we'll ignore sunrise/sunset for now
-  // between 18:00 and 6:00 is night
-  // between 6:00 and 18:00 is day
-  public isDayTime(timestamp: string): boolean {
+   // should return a boolean depending on timestamp we'll ignore sunrise/sunset for now
+   public isDayTime(timestamp: string): boolean {
+    const sunriseHour = parseInt(this.weather.city.sunriseList[0].substring(11, 13));
+    const sunsetHour = parseInt(this.weather.city.sunsetList[0].substring(11,13));
     const hour = parseInt(timestamp.substring(11, 13));
-    return hour >= 6 && hour < 18;
+    return hour >= sunriseHour && hour <= sunsetHour;
+  }
+
+  public getSunsetSunrise(index: number): string[] {
+    return [this.weather.city.sunriseList[index], this.weather.city.sunsetList[index]];
   }
 }

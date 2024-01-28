@@ -1,7 +1,17 @@
 <div class="p-3 bg-white shadow-2xl rounded-xl" (click)="toggleWeather()">
-  <div class="flex justify-between items-center mb-4">
+  <div class="flex justify-between items-center">
     <h2 class="text-2xl font-semibold">{{ dayLabel }}'s weather</h2>
     <p class="text-sm font-medium text-gray-600">
+      Sunrise: {{ sunsetSunrise[0].substring(11, 16) }} 
+    </p>
+  
+    <p class="text-sm font-medium text-gray-600">
+      Sunset: {{ sunsetSunrise[1].substring(11, 16) }}
+    </p>
+    <p
+      class="text-sm font-medium text-gray-600 w-48"
+      *ngIf="!isTimeStampLengthOne()"
+    >
       Click anywhere to {{ showWeather ? "minimize" : "maximize" }}
     </p>
   </div>
@@ -46,7 +56,7 @@
       </div>
     </div>
     <div class="p-2 bg-white rounded shadow my-2 sm:my-0 h-20">
-      <div class="font-semibold">Wind Direction:</div>
+      <div class="font-semibold">Avg Wind Direction:</div>
       <div class="flex justify-center text-2xl sm:text-3xl">
         {{ averageWindDirection }}°
       </div>
@@ -112,10 +122,10 @@
   </div>
 
   <!-- Full Day Hourly Weather (Expanded View) -->
-  <div *ngIf="showWeather" class="mt-4 p-4 bg-neutral-200 rounded-xl">
+  <div *ngIf="showWeather" class="p-4 bg-neutral-200 rounded-xl">
     <!-- Full days weather navigation -->
     <div>
-      <div class="grid grid-cols-6 grid-rows-1 gap-2 mb-3 lg:gap-0">
+      <div class="grid grid-cols-6 grid-rows-1 gap-2 lg:gap-0">
         <!-- Time Card -->
         <div class="flex flex-col justify-center items-center">
           <div class="font-semibold">Time:</div>
@@ -123,13 +133,8 @@
         <!-- Temperature Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden sm:block font-semibold">
-              Temperature:
-            </div>
-            <div
-              class="block sm:hidden font-semibold"
-              title="Temperature"
-            >
+            <div class="hidden sm:block font-semibold">Temperature:</div>
+            <div class="block sm:hidden font-semibold" title="Temperature">
               Temp:
             </div>
           </div>
@@ -137,13 +142,8 @@
         <!-- Precipitation Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden sm:block font-semibold">
-              Precipitation:
-            </div>
-            <div
-              class="block sm:hidden font-semibold"
-              title="Precipitation"
-            >
+            <div class="hidden sm:block font-semibold">Precipitation:</div>
+            <div class="block sm:hidden font-semibold" title="Precipitation">
               Precip.
             </div>
           </div>
@@ -151,13 +151,8 @@
         <!-- Wind Speed Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden sm:block font-semibold">
-              Wind Speed:
-            </div>
-            <div
-              class="block sm:hidden font-semibold"
-              title="Wind Speed"
-            >
+            <div class="hidden sm:block font-semibold">Wind Speed:</div>
+            <div class="block sm:hidden font-semibold" title="Wind Speed">
               Wind:
             </div>
           </div>
@@ -165,13 +160,8 @@
         <!-- Wind Direction Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden lg:block font-semibold">
-              Wind Direction:
-            </div>
-            <div
-              class="block lg:hidden font-semibold"
-              title="Wind Direction"
-            >
+            <div class="hidden lg:block font-semibold">Wind Direction:</div>
+            <div class="block lg:hidden font-semibold" title="Wind Direction">
               Wdir:
             </div>
           </div>
@@ -223,24 +213,25 @@
             </div>
           </div>
           <!-- Weather Image Card -->
-          <div class="flex flex-col justify-center items-center overflow-hidden">
-              <img
-                [src]="
-                  getWeatherConditionImage(
-                    weather.weatherData[hour].weatherCode,
-                    isDayTime(hour)
-                  )
-                "
-                [title]="
-                  getWeatherConditionDescription(
-                    weather.weatherData[hour].weatherCode
-                  )
-                "
-                alt="Weather Condition"
-                class="h-12 w-12 lg:h-14 lg:w-14"
-
-              />
-            </div>
+          <div
+            class="flex flex-col justify-center items-center overflow-hidden"
+          >
+            <img
+              [src]="
+                getWeatherConditionImage(
+                  weather.weatherData[hour].weatherCode,
+                  isDayTime(hour)
+                )
+              "
+              [title]="
+                getWeatherConditionDescription(
+                  weather.weatherData[hour].weatherCode
+                )
+              "
+              alt="Weather Condition"
+              class="h-12 w-12 lg:h-14 lg:w-14"
+            />
+          </div>
         </div>
       </div>
     </ng-template>

@@ -47,24 +47,24 @@
   <nav class="flex mt-3">
     <div class="flex flex-row">
       <a
-        class="my-2 px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4 rounded-2xl"
+        class="my-2 px-7 pb-3.5 pt-4 text-xs uppercase leading-tight md:mr-4 rounded-2xl"
         routerLink="/"
         [ngClass]="{
-          'bg-neutral-100 text-neutral-500 hover:bg-neutral-300 font-medium dark:bg-neutral-700':
+          'bg-neutral-100 text-neutral-500 hover:bg-neutral-300':
             !isRouteActive('/'),
-          'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900':
+          'bg-neutral-300 text-black font-semibold':
             isRouteActive('/')
         }"
         >Weather</a
       >
 
       <a
-        class="my-2 block px-7 pb-3.5 pt-4 text-xs uppercase leading-tight dark:text-white md:mr-4 rounded-2xl"
+        class="my-2 block px-7 pb-3.5 pt-4 text-xs uppercase leading-tight md:mr-4 rounded-2xl"
         routerLink="/about"
         [ngClass]="{
-          'bg-neutral-100 text-neutral-500 hover:bg-neutral-300 font-medium dark:bg-neutral-700':
+          'bg-neutral-100 text-neutral-500 hover:bg-neutral-300':
             !isRouteActive('/about'),
-          'bg-neutral-300 text-black font-extrabold dark:bg-neutral-900':
+          'bg-neutral-300 text-black font-semibold':
             isRouteActive('/about')
         }"
         >About</a
