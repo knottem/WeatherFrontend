@@ -9,7 +9,7 @@ import { catchError, delay } from 'rxjs/operators';
 })
 export class WeatherService {
 
-  private CURRENT_VERSION = '1.0.0';
+  private CURRENT_VERSION = '1.0.1';
   private STORAGE_KEY = 'weatherData';
 
   private weatherConditions: { [key: number]: string } = {

@@ -33,7 +33,7 @@
   <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-2xl font-semibold">
-        Weather in {{ weather.city.name }} at {{ currentWeather.timestamp }}
+        Weather in {{ weather.city.name }} at {{ currentWeather.timestamp.substring(11, 16)}}
       </h2>
     </div>
     <div
@@ -93,6 +93,7 @@
     <app-weather-table
       [dayLabel]="currentDays[index]"
       [weather]="getWeatherDataForDay(timestamps[index])"
+      [sunsetSunrise]="getSunsetSunrise(index)"
     >
     </app-weather-table>
     <br />

@@ -1,7 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
-import { trigger, style, animate, transition, query, stagger } from '@angular/animations';
+import {
+  trigger,
+  style,
+  animate,
+  transition,
+  query,
+  stagger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-weather-table',
@@ -10,32 +17,42 @@ import { trigger, style, animate, transition, query, stagger } from '@angular/an
     trigger('fadeInStagger', [
       transition('* => noAnimation', []),
       transition('* => animation', [
-        query(':enter', [
-          style({ opacity: 0, transform: 'translateY(-20px)' }),
-          stagger('5ms', [
-            animate('100ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-          ])
-        ], { optional: true }),
-        query(':leave', [
-          stagger('-5ms', [
-            animate('100ms ease-in', style({ opacity: 0, height: '0px' }))
-          ])
-        ], { optional: true })
-      ])
+        query(
+          ':enter',
+          [
+            style({ opacity: 0, transform: 'translateY(-20px)' }),
+            stagger('5ms', [
+              animate(
+                '100ms ease-out',
+                style({ opacity: 1, transform: 'translateY(0)' })
+              ),
+            ]),
+          ],
+          { optional: true }
+        ),
+        query(
+          ':leave',
+          [
+            stagger('-5ms', [
+              animate('100ms ease-in', style({ opacity: 0, height: '0px' })),
+            ]),
+          ],
+          { optional: true }
+        ),
+      ]),
     ]),
     trigger('fadeInExpand', [
       transition(':enter', [
         style({ opacity: 0, height: '0px', overflow: 'hidden' }),
-        animate('100ms ease-out', style({ opacity: 1, height: '*' }))
-      ])
-    ])
-  ]
+        animate('100ms ease-out', style({ opacity: 1, height: '*' })),
+      ]),
+    ]),
+  ],
 })
-
 export class WeatherTableComponent {
-  @Input() dayLabel: string = "";
-  @Input() cityName: string = "";
+  @Input() dayLabel: string = '';
   @Input() weather: WeatherData = new WeatherData();
+  @Input() sunsetSunrise: string[] = [];
 
   private imageCache = new Map<string, string>();
 
@@ -52,7 +69,7 @@ export class WeatherTableComponent {
   public maxWindSpeed: number = 0;
   public averageWindDirection: number = 0;
 
-  constructor(private weatherService: WeatherService) { }
+  constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
     if (this.getTimestamps().length === 1) {
@@ -86,7 +103,7 @@ export class WeatherTableComponent {
 
     let timestamps = Object.keys(this.weather.weatherData);
 
-    timestamps.forEach(timestamp => {
+    timestamps.forEach((timestamp) => {
       let hour = parseInt(timestamp.substring(11, 13));
       if (hour >= 6 && hour < 12) {
         morningCodes.push(this.weather.weatherData[timestamp].weatherCode);
@@ -103,15 +120,15 @@ export class WeatherTableComponent {
     this.afternoonWeather = this.getMostCommonCode(afternoonCodes);
     this.eveningWeather = this.getMostCommonCode(eveningCodes);
     this.nightWeather = this.getMostCommonCode(nightCodes);
-
   }
 
   private getMostCommonCode(codes: number[]): number {
     if (codes.length === 0) return -1;
 
     const modeMap = new Map();
-    let maxEl = codes[0], maxCount = 1;
-    codes.forEach(code => {
+    let maxEl = codes[0],
+      maxCount = 1;
+    codes.forEach((code) => {
       if (!modeMap.has(code)) {
         modeMap.set(code, 1);
       } else {
@@ -132,15 +149,17 @@ export class WeatherTableComponent {
     let cosSum = 0;
     let count = 0;
 
-    Object.values(this.weather.weatherData).forEach(data => {
-      const angleRadians = data.windDirection * Math.PI / 180;
+    Object.values(this.weather.weatherData).forEach((data) => {
+      const angleRadians = (data.windDirection * Math.PI) / 180;
       sinSum += Math.sin(angleRadians);
       cosSum += Math.cos(angleRadians);
       count++;
     });
 
     if (count > 0) {
-      this.averageWindDirection = Math.round(Math.atan2(sinSum / count, cosSum / count) * 180 / Math.PI);
+      this.averageWindDirection = Math.round(
+        (Math.atan2(sinSum / count, cosSum / count) * 180) / Math.PI
+      );
       if (this.averageWindDirection < 0) {
         this.averageWindDirection += 360;
       }
@@ -170,7 +189,7 @@ export class WeatherTableComponent {
   // should return an image path depending on weather code and timestamp
   public getWeatherConditionImage(code: number, day: boolean): string {
     const cacheKey = `${code}-${day ? 'day' : 'night'}`;
-    if(!this.imageCache.has(cacheKey)){
+    if (!this.imageCache.has(cacheKey)) {
       const image = this.weatherService.getWeatherConditionImage(code, day);
       this.imageCache.set(cacheKey, image);
       return image;
@@ -178,14 +197,11 @@ export class WeatherTableComponent {
     return this.imageCache.get(cacheKey) as string;
   }
 
-  // should return a boolean depending on timestamp we'll ignore sunrise/sunset for now
-  // between 18:00 and 6:00 is night
-  // between 6:00 and 18:00 is day
+  // should return a boolean depending on timestamp and sunrise/sunset
   public isDayTime(timestamp: string): boolean {
+    const sunriseHour = parseInt(this.sunsetSunrise[0].substring(11, 13));
+    const sunsetHour = parseInt(this.sunsetSunrise[1].substring(11, 13));
     const hour = parseInt(timestamp.substring(11, 13));
-    const isDay = hour >= 6 && hour < 18;
-    return isDay;
+    return hour >= sunriseHour && hour <= sunsetHour;
   }
-
-
 }
