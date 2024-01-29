@@ -57,9 +57,10 @@ export class WeatherTableComponent {
   private imageCache = new Map<string, string>();
 
   public showWeather: boolean = false;
+  public timestamps: string[] = [];
 
-  public highTemp: number = 0;
-  public lowTemp: number = 0;
+  public highTemp: number = -100;
+  public lowTemp: number = 100;
   public totalPrecipitation: number = 0;
 
   public morningWeather: number = -1;
@@ -72,7 +73,8 @@ export class WeatherTableComponent {
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
-    if (this.getTimestamps().length === 1) {
+    this.timestamps = Object.keys(this.weather.weatherData);
+    if (this.timestamps.length === 1) {
       this.showWeather = true;
     }
     // go thru weatherData and find the highest and lowest temps
@@ -81,7 +83,7 @@ export class WeatherTableComponent {
       if (weather.temperature > this.highTemp) {
         this.highTemp = weather.temperature;
       }
-      if (weather.temperature < this.lowTemp || this.lowTemp === 0) {
+      if (weather.temperature < this.lowTemp) {
         this.lowTemp = weather.temperature;
       }
       if (weather.windSpeed > this.maxWindSpeed) {
@@ -93,6 +95,11 @@ export class WeatherTableComponent {
     this.totalPrecipitation = Math.round(this.totalPrecipitation * 10) / 10;
     this.calculateCommonWeather();
     this.calculateAverageWindDirection();
+    
+    if (this.dayLabel === 'Today') {
+      this.timestamps.shift();
+    }
+
   }
 
   private calculateCommonWeather(): void {
@@ -101,7 +108,7 @@ export class WeatherTableComponent {
     let eveningCodes: number[] = [];
     let nightCodes: number[] = [];
 
-    let timestamps = Object.keys(this.weather.weatherData);
+    let timestamps = this.getTimestamps();
 
     timestamps.forEach((timestamp) => {
       let hour = parseInt(timestamp.substring(11, 13));
@@ -169,7 +176,7 @@ export class WeatherTableComponent {
   }
 
   public getTimestamps(): string[] {
-    return Object.keys(this.weather.weatherData);
+      return Object.keys(this.weather.weatherData);
   }
 
   public toggleWeather(): void {
@@ -203,5 +210,22 @@ export class WeatherTableComponent {
     const sunsetHour = parseInt(this.sunsetSunrise[1].substring(11, 13));
     const hour = parseInt(timestamp.substring(11, 13));
     return hour >= sunriseHour && hour <= sunsetHour;
+  }
+
+  shouldEveningSpanTwoColumns(): boolean {
+    if (this.nightWeather === -1 && this.morningWeather === -1 && this.afternoonWeather === -1) {
+      return true;
+    }
+    if (this.nightWeather === -1 && this.morningWeather !== -1 && this.afternoonWeather !== -1) {
+      return true;
+    }
+    return false;
+  }
+
+  shouldAfternoonSpanTwoColumns(): boolean {
+    if(this.eveningWeather === -1) {
+      return true;
+    }
+    return false;
   }
 }

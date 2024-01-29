@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WeatherDisplayComponent } from './weather-display/weather-display.component';
-import { HeaderCompComponent } from './header-comp/header-comp.component';
+import { HeaderComponent } from './header/header.component';
 import { ErrorCompComponent } from './error-comp/error-comp.component';
 import { LoadingIndicatorComponent } from './loading-indicator/loading-indicator.component';
 import { FormsModule } from '@angular/forms';
@@ -15,16 +15,18 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WeatherTableComponent } from './weather-table/weather-table.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherDisplayComponent,
-    HeaderCompComponent,
+    HeaderComponent,
     ErrorCompComponent,
     LoadingIndicatorComponent,
     WeatherTableComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

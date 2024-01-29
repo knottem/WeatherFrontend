@@ -7,8 +7,7 @@
       [ngClass]="{
         'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
           amountOfDays !== 3,
-        'bg-neutral-300 text-black font-extrabold':
-          amountOfDays === 3
+        'bg-neutral-300 text-black font-extrabold': amountOfDays === 3
       }"
       (click)="amountOfDaysChanged(3)"
     >
@@ -20,8 +19,7 @@
       [ngClass]="{
         'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
           amountOfDays !== 10,
-        'bg-neutral-300 text-black font-extrabold':
-          amountOfDays == 10
+        'bg-neutral-300 text-black font-extrabold': amountOfDays == 10
       }"
       (click)="amountOfDaysChanged(10)"
     >
@@ -31,16 +29,17 @@
 
   <!-- Current Weather Display -->
   <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-between items-center">
       <h2 class="text-2xl font-semibold">
-        Weather in {{ weather.city.name }} at {{ currentWeather.timestamp.substring(11, 16)}}
+        Weather in {{ weather.city.name }} at
+        {{ currentWeather.timestamp.substring(11, 16) }}
       </h2>
     </div>
     <div
-      class="p-4 bg-neutral-200 rounded sm:grid sm:grid-cols-5 gap-4 relative"
+      class="p-4 bg-neutral-200 rounded grid grid-cols-2 lg:grid-cols-5 gap-4 relative"
     >
       <div
-        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative"
+        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
       >
         <div class="absolute top-2 font-semibold">Temperature:</div>
         <div
@@ -54,37 +53,45 @@
         </div>
       </div>
       <div
-        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative"
-      >
-        <div class="absolute top-2 font-semibold">Current Weather:</div>
-        <img
-          class="h-16 w-16 mt-5"
-          [src]="
-            getWeatherConditionImage(
-              currentWeather.weatherCode,
-              isDayTime(currentWeather.timestamp)
-            )
-          "
-          [title]="getWeatherConditionDescription(currentWeather.weatherCode)"
-          alt="Weather Condition"
-        />
-      </div>
-      <div
-        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative"
+        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
       >
         <div class="absolute top-2 font-semibold">Precipitation:</div>
-        <div class="text-2xl sm:text-3xl mt-5">{{ currentWeather.precipitation }} mm</div>
+        <div class="text-2xl sm:text-3xl mt-5">
+          {{ currentWeather.precipitation }} mm
+        </div>
       </div>
       <div
-        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative">
+        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
+      >
         <div class="absolute top-2 font-semibold">Wind Speed:</div>
-        <div class="text-2xl sm:text-3xl mt-5">{{ currentWeather.windSpeed }} m/s</div>
+        <div class="text-2xl sm:text-3xl mt-5">
+          {{ currentWeather.windSpeed }} m/s
+        </div>
       </div>
       <div
-        class="p-2 bg-white rounded shadow my-2 sm:my-0 h-21 flex flex-col justify-center items-center relative">
-      <div class="absolute top-2 font-semibold">Wind Direction:</div>
-      <div class="text-2xl sm:text-3xl mt-5">{{ currentWeather.windDirection }}°</div>
+        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
+      >
+        <div class="absolute top-2 font-semibold">Wind Direction:</div>
+        <div class="text-2xl sm:text-3xl mt-5">
+          {{ currentWeather.windDirection }}°
+        </div>
       </div>
+      <div
+      class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative col-span-2 lg:col-auto"
+    >
+      <div class="absolute top-2 font-semibold">Current Weather:</div>
+      <img
+        class="h-16 w-16 mt-5"
+        [src]="
+          getWeatherConditionImage(
+            currentWeather.weatherCode,
+            isDayTime(currentWeather.timestamp)
+          )
+        "
+        [title]="getWeatherConditionDescription(currentWeather.weatherCode)"
+        alt="Weather Condition"
+      />
+    </div>
     </div>
   </div>
 
@@ -99,17 +106,4 @@
     <br />
   </div>
 
-  <!-- Footer Text -->
-  <div class="flex justify-between items-start sm:items-center mb-4 mx-2">
-    <p class="text-gray-600 text-xs mt-4 sm:text-sm">
-      <span class="block sm:inline"
-        >Weather data last updated at {{ updatedTime }}.</span
-      >
-      <span class="block sm:inline">Sources: SMHI and Yr.</span>
-    </p>
-    <p class="text-gray-600 text-xs mt-4 sm:text-sm">
-      <span class="block sm:inline">Version:</span>
-      <span class="block sm:inline">{{ version }}</span>
-    </p>
-  </div>
 </div>

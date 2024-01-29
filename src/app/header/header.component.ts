@@ -8,11 +8,11 @@ import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/m
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-header-comp',
-  templateUrl: './header-comp.component.html'
+  selector: 'app-header',
+  templateUrl: './header.component.html'
   //styleUrls: ['./header-comp.component.css']
 })
-export class HeaderCompComponent implements OnInit {
+export class HeaderComponent implements OnInit {
 
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChild('trigger') autocompleteTrigger!: MatAutocompleteTrigger;
