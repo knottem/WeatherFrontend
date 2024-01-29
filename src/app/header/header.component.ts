@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { SearchService } from '../search.service';
 import { WeatherService } from '../weather.service';
 import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-header',
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   public lastSearched: string[] = [];
 
   constructor(
-    public searchService: SearchService,
+    public sharedService: SharedService,
     private weatherService: WeatherService,
     private router: Router
   ) { }
@@ -94,7 +94,7 @@ export class HeaderComponent implements OnInit {
   public updateSearchQuery(city: string) {
     if (this.cityList.includes(city)) {
       this.addCityToLastSearched(city);
-      this.searchService.setSearchQuery(city);
+      this.sharedService.setSearchQuery(city);
       this.router.navigate(['/']);
     }
   }

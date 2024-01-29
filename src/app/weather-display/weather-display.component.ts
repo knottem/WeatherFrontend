@@ -1,10 +1,9 @@
 import { Component, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
-import { SearchService } from '../search.service';
+import { SharedService } from '../shared.service';
 import { WeatherTableComponent } from '../weather-table/weather-table.component';
 import { DateTime } from 'luxon';
-import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-weather-display',
@@ -29,16 +28,15 @@ export class WeatherDisplayComponent {
 
   constructor(
     private weatherService: WeatherService,
-    private searchService: SearchService,
     private sharedService: SharedService
   ) {}
 
   ngOnInit() {
-    this.searchService.searchQuery$.subscribe((query) => {
+    this.sharedService.searchQuery$.subscribe((query) => {
       this.getWeather(query);
     });
 
-    const data = this.weatherService.loadWeatherData();
+    const data = this.sharedService.loadWeatherData();
     let weather = null;
     let city = this.defaultCity;
     if (data !== null) {
@@ -91,7 +89,7 @@ export class WeatherDisplayComponent {
     this.sharedService.setUpdatedTime(this.weather.timestamp.substring(11, 16));
     
     if (this.weather.message !== 'Mock data') {
-      this.weatherService.saveWeatherData(data);
+      this.sharedService.saveWeatherData(data);
     }
     document.title = `${this.weather.city.name} - Weather`;
     this.isLoaded = true;

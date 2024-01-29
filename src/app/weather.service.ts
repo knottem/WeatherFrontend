@@ -9,9 +9,6 @@ import { catchError, delay } from 'rxjs/operators';
 })
 export class WeatherService {
 
-  private CURRENT_VERSION = '1.0.1';
-  private STORAGE_KEY = 'weatherData';
-
   private weatherConditions: { [key: number]: string } = {
     1: 'Clear sky',
     2: 'Nearly clear sky',
@@ -138,27 +135,6 @@ export class WeatherService {
         return of([]);
       })
     );
-  }
-
-  saveWeatherData(data: any): void {
-    const dataWithVersion = { ...data, version: this.CURRENT_VERSION };
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(dataWithVersion));
-  }
-  
-  loadWeatherData(): any {
-    //remove old data
-    localStorage.removeItem("weather");
-
-    const data = JSON.parse(localStorage.getItem(this.STORAGE_KEY) as string);
-    if (data && data.version === this.CURRENT_VERSION) {
-      return data;
-    }
-    localStorage.removeItem(this.STORAGE_KEY);
-    return null;
-  }
-  
-  clearOldData(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
   }
   
 }                                                                                 
