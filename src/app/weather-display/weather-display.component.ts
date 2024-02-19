@@ -1,13 +1,17 @@
-import { Component, ViewChildren, QueryList, ViewChild } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { SharedService } from '../shared.service';
 import { WeatherTableComponent } from '../weather-table/weather-table.component';
 import { DateTime } from 'luxon';
+import { CommonModule } from '@angular/common';
+import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
 
 @Component({
   selector: 'app-weather-display',
-  templateUrl: './weather-display.component.html'
+  templateUrl: './weather-display.component.html',
+  standalone: true,
+  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent],
 })
 export class WeatherDisplayComponent {
 
@@ -54,10 +58,14 @@ export class WeatherDisplayComponent {
   }
 
   public amountOfDaysChanged(num: number): void {
+    this.isLoaded = false;
     this.amountOfDays = num;
     this.weatherTableComponent.forEach((table) => {
       table.showWeather = false;
     });
+    setTimeout(() => {
+      this.isLoaded = true;
+    }, Math.floor(Math.random() * 300) + 100);
   }
 
   private getWeather(str: string) {

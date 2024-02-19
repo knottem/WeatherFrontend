@@ -9,6 +9,7 @@ import {
   query,
   stagger,
 } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-weather-table',
@@ -48,6 +49,8 @@ import {
       ]),
     ]),
   ],
+  standalone: true,
+  imports: [CommonModule]
 })
 export class WeatherTableComponent {
   @Input() dayLabel: string = '';

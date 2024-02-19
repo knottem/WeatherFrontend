@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SharedService } from '../shared.service';
 
@@ -6,7 +6,7 @@ import { SharedService } from '../shared.service';
   selector: 'app-footer',
   template: `
     <!-- Footer Text -->
-    <div class="flex justify-between items-start sm:items-center mb-4 mx-2">
+    <div class="flex justify-between items-start sm:items-center mx-2">
       <div *ngIf="updatedTime === ''">
         <p class="text-gray-600 text-xs mt-4 sm:text-sm">
           Sources: SMHI and Yr.

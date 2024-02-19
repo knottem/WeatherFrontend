@@ -3,19 +3,32 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
-    <!-- app.component.html -->
-    <app-header></app-header>
-    <!-- Header and navigation -->
-
-    <router-outlet></router-outlet>
-    <!-- This is where routed components will be displayed -->
-
-    <app-footer></app-footer>
-    <!-- Footer -->
-
-    <app-error-comp></app-error-comp>
-    <!-- Error handling and messages -->
+      <app-header></app-header>
+      <app-error-comp></app-error-comp>
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
   `,
-  styleUrls: ['./app.component.css'],
+  styles: [
+    `
+      :host {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        min-width: 600px;
+        max-width: 1400px;
+        margin: 0 auto;
+        font-family: Roboto, sans-serif;
+      }
+
+      @media (max-width: 1024px) {
+        :host {
+          width: 100%;
+          min-width: 0;
+          margin: 0;
+          flex-direction: column;
+        }
+      }
+    `,
+  ],
 })
 export class AppComponent {}

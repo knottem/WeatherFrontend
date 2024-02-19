@@ -9,7 +9,7 @@ import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
   //styleUrls: ['./header-comp.component.css']
 })
 export class HeaderComponent implements OnInit {
@@ -41,7 +41,6 @@ export class HeaderComponent implements OnInit {
         this.currentTime = newTime;
       }
     }, 1000);
-
   }
 
   // Updates the current time in HH:MM format

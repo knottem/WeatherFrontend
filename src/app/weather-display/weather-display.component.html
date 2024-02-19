@@ -1,32 +1,32 @@
+ <!-- Buttons to switch between 3 days and 10 days-->
+ <div class="flex">
+  <button
+    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4"
+    [ngClass]="{
+      'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
+        amountOfDays !== 3,
+      'bg-neutral-300 text-black font-extrabold': amountOfDays === 3
+    }"
+    (click)="amountOfDaysChanged(3)"
+  >
+    Show 3 days
+  </button>
+
+  <button
+    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4"
+    [ngClass]="{
+      'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
+        amountOfDays !== 10,
+      'bg-neutral-300 text-black font-extrabold': amountOfDays == 10
+    }"
+    (click)="amountOfDaysChanged(10)"
+  >
+    Show 10 days
+  </button>
+</div>
+
 <app-loading-indicator *ngIf="!isLoaded"></app-loading-indicator>
 <div *ngIf="isLoaded">
-  <!-- Buttons to switch between 3 days and 10 days-->
-  <div class="flex">
-    <button
-      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4"
-      [ngClass]="{
-        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
-          amountOfDays !== 3,
-        'bg-neutral-300 text-black font-extrabold': amountOfDays === 3
-      }"
-      (click)="amountOfDaysChanged(3)"
-    >
-      Show 3 days
-    </button>
-
-    <button
-      class="my-2 block rounded-2xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4"
-      [ngClass]="{
-        'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
-          amountOfDays !== 10,
-        'bg-neutral-300 text-black font-extrabold': amountOfDays == 10
-      }"
-      (click)="amountOfDaysChanged(10)"
-    >
-      Show 10 days
-    </button>
-  </div>
-
   <!-- Current Weather Display -->
   <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
     <div class="flex justify-between items-center">

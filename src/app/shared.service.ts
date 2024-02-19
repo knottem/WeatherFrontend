@@ -18,7 +18,7 @@ export class SharedService {
   private CURRENT_VERSION = '1.0.1';
   private STORAGE_KEY = 'weatherData';
 
-  constructor() {}
+  constructor() { }
 
   setUpdatedTime(time: string) {
     this.updatedTimeSource.next(time);
@@ -53,7 +53,4 @@ export class SharedService {
     localStorage.removeItem(this.STORAGE_KEY);
   }
 
-
-
-  
 }
