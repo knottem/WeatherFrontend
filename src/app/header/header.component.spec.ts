@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeaderCompComponent } from './header-comp.component';
+import { HeaderComponent } from './header.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
 
 describe('HeaderCompComponent', () => {
-  let component: HeaderCompComponent;
-  let fixture: ComponentFixture<HeaderCompComponent>;
+  let component: HeaderComponent;
+  let fixture: ComponentFixture<HeaderComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderCompComponent],
+      declarations: [HeaderComponent],
       imports: [MatAutocompleteModule, 
                 HttpClientTestingModule,
                 ReactiveFormsModule],
-      providers: [HeaderCompComponent]
+      providers: [HeaderComponent]
     });
-    fixture = TestBed.createComponent(HeaderCompComponent);
+    fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

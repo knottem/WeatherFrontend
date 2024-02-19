@@ -1,18 +1,23 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
 import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
-import { SearchService } from '../search.service';
+import { SharedService } from '../shared.service';
 import { WeatherTableComponent } from '../weather-table/weather-table.component';
 import { DateTime } from 'luxon';
-import { environment } from 'src/environments/environment';
+import { CommonModule } from '@angular/common';
+import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
 
 @Component({
   selector: 'app-weather-display',
-  templateUrl: './weather-display.component.html'
+  templateUrl: './weather-display.component.html',
+  standalone: true,
+  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent],
 })
 export class WeatherDisplayComponent {
+
   @ViewChildren(WeatherTableComponent)
   private weatherTableComponent!: QueryList<WeatherTableComponent>;
+
   private defaultCity: string = 'stockholm';
   public amountOfDays: number = 3;
 
@@ -25,20 +30,17 @@ export class WeatherDisplayComponent {
   public isLoaded: boolean = false;
   public updatedTime: string = '';
 
-  public version: string = '';
-
   constructor(
     private weatherService: WeatherService,
-    private searchService: SearchService
+    private sharedService: SharedService
   ) {}
 
   ngOnInit() {
-    this.version = environment.apiVersion;
-    this.searchService.searchQuery$.subscribe((query) => {
+    this.sharedService.searchQuery$.subscribe((query) => {
       this.getWeather(query);
     });
 
-    const data = this.weatherService.loadWeatherData();
+    const data = this.sharedService.loadWeatherData();
     let weather = null;
     let city = this.defaultCity;
     if (data !== null) {
@@ -56,10 +58,14 @@ export class WeatherDisplayComponent {
   }
 
   public amountOfDaysChanged(num: number): void {
+    this.isLoaded = false;
     this.amountOfDays = num;
     this.weatherTableComponent.forEach((table) => {
       table.showWeather = false;
     });
+    setTimeout(() => {
+      this.isLoaded = true;
+    }, Math.floor(Math.random() * 300) + 100);
   }
 
   private getWeather(str: string) {
@@ -88,10 +94,10 @@ export class WeatherDisplayComponent {
       this.weather.weatherData[availableTimestamps[0]].windDirection,
       this.weather.weatherData[availableTimestamps[0]].precipitation
     );
-
-    this.updatedTime = this.weather.timestamp.substring(11, 16);
+    this.sharedService.setUpdatedTime(this.weather.timestamp.substring(11, 16));
+    
     if (this.weather.message !== 'Mock data') {
-      this.weatherService.saveWeatherData(data);
+      this.sharedService.saveWeatherData(data);
     }
     document.title = `${this.weather.city.name} - Weather`;
     this.isLoaded = true;
@@ -136,10 +142,7 @@ export class WeatherDisplayComponent {
           return new Date(timestamp).getDate() === now.getDate();
         })
       );
-    }
-    if (!lasthour) {
-      timestampsSets[0].shift();
-    }
+    } 
     return timestampsSets;
   }
 

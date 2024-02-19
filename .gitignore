@@ -45,3 +45,6 @@ Thumbs.db
 # Enviroment variables
 /src/environments/*
 
+# Notes for releases
+patch-notes.md
+
