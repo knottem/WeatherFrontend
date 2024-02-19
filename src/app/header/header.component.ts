@@ -1,18 +1,18 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { SearchService } from '../search.service';
 import { WeatherService } from '../weather.service';
 import { FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
+import { SharedService } from '../shared.service';
 
 @Component({
-  selector: 'app-header-comp',
-  templateUrl: './header-comp.component.html'
+  selector: 'app-header',
+  templateUrl: './header.component.html',
   //styleUrls: ['./header-comp.component.css']
 })
-export class HeaderCompComponent implements OnInit {
+export class HeaderComponent implements OnInit {
 
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChild('trigger') autocompleteTrigger!: MatAutocompleteTrigger;
@@ -24,7 +24,7 @@ export class HeaderCompComponent implements OnInit {
   public lastSearched: string[] = [];
 
   constructor(
-    public searchService: SearchService,
+    public sharedService: SharedService,
     private weatherService: WeatherService,
     private router: Router
   ) { }
@@ -41,7 +41,6 @@ export class HeaderCompComponent implements OnInit {
         this.currentTime = newTime;
       }
     }, 1000);
-
   }
 
   // Updates the current time in HH:MM format
@@ -94,7 +93,7 @@ export class HeaderCompComponent implements OnInit {
   public updateSearchQuery(city: string) {
     if (this.cityList.includes(city)) {
       this.addCityToLastSearched(city);
-      this.searchService.setSearchQuery(city);
+      this.sharedService.setSearchQuery(city);
       this.router.navigate(['/']);
     }
   }

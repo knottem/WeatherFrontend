@@ -1,13 +1,10 @@
 // app-routing.module.ts
-
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { WeatherDisplayComponent } from './weather-display/weather-display.component';
-import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
-  { path: '', component: WeatherDisplayComponent }, // Default route
-  { path: 'about', component: AboutComponent },
+  { path: '', loadComponent: () => import('./weather-display/weather-display.component').then(m => m.WeatherDisplayComponent)}, // Default route
+  { path: 'about', loadComponent: () => import('./about/about.component').then(m => m.AboutComponent) },
   { path: '**', redirectTo: '' }, // Wildcard route
 ];
 
