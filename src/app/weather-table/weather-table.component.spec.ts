@@ -12,6 +12,7 @@ describe('WeatherTableComponent', () => {
     });
     fixture = TestBed.createComponent(WeatherTableComponent);
     component = fixture.componentInstance;
+    component.sunsetSunrise = ['mockSunrise', 'mockSunset'];
     fixture.detectChanges();
   });
 
