@@ -1,0 +1,85 @@
+name: Angular testing and Publishing on dev branch
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  test-all-dev:
+    runs-on: ubuntu-latest
+    outputs:
+        tags: ${{ steps.version.outputs.VERSION }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate environment.ts
+        run: |
+          mkdir -p src/environments
+          echo "export const environment = { apiUrl: '${{ secrets.API_URL }}', apiVersion: '0.0.0' };" > src/environments/environment.ts
+
+      - name: Run tests
+        run: npm run test
+
+  build-and-publish-dev:
+    needs: [ test-all-dev ]
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check environments
+        run: |
+          echo "registry: ${{ env.REGISTRY }}"
+          echo "VERSION: ${{ env.VERSION }}"
+
+      - name: Generate environment.ts
+        run: |
+          mkdir -p src/environments
+          echo "export const environment = { apiUrl: '${{ secrets.API_URL }}', apiVersion: '0.0.0' };" > src/environments/environment.ts
+
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5.0.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.package-version.outputs.current-version }}
+            dev
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
