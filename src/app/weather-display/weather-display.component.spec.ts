@@ -10,7 +10,6 @@ describe('WeatherDisplayComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [WeatherDisplayComponent],
       providers: [WeatherDisplayComponent]
     });
     fixture = TestBed.createComponent(WeatherDisplayComponent);

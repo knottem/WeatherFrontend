@@ -5,17 +5,17 @@
     <h2 class="text-xs sm:text-2xl font-semibold whitespace-nowrap sm:w-48">
       {{ dayLabel }}'s weather
     </h2>
-  
+
     <!-- Sunrise and Sunset for larger screens -->
     <div class="hidden sm:flex sm:justify-between sm:w-96 px-6 lg:px-0">
       <p class="text-sm font-medium text-gray-600">
-        Sunrise: {{ sunsetSunrise[0].substring(11, 16) }}
+        Sunrise: {{ sunsetSunrise[0]?.substring(11, 16) }}
       </p>
       <p class="text-sm font-medium text-gray-600">
-        Sunset: {{ sunsetSunrise[1].substring(11, 16) }}
+        Sunset: {{ sunsetSunrise[1]?.substring(11, 16) }}
       </p>
     </div>
-  
+
     <!-- Click to Maximize/Minimize Text -->
     <p class="flex sm:hidden text-xs lg:text-sm font-medium text-gray-600 whitespace-nowrap" *ngIf="!isTimeStampLengthOne()">
       Click to {{ showWeather ? "minimize" : "maximize" }}
@@ -27,10 +27,10 @@
     <div class="sm:hidden flex justify-between items-center px-4">
     <!-- Sunrise and Sunset for smaller screens -->
       <p class="text-sm font-medium text-gray-600">
-        Sunrise: {{ sunsetSunrise[0].substring(11, 16) }}
+        Sunrise: {{ sunsetSunrise[0]?.substring(11, 16) }}
       </p>
       <p class="text-sm font-medium text-gray-600">
-        Sunset: {{ sunsetSunrise[1].substring(11, 16) }}
+        Sunset: {{ sunsetSunrise[1]?.substring(11, 16) }}
       </p>
   </div>
 
@@ -119,10 +119,10 @@
     [ngClass]="shouldAfternoonSpanTwoColumns() ? 'col-span-2 flex-col justify-center' : ''"
     class="p-2 bg-white rounded shadow flex items-center h-20 lg:col-auto relative"
   >
-    <span 
+    <span
     class="font-semibold"
     [ngClass]="shouldAfternoonSpanTwoColumns() ? 'absolute top-2' :''">Afternoon:</span>
-    <div 
+    <div
     class=""
     [ngClass]="shouldAfternoonSpanTwoColumns() ? 'mt-5':'absolute left-1/2 sm:transform sm:-translate-x-1/2'">
       <img
@@ -138,10 +138,10 @@
       [ngClass]="shouldEveningSpanTwoColumns() ? 'col-span-2 flex-col justify-center' : ''"
       class="p-2 bg-white rounded shadow flex items-center h-20 lg:col-auto relative"
     >
-      <span 
+      <span
       class="font-semibold"
       [ngClass]="shouldEveningSpanTwoColumns() ? 'absolute top-2' :''">Evening:</span>
-      <div 
+      <div
       class=""
       [ngClass]="shouldEveningSpanTwoColumns() ? 'mt-5':'absolute left-1/2 sm:transform sm:-translate-x-1/2'">
         <img

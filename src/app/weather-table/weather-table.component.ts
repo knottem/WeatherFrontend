@@ -98,7 +98,7 @@ export class WeatherTableComponent {
     this.totalPrecipitation = Math.round(this.totalPrecipitation * 10) / 10;
     this.calculateCommonWeather();
     this.calculateAverageWindDirection();
-    
+
     if (this.dayLabel === 'Today') {
       this.timestamps.shift();
     }
