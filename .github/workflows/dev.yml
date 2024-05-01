@@ -28,7 +28,7 @@ jobs:
         run: npm ci
 
       - name: Generate environment.ts
-        run:
+        run: |
           echo "export const environment = { apiUrl: '${{ secrets.API_URL }}', apiVersion: '<%= apiVersion %>' };" > src/environments/environment.ts
 
       - name: Run tests
