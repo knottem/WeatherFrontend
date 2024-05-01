@@ -34,14 +34,13 @@ jobs:
           mkdir -p src/environments
           echo "export const environment = { apiUrl: '${{ secrets.API_URL }}', apiVersion: '0.0.0' };" > src/environments/environment.ts
 
+      - name: Extract project version
+        run: |
+            VERSION=$(node --print 'require("./package.json").version')
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Run tests
         run: npm run test
-
-      - name: Extract project version
-        id: version
-        run: |
-          echo "VERSION=$(node --print 'require("./package.json").version')" >> $GITHUB_ENV
-          echo "VERSION: ${{ env.VERSION }}"
 
   build-and-publish-dev:
     needs: [ test-all-dev ]
