@@ -6,12 +6,13 @@ import { WeatherTableComponent } from '../weather-table/weather-table.component'
 import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-weather-display',
   templateUrl: './weather-display.component.html',
   standalone: true,
-  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent],
+  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent, TranslateModule],
 })
 export class WeatherDisplayComponent {
 
@@ -95,7 +96,7 @@ export class WeatherDisplayComponent {
       this.weather.weatherData[availableTimestamps[0]].precipitation
     );
     this.sharedService.setUpdatedTime(this.weather.timestamp.substring(11, 16));
-    
+
     if (this.weather.message !== 'Mock data') {
       this.sharedService.saveWeatherData(data);
     }
@@ -142,7 +143,7 @@ export class WeatherDisplayComponent {
           return new Date(timestamp).getDate() === now.getDate();
         })
       );
-    } 
+    }
     return timestampsSets;
   }
 
@@ -185,7 +186,7 @@ export class WeatherDisplayComponent {
     const utcDateTime = DateTime.fromISO(timestamp, { zone: 'utc' });
     if (utcDateTime.isValid) {
       return utcDateTime.toLocal().toFormat('yyyy-MM-dd HH:mm:ss');
-    } 
+    }
     console.error(`Invalid timestamp: ${timestamp}`);
     return timestamp;
   }

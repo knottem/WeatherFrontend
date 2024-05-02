@@ -108,6 +108,12 @@
         }"
         >About</a
       >
+
+      <select #languageSelect (change)="switchLanguage(languageSelect.value)">
+        <option value="en">English</option>
+        <option value="sv">Svenska</option>
+        <!-- Add options for other supported languages -->
+      </select>
     </div>
   </nav>
 </div>

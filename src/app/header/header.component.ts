@@ -6,6 +6,7 @@ import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +27,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     public sharedService: SharedService,
     private weatherService: WeatherService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -147,5 +149,9 @@ export class HeaderComponent implements OnInit {
 
   isRouteActive(route: string): boolean {
     return this.router.url === route;
+  }
+
+  switchLanguage(language: string) {
+    this.translate.use(language);
   }
 }
