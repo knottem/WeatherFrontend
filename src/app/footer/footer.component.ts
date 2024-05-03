@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SharedService } from '../shared.service';
 
@@ -9,15 +9,15 @@ import { SharedService } from '../shared.service';
     <div class="flex justify-between items-start sm:items-center mx-2">
       <div *ngIf="updatedTime === ''">
         <p class="text-gray-600 text-xs mt-4 sm:text-sm">
-          Sources: SMHI and Yr.
+          {{ 'footer.sources' | translate }}
         </p>
       </div>
       <div *ngIf="updatedTime !== ''">
         <p class="text-gray-600 text-xs mt-4 sm:text-sm">
-          <span class="block sm:inline"
-            >Weather data last updated at {{ updatedTime }}. </span
-          >
-          <span class="block sm:inline">Sources: SMHI and Yr.</span>
+          <span class="block sm:inline">
+            {{ 'footer.updated' | translate }} {{ updatedTime }}.
+          </span>
+          <span class="block sm:inline">{{ 'footer.sources' | translate }}</span>
         </p>
       </div>
       <p class="text-gray-600 text-xs mt-4 sm:text-sm">
