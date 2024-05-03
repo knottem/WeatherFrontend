@@ -10,6 +10,7 @@ import {
   stagger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-weather-table',
@@ -50,7 +51,7 @@ import { CommonModule } from '@angular/common';
     ]),
   ],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, TranslateModule]
 })
 export class WeatherTableComponent {
   @Input() dayLabel: string = '';
@@ -73,14 +74,16 @@ export class WeatherTableComponent {
   public maxWindSpeed: number = 0;
   public averageWindDirection: number = 0;
 
-  constructor(private weatherService: WeatherService) {}
+  constructor(private weatherService: WeatherService,
+              private translate: TranslateService) {
+  }
 
   ngOnInit() {
     this.timestamps = Object.keys(this.weather.weatherData);
     if (this.timestamps.length === 1) {
       this.showWeather = true;
     }
-    // go thru weatherData and find the highest and lowest temps
+    // go through weatherData and find the highest and lowest temps
     for (let timestamp in this.weather.weatherData) {
       const weather = this.weather.weatherData[timestamp];
       if (weather.temperature > this.highTemp) {
@@ -183,7 +186,7 @@ export class WeatherTableComponent {
   }
 
   public toggleWeather(): void {
-    if (!(this.getTimestamps().length === 1)) {
+    if (this.getTimestamps().length !== 1) {
       this.showWeather = !this.showWeather;
     }
   }
@@ -230,5 +233,13 @@ export class WeatherTableComponent {
       return true;
     }
     return false;
+  }
+
+  getTranslatedDayLabel(): string {
+    return this.translate.instant(`weatherTable.${this.dayLabel}`) + this.translate.instant('weatherTable.day');
+  }
+
+  getWeatherTranslationKey(): string {
+    return this.showWeather ? 'weatherTable.min' : 'weatherTable.max';
   }
 }
