@@ -1,38 +1,56 @@
 <div class="flex flex-col mx-auto my-3 px-6 py-4 shadow-xl">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4">About</h2> 
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+      {{ 'about.title' | translate }}
+    </h2>
     <div class="text-gray-700 md:text-lg mb-4">
         <p>
-            This project, a comprehensive weather forecasting application, is being developed as part of my thesis at <a href="https://nackademin.se/" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">Nackademin</a>. The application integrates data from multiple trusted sources to deliver real-time weather updates.
+          {{ 'about.content1-part1' | translate }}
+          <a href="https://nackademin.se/" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">Nackademin</a>
+          {{ 'about.content1-part2' | translate }}
         </p>
-
         <p>
-            The frontend of the application is built using Angular along with Tailwind CSS for its flexible and responsive design capabilities. This combination allows for an user-friendly interface that is accessible on a variety of devices and screen sizes.
+            {{ 'about.content2' | translate }}
         </p>
-
         <p>
-            On the backend, I'm utilizing Java with Spring Boot. The backend is responsible for fetching and processing weather data from SMHI and YR, two reputable meteorological services. By combining data from these sources, the application ensures a more comprehensive and accurate weather forecast.
+            {{ 'about.content3' | translate }}
         </p>
-
         <p>
-            The Weather images used in the application are sourced from <a href="https://nrkno.github.io/yr-weather-symbols/" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">Yr Weather Symbols</a>, contributing to the visual appeal and easy interpretation of weather conditions.
+            {{ 'about.content4-part1' | translate }}
+          <a href="https://nrkno.github.io/yr-weather-symbols/" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">
+            {{ 'about.content4-link' | translate }}
+          </a>
+          {{ 'about.content4-part2' | translate }}
         </p>
-
         <p>
-            The application is currently in development. If you have any questions or feedback, feel free to contact me through the links below.
+            {{ 'about.translationDisclaimer' | translate }}
         </p>
-
+        <p>
+            {{ 'about.content5' | translate }}
+        </p>
         <ul class="list-disc pl-5 mt-8">
             <li class="my-4">
-                <a href="https://github.com/knottem/WeatherFrontend" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600 ">WeatherFrontend</a> - Explore the frontend code on GitHub.
+                <a href="https://github.com/knottem/WeatherFrontend" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600 ">
+                  {{ 'about.frontendLink' | translate }}
+                </a>
+                - {{ 'about.frontendLinkDescription' | translate }}
             </li>
              <li class="my-4">
-                <a href="https://github.com/knottem/WeatherApi" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">WeatherApi (Backend)</a> - Dive into the backend code on GitHub.
+                <a href="https://github.com/knottem/WeatherApi" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">
+                  {{ 'about.backendLink' | translate }}
+                </a>
+                - {{ 'about.backendLinkDescription' | translate }}
             </li>
             <li class="my-4">
-                <a href="https://github.com/knottem" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">My Personal GitHub</a> - Check out my other projects.
+                <a href="https://github.com/knottem" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">
+                  {{ 'about.personalGithub' | translate }}
+                </a>
+              - {{ 'about.personalGithubDescription' | translate }}
             </li>
             <li class="my-4">
-                <a href="https://www.linkedin.com/in/erik-wallenius-ab04b0251/" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">My LinkedIn</a> - Connect with me
+                <a href="https://www.linkedin.com/in/erik-wallenius-ab04b0251/" target="_blank" class="text-blue-600 hover:text-blue-800 visited:text-purple-600">
+                  {{ 'about.linkedin' | translate }}
+                </a>
+              - {{ 'about.linkedinDescription' | translate }}
             </li>
         </ul>
     </div>
