@@ -6,7 +6,7 @@ import { WeatherTableComponent } from '../weather-table/weather-table.component'
 import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
-import {TranslateModule} from "@ngx-translate/core";
+import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-weather-display',
