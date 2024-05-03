@@ -1,4 +1,70 @@
 {
-  "showThreeDays": "Visa 3 dagar",
-  "showTenDays": "Visa 10 dagar"
+	"about": {
+		"backendLink": "VäderApi (Backend)",
+		"backendLinkDescription": "Dyk in i backend-koden på GitHub.",
+		"content1-part1": "Detta projekt, en omfattande väderprognosapplikation, utvecklas som en del av mitt examensarbete på ",
+		"content1-part2": ". Applikationen integrerar data från flera pålitliga källor för att leverera väderuppdateringar i realtid.",
+		"content2": "Applikationens frontend är byggd med Angular tillsammans med Tailwind CSS för dess flexibla och responsiva designmöjligheter. Denna kombination möjliggör ett användarvänligt gränssnitt som är tillgängligt på en mängd olika enheter och skärmstorlekar.",
+		"content3": "Backend använder sig av Java med Spring Boot. Backend ansvarar för att hämta och bearbeta väderdata från SMHI och YR, två välrenommerade meteorologiska tjänster. Genom att kombinera data från dessa källor säkerställer applikationen en mer omfattande och korrekt väderprognos.",
+		"content4-link": "Yr vädersymboler",
+		"content4-part1": "Väderbilderna som används i applikationen kommer från",
+		"content4-part2": ", vilket bidrar till det visuella tilltalande och enkel tolkning av väderförhållanden.",
+		"content5": "Applikationen är för närvarande under utveckling. Om du har några frågor eller feedback, kontakta mig gärna via länkarna nedan.",
+		"frontendLink": "VäderFrontend",
+		"frontendLinkDescription": "Utforska gränssnittskoden på GitHub.",
+		"linkedin": "Min LinkedIn",
+		"linkedinDescription": "Ta kontakt med mig",
+		"personalGithub": "Min personliga GitHub",
+		"personalGithubDescription": "Kolla in mina andra projekt.",
+		"title": "Om",
+		"translationDisclaimer": "Översättningarna har skapats automatiskt med hjälp av BabelEdit och google translate så de kan innehålla felaktigheter."
+	},
+	"currentWeather": "Vädret just nu",
+	"footer": {
+		"sources": "Källor: SMHI och YR",
+		"updated": "Väderdata uppdaterades kl"
+	},
+	"header": {
+		"searchForCity": "Sök efter en stad",
+		"selectLanguage": "Ändra språk",
+		"weatherApp": "Väderapp"
+	},
+	"precipitation": "Nederbörd",
+	"precipitationShort": "Nedb",
+	"temperature": "Temperatur",
+	"temperatureShort": "Temp",
+	"time": "Tid",
+	"weather": "Väder",
+	"weatherDisplay": {
+		"showTenDays": "Visa 10 dagar",
+		"showThreeDays": "Visa 3 dagar",
+		"weatherAt": "Vädret i {{ cityName }} kl {{ current }}"
+	},
+	"weatherTable": {
+		"afternoon": "E.m",
+		"avgWindDirection": "Vindriktning",
+		"clickTo": "Klicka för att ",
+		"evening": "Kväll",
+		"max": "maximera",
+		"maxWind": "Högsta vindstyrka",
+		"min": "minimera",
+		"morning": "Morgon",
+		"night": "Natt",
+		"sunrise": "Soluppgång",
+		"sunset": "Solnedgång",
+		"temperatureHL": "Temperatur Hög/Låg",
+		"weatherFriday": "Fredagens väder",
+		"weatherMonday": "Måndagens väder",
+		"weatherSaturday": "Lördagens väder",
+		"weatherSunday": "Söndagens väder",
+		"weatherThursday": "Torsdagens väder",
+		"weatherToday": "Dagens väder",
+		"weatherTomorrow": "Morgondagens väder",
+		"weatherTuesday": "Tisdagens väder",
+		"weatherWednesday": "Onsdagens väder"
+	},
+	"wind": "Vind",
+	"windDirection": "Vindriktning",
+	"windDirectionShort": "Wdir",
+	"windSpeed": "Vindhastighet"
 }

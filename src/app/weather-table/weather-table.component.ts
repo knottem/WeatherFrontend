@@ -235,10 +235,6 @@ export class WeatherTableComponent {
     return false;
   }
 
-  getTranslatedDayLabel(): string {
-    return this.translate.instant(`weatherTable.${this.dayLabel}`) + this.translate.instant('weatherTable.day');
-  }
-
   getWeatherTranslationKey(): string {
     return this.showWeather ? 'weatherTable.min' : 'weatherTable.max';
   }

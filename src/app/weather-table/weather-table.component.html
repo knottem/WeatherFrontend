@@ -3,7 +3,7 @@
   <div class="flex justify-between items-center sm:flex-row">
     <!-- Day Label -->
     <h2 class="text-xs sm:text-2xl font-semibold whitespace-nowrap sm:w-48">
-      {{ getTranslatedDayLabel() }}
+      {{ 'weatherTable.weather' + dayLabel | translate }}
     </h2>
 
     <!-- Sunrise and Sunset for larger screens -->
