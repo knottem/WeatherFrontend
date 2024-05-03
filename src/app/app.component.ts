@@ -34,7 +34,14 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class AppComponent {
   constructor(private translate: TranslateService) {
-    translate.setDefaultLang('en');
-    translate.use('en');
+    // check if the user has a language preference stored in cookies
+    const userLang = localStorage.getItem('language');
+    if (userLang) {
+      translate.setDefaultLang(userLang);
+      translate.use(userLang);
+    } else {
+      translate.setDefaultLang('en');
+      translate.use('en');
+    }
   }
 }
