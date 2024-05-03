@@ -41,7 +41,7 @@
 		"weatherAt": "Vädret i {{ cityName }} kl {{ current }}"
 	},
 	"weatherTable": {
-		"afternoon": "E.m",
+		"afternoon": "Eftermiddag",
 		"avgWindDirection": "Vindriktning",
 		"clickTo": "Klicka för att ",
 		"evening": "Kväll",

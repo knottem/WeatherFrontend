@@ -1,0 +1,70 @@
+{
+	"about": {
+		"backendLink": "WeatherApi (backend)",
+		"backendLinkDescription": "Sumérgete en el código backend en GitHub.",
+		"content1-part1": "Este proyecto, una aplicación integral de pronóstico del tiempo, se está desarrollando como parte de mi tesis en",
+		"content1-part2": ". La aplicación integra datos de múltiples fuentes confiables para brindar actualizaciones meteorológicas en tiempo real.",
+		"content2": "La interfaz de la aplicación está construida utilizando Angular junto con Tailwind CSS por sus capacidades de diseño flexibles y responsivos. Esta combinación permite una interfaz fácil de usar a la que se puede acceder en una variedad de dispositivos y tamaños de pantalla.",
+		"content3": "En el backend, estoy utilizando Java con Spring Boot. El backend es responsable de obtener y procesar datos meteorológicos de SMHI y YR, dos servicios meteorológicos de buena reputación. Al combinar datos de estas fuentes, la aplicación garantiza una previsión meteorológica más completa y precisa.",
+		"content4-link": "Símbolos meteorológicos del Yr",
+		"content4-part1": "Las imágenes meteorológicas utilizadas en la aplicación provienen de",
+		"content4-part2": ", contribuyendo al atractivo visual y la fácil interpretación de las condiciones climáticas.",
+		"content5": "La aplicación se encuentra actualmente en desarrollo. Si tiene alguna pregunta o comentario, no dude en ponerse en contacto conmigo a través de los enlaces a continuación.",
+		"frontendLink": "WeatherFrontend",
+		"frontendLinkDescription": "Explore el código de interfaz en GitHub.",
+		"linkedin": "Mi LinkedIn",
+		"linkedinDescription": "Conectate conmigo",
+		"personalGithub": "Mi GitHub personal",
+		"personalGithubDescription": "Mira mis otros proyectos.",
+		"title": "Acerca de",
+		"translationDisclaimer": "Las traducciones se han generado automáticamente con la ayuda de BabelEdit y Google Translate, por lo que pueden contener imprecisiones."
+	},
+	"currentWeather": "Clima actual",
+	"footer": {
+		"sources": "Fuentes: SMHI y YR",
+		"updated": "Los datos meteorológicos se actualizaron por última vez a las"
+	},
+	"header": {
+		"searchForCity": "Buscar una ciudad",
+		"selectLanguage": "Cambiar idioma",
+		"weatherApp": "Aplicación meteorológica"
+	},
+	"precipitation": "Precipitación",
+	"precipitationShort": "Precip",
+	"temperature": "Temperatura",
+	"temperatureShort": "Temp",
+	"time": "Tiempo",
+	"weather": "Clima",
+	"weatherDisplay": {
+		"showTenDays": "Mostrar 10 días",
+		"showThreeDays": "Mostrar 3 días",
+		"weatherAt": "El tiempo en {{ cityName }} a las {{ current }}"
+	},
+	"weatherTable": {
+		"afternoon": "Tarde",
+		"avgWindDirection": "Dirección promedio del viento",
+		"clickTo": "Haga clic para",
+		"evening": "Noche",
+		"max": "maximizar",
+		"maxWind": "Velocidad máxima del viento",
+		"min": "minimizar",
+		"morning": "Mañana",
+		"night": "Noche",
+		"sunrise": "Amanecer",
+		"sunset": "Atardecer",
+		"temperatureHL": "Temperatura alta/baja",
+		"weatherFriday": "El clima del viernes",
+		"weatherMonday": "El clima del lunes",
+		"weatherSaturday": "El clima del sábado",
+		"weatherSunday": "El clima del domingo",
+		"weatherThursday": "El tiempo del jueves",
+		"weatherToday": "El tiempo de hoy",
+		"weatherTomorrow": "El tiempo de mañana",
+		"weatherTuesday": "El tiempo del martes",
+		"weatherWednesday": "El tiempo del miércoles"
+	},
+	"wind": "Viento",
+	"windDirection": "Dirección del viento",
+	"windDirectionShort": "Wdir",
+	"windSpeed": "Velocidad del viento"
+}
