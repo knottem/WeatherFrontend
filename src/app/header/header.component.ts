@@ -34,8 +34,9 @@ export class HeaderComponent implements OnInit {
     { code: 'en', name: 'English' },
     { code: 'sv', name: 'Svenska' },
     { code: 'de', name: 'Deutsch' },
-    { code: 'es', name: 'Español' }
-    // Add more languages as needed
+    { code: 'es', name: 'Español' },
+    { code: 'fr', name: 'Français' }
+
   ];
   public currentLanguage = this.translate.currentLang;
 

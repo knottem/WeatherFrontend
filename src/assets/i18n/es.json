@@ -43,7 +43,7 @@
 	"weatherTable": {
 		"afternoon": "Tarde",
 		"avgWindDirection": "Dirección promedio del viento",
-		"clickTo": "Haga clic para",
+		"clickTo": "Haga clic para ",
 		"evening": "Noche",
 		"max": "maximizar",
 		"maxWind": "Velocidad máxima del viento",
