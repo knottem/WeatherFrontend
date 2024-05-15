@@ -3,6 +3,7 @@ import { HeaderComponent } from './header.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from "@ngx-translate/core";
 
 describe('HeaderCompComponent', () => {
   let component: HeaderComponent;
@@ -11,9 +12,10 @@ describe('HeaderCompComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent],
-      imports: [MatAutocompleteModule, 
+      imports: [MatAutocompleteModule,
                 HttpClientTestingModule,
-                ReactiveFormsModule],
+                ReactiveFormsModule,
+                TranslateModule.forRoot()],
       providers: [HeaderComponent]
     });
     fixture = TestBed.createComponent(HeaderComponent);

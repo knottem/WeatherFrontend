@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -31,4 +32,16 @@ import { Component } from '@angular/core';
     `,
   ],
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private translate: TranslateService) {
+    // check if the user has a language preference stored in cookies
+    const userLang = localStorage.getItem('language');
+    if (userLang) {
+      translate.setDefaultLang(userLang);
+      translate.use(userLang);
+    } else {
+      translate.setDefaultLang('en');
+      translate.use('en');
+    }
+  }
+}

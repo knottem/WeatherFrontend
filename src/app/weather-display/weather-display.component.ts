@@ -6,12 +6,13 @@ import { WeatherTableComponent } from '../weather-table/weather-table.component'
 import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
+import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-weather-display',
   templateUrl: './weather-display.component.html',
   standalone: true,
-  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent],
+  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent, TranslateModule],
 })
 export class WeatherDisplayComponent {
 
@@ -95,7 +96,8 @@ export class WeatherDisplayComponent {
       this.weather.weatherData[availableTimestamps[0]].precipitation
     );
     this.sharedService.setUpdatedTime(this.weather.timestamp.substring(11, 16));
-    
+    this.sharedService.setWeatherSources(this.extractSources(this.weather.message));
+
     if (this.weather.message !== 'Mock data') {
       this.sharedService.saveWeatherData(data);
     }
@@ -142,7 +144,7 @@ export class WeatherDisplayComponent {
           return new Date(timestamp).getDate() === now.getDate();
         })
       );
-    } 
+    }
     return timestampsSets;
   }
 
@@ -185,7 +187,7 @@ export class WeatherDisplayComponent {
     const utcDateTime = DateTime.fromISO(timestamp, { zone: 'utc' });
     if (utcDateTime.isValid) {
       return utcDateTime.toLocal().toFormat('yyyy-MM-dd HH:mm:ss');
-    } 
+    }
     console.error(`Invalid timestamp: ${timestamp}`);
     return timestamp;
   }
@@ -229,5 +231,16 @@ export class WeatherDisplayComponent {
 
   public getSunsetSunrise(index: number): string[] {
     return [this.weather.city.sunriseList[index], this.weather.city.sunsetList[index]];
+  }
+
+  private extractSources(message: string): string[] {
+    const match = message.match(/from (.*)/);
+    if (match && match[1]) {
+      const sourcesString = match[1].trim();
+      // Split by comma and then by " and " for the last source
+      const sources = sourcesString.split(/,| and /).map(source => source.trim());
+      return sources;
+    }
+    return [];
   }
 }

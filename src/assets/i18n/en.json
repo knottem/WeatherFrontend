@@ -1,0 +1,71 @@
+{
+	"about": {
+		"backendLink": "WeatherApi (Backend)",
+		"backendLinkDescription": "Dive into the backend code on GitHub.",
+		"content1-part1": "This project, a comprehensive weather forecasting application, is being developed as part of my thesis at ",
+		"content1-part2": ". The application integrates data from multiple trusted sources to deliver real-time weather updates.",
+		"content2": "The frontend of the application is built using Angular along with Tailwind CSS for its flexible and responsive design capabilities. This combination allows for an user-friendly interface that is accessible on a variety of devices and screen sizes.",
+		"content3": "On the backend, I'm utilizing Java with Spring Boot. The backend is responsible for fetching and processing weather data from SMHI and YR, two reputable meteorological services. By combining data from these sources, the application ensures a more comprehensive and accurate weather forecast.",
+		"content4-link": "Yr Weather Symbols",
+		"content4-part1": "The Weather images used in the application are sourced from ",
+		"content4-part2": ", contributing to the visual appeal and easy interpretation of weather conditions.",
+		"content5": "The application is currently in development. If you have any questions or feedback, feel free to contact me through the links below.",
+		"frontendLink": "WeatherFrontend",
+		"frontendLinkDescription": "Explore the frontend code on GitHub.",
+		"linkedin": "My LinkedIn",
+		"linkedinDescription": "Connect with me",
+		"personalGithub": "My Personal GitHub",
+		"personalGithubDescription": "Check out my other projects.",
+		"title": "About",
+		"translationDisclaimer": "The translations have been automatically generated with the help of BabelEdit and google translate so they may contain inaccuracies."
+	},
+	"currentWeather": "Current Weather",
+	"footer": {
+		"sources": "Sources: {{sourceList}}",
+		"updated": "Weather data last updated at ",
+    "and": "and"
+	},
+	"header": {
+		"searchForCity": "Search for a City",
+		"selectLanguage": "Change language",
+		"weatherApp": "WeatherApp"
+	},
+	"precipitation": "Precipitation",
+	"precipitationShort": "Precip",
+	"temperature": "Temperature",
+	"temperatureShort": "Temp",
+	"time": "Time",
+	"weather": "Weather",
+	"weatherDisplay": {
+		"showTenDays": "Show 10 days",
+		"showThreeDays": "Show 3 days",
+		"weatherAt": "Weather in {{ cityName }} at {{ current }}"
+	},
+	"weatherTable": {
+		"afternoon": "Afternoon",
+		"avgWindDirection": "Avg Wind Direction",
+		"clickTo": "Click anywhere to ",
+		"evening": "Evening",
+		"max": "maximize",
+		"maxWind": "Max Wind speed",
+		"min": "minimize",
+		"morning": "Morning",
+		"night": "Night",
+		"sunrise": "Sunrise",
+		"sunset": "Sunset",
+		"temperatureHL": "Temperature high/low",
+		"weatherFriday": "Friday's weather",
+		"weatherMonday": "Monday's weather",
+		"weatherSaturday": "Saturday's weather",
+		"weatherSunday": "Sunday's weather",
+		"weatherThursday": "Thursday's weather",
+		"weatherToday": "Today's weather",
+		"weatherTomorrow": "Tomorrow's weather",
+		"weatherTuesday": "Tuesday's weather",
+		"weatherWednesday": "Wednesday's weather"
+	},
+	"wind": "Wind",
+	"windDirection": "Wind Direction",
+	"windDirectionShort": "Wdir",
+	"windSpeed": "Wind Speed"
+}

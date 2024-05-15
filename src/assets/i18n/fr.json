@@ -1,0 +1,71 @@
+{
+	"about": {
+		"backendLink": "WeatherApi (Backend)",
+		"backendLinkDescription": "Plongez dans le code backend sur GitHub.",
+		"content1-part1": "Ce projet, une application complète de prévision météorologique, est en cours de développement dans le cadre de ma thèse à",
+		"content1-part2": ". L'application intègre des données provenant de plusieurs sources fiables pour fournir des mises à jour météorologiques en temps réel.",
+		"content2": "L'interface de l'application est construite à l'aide d'Angular et de Tailwind CSS pour ses capacités de conception flexibles et réactives. Cette combinaison permet de créer une interface conviviale accessible sur une variété d’appareils et de tailles d’écran.",
+		"content3": "Sur le backend, j'utilise Java avec Spring Boot. Le backend est responsable de la récupération et du traitement des données météorologiques de SMHI et YR, deux services météorologiques réputés. En combinant les données de ces sources, l'application garantit des prévisions météorologiques plus complètes et plus précises.",
+		"content4-link": "Symboles météorologiques de l'année",
+		"content4-part1": "Les images météo utilisées dans l'application proviennent de",
+		"content4-part2": ", contribuant à l'attrait visuel et à l'interprétation facile des conditions météorologiques.",
+		"content5": "L'application est actuellement en développement. Si vous avez des questions ou des commentaires, n'hésitez pas à me contacter via les liens ci-dessous.",
+		"frontendLink": "MétéoFrontend",
+		"frontendLinkDescription": "Explorez le code frontend sur GitHub.",
+		"linkedin": "Mon LinkedIn",
+		"linkedinDescription": "Connectez-vous avec moi",
+		"personalGithub": "Mon GitHub personnel",
+		"personalGithubDescription": "Découvrez mes autres projets.",
+		"title": "À propos",
+		"translationDisclaimer": "Les traductions ont été générées automatiquement à l'aide de BabelEdit et de Google Translate, elles peuvent donc contenir des inexactitudes."
+	},
+	"currentWeather": "Météo actuelle",
+	"footer": {
+		"sources": "Sources : {{sourceList}}",
+		"updated": "Données météorologiques mises à jour pour la dernière fois à",
+    "and": "et"
+	},
+	"header": {
+		"searchForCity": "Rechercher une ville",
+		"selectLanguage": "Changer de langue",
+		"weatherApp": "MétéoApp"
+	},
+	"precipitation": "Précipitation",
+	"precipitationShort": "Precip",
+	"temperature": "Température",
+	"temperatureShort": "Temp",
+	"time": "Temps",
+	"weather": "Météo",
+	"weatherDisplay": {
+		"showTenDays": "Afficher 10 jours",
+		"showThreeDays": "Afficher 3 jours",
+		"weatherAt": "Météo à {{ cityName }} à {{ current }}"
+	},
+	"weatherTable": {
+		"afternoon": "Après-midi",
+		"avgWindDirection": "Direction moyenne du vent",
+		"clickTo": "Cliquez sur ",
+		"evening": "Soirée",
+		"max": "maximiser",
+		"maxWind": "Vitesse maximale du vent",
+		"min": "minimiser",
+		"morning": "Matin",
+		"night": "Nuit",
+		"sunrise": "Lever du soleil",
+		"sunset": "Coucher de soleil",
+		"temperatureHL": "Température haute/basse",
+		"weatherFriday": "La météo de vendredi",
+		"weatherMonday": "La météo de lundi",
+		"weatherSaturday": "La météo de samedi",
+		"weatherSunday": "La météo du dimanche",
+		"weatherThursday": "La météo de jeudi",
+		"weatherToday": "La météo d'aujourd'hui",
+		"weatherTomorrow": "La météo de demain",
+		"weatherTuesday": "La météo de mardi",
+		"weatherWednesday": "La météo de mercredi"
+	},
+	"wind": "Vent",
+	"windDirection": "Direction du vent",
+	"windDirectionShort": "Wdir",
+	"windSpeed": "Vitesse du vent"
+}

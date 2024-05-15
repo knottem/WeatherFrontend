@@ -6,11 +6,19 @@ import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   //styleUrls: ['./header-comp.component.css']
+  styles: [`
+    .disabled-option {
+      color: #999;
+      font-style: italic;
+    }
+  `]
+
 })
 export class HeaderComponent implements OnInit {
 
@@ -22,11 +30,20 @@ export class HeaderComponent implements OnInit {
   public cityList: string[] = [];
   public filteredCities: Observable<string[]> = of([]);
   public lastSearched: string[] = [];
+  public languages: { code: string, name: string }[] = [
+    { code: 'en', name: 'English' },
+    { code: 'sv', name: 'Svenska' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'es', name: 'Español' },
+    { code: 'fr', name: 'Français' }
+  ];
+  public currentLanguage = this.translate.currentLang;
 
   constructor(
     public sharedService: SharedService,
     private weatherService: WeatherService,
-    private router: Router
+    private router: Router,
+    public translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -74,7 +91,7 @@ export class HeaderComponent implements OnInit {
   }
 
   // Update the search query if city is selected from the autocomplete list
-  // For now we show error message in the placerholder if no results are found
+  // For now we show no error message in the placeholder if no results are found
   public onEnterPress() {
     const currentValue = this.searchQuery.value.toLowerCase();
     const matchingCities = this.cityList.filter(city =>
@@ -147,5 +164,11 @@ export class HeaderComponent implements OnInit {
 
   isRouteActive(route: string): boolean {
     return this.router.url === route;
+  }
+
+  switchLanguage(language: string) {
+    this.translate.use(language);
+    this.currentLanguage = language;
+    localStorage.setItem('language', language);
   }
 }

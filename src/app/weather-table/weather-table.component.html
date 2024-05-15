@@ -3,34 +3,34 @@
   <div class="flex justify-between items-center sm:flex-row">
     <!-- Day Label -->
     <h2 class="text-xs sm:text-2xl font-semibold whitespace-nowrap sm:w-48">
-      {{ dayLabel }}'s weather
+      {{ 'weatherTable.weather' + dayLabel | translate }}
     </h2>
 
     <!-- Sunrise and Sunset for larger screens -->
     <div class="hidden sm:flex sm:justify-between sm:w-96 px-6 lg:px-0">
       <p class="text-sm font-medium text-gray-600">
-        Sunrise: {{ sunsetSunrise[0].substring(11, 16) }}
+        {{ 'weatherTable.sunrise' | translate }}: {{ sunsetSunrise[0].substring(11, 16) }}
       </p>
       <p class="text-sm font-medium text-gray-600">
-        Sunset: {{ sunsetSunrise[1].substring(11, 16) }}
+        {{ 'weatherTable.sunset' | translate }}: {{ sunsetSunrise[1].substring(11, 16) }}
       </p>
     </div>
 
     <!-- Click to Maximize/Minimize Text -->
     <p class="flex sm:hidden text-xs lg:text-sm font-medium text-gray-600 whitespace-nowrap" *ngIf="!isTimeStampLengthOne()">
-      Click to {{ showWeather ? "minimize" : "maximize" }}
+      {{ 'weatherTable.clickTo' | translate }} {{ getWeatherTranslationKey() | translate }}
     </p>
     <p class="hidden sm:flex text-xs lg:text-sm font-medium text-gray-600 w-48 whitespace-nowrap" *ngIf="!isTimeStampLengthOne()">
-      Click anywhere to {{ showWeather ? "minimize" : "maximize" }}
+      {{ 'weatherTable.clickTo' | translate }} {{ getWeatherTranslationKey() | translate }}
     </p>
     </div>
     <div class="sm:hidden flex justify-between items-center px-4">
     <!-- Sunrise and Sunset for smaller screens -->
       <p class="text-sm font-medium text-gray-600">
-        Sunrise: {{ sunsetSunrise[0].substring(11, 16) }}
+        {{ 'weatherTable.sunrise' | translate }}: {{ sunsetSunrise[0].substring(11, 16) }}
       </p>
       <p class="text-sm font-medium text-gray-600">
-        Sunset: {{ sunsetSunrise[1].substring(11, 16) }}
+        {{ 'weatherTable.sunset' | translate }}: {{ sunsetSunrise[1].substring(11, 16) }}
       </p>
   </div>
 
@@ -40,7 +40,9 @@
   >
     <div class="p-2 bg-white rounded shadow h-20">
       <div>
-      <div class="hidden sm:block font-semibold">Temperature high/low:</div>
+      <div class="hidden sm:block font-semibold">
+        {{ 'weatherTable.temperatureHL' | translate }}:
+      </div>
       <div class="block sm:hidden font-semibold" title="Temperature">
         Temp. high/low:
       </div>
@@ -67,19 +69,23 @@
     </div>
     <!-- Other weather condition divs -->
     <div class="p-2 bg-white rounded shadow h-20">
-      <div class="font-semibold">Precipitation:</div>
+      <div class="font-semibold">
+        {{ 'precipitation' | translate }}:
+      </div>
       <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
         {{ totalPrecipitation }} mm
       </div>
     </div>
     <div class="p-2 bg-white rounded shadow h-20">
-      <div class="font-semibold">Max Wind speed:</div>
+      <div class="font-semibold">
+        {{ 'weatherTable.maxWind' | translate }}:</div>
       <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
         {{ maxWindSpeed }} m/s
       </div>
     </div>
     <div class="p-2 bg-white rounded shadow h-20">
-      <div class="font-semibold">Avg Wind Direction:</div>
+      <div class="font-semibold">
+        {{ 'weatherTable.avgWindDirection' | translate }}:</div>
       <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
         {{ averageWindDirection }}°
       </div>
@@ -88,7 +94,7 @@
       *ngIf="nightWeather !== -1"
       class="p-2 bg-white rounded shadow flex items-center relative h-20"
     >
-      <span class="font-semibold flex">Night:</span>
+      <span class="font-semibold flex"> {{ 'weatherTable.night' | translate }}:</span>
       <div class="absolute left-1/2 sm:transform sm:-translate-x-1/2">
         <img
           [src]="getWeatherConditionImage(nightWeather, false)"
@@ -102,7 +108,7 @@
       *ngIf="morningWeather !== -1"
       class="p-2 bg-white rounded shadow flex items-center relative h-20 lg:col-auto"
     >
-      <span class="font-semibold">Morning:</span>
+      <span class="font-semibold">{{ 'weatherTable.morning' | translate }}:</span>
       <div
         class="absolute left-1/2 sm:left-1/2 sm:transform sm:-translate-x-1/2"
       >
@@ -121,7 +127,7 @@
   >
     <span
     class="font-semibold"
-    [ngClass]="shouldAfternoonSpanTwoColumns() ? 'absolute top-2' :''">Afternoon:</span>
+    [ngClass]="shouldAfternoonSpanTwoColumns() ? 'absolute top-2' :''">{{ 'weatherTable.afternoon' | translate }}:</span>
     <div
     class=""
     [ngClass]="shouldAfternoonSpanTwoColumns() ? 'mt-5':'absolute left-1/2 sm:transform sm:-translate-x-1/2'">
@@ -140,7 +146,7 @@
     >
       <span
       class="font-semibold"
-      [ngClass]="shouldEveningSpanTwoColumns() ? 'absolute top-2' :''">Evening:</span>
+      [ngClass]="shouldEveningSpanTwoColumns() ? 'absolute top-2' :''">{{ 'weatherTable.evening' | translate }}:</span>
       <div
       class=""
       [ngClass]="shouldEveningSpanTwoColumns() ? 'mt-5':'absolute left-1/2 sm:transform sm:-translate-x-1/2'">
@@ -161,47 +167,55 @@
       <div class="grid grid-cols-6 grid-rows-1 gap-2 lg:gap-0 px-1 sm:px-0">
         <!-- Time Card -->
         <div class="flex flex-col justify-center items-center">
-          <div class="font-semibold">Time:</div>
+          <div class="font-semibold">{{ 'time' | translate }}:</div>
         </div>
         <!-- Temperature Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden sm:block font-semibold">Temperature:</div>
+            <div class="hidden sm:block font-semibold">
+              {{ 'temperature' | translate }}:
+            </div>
             <div class="block sm:hidden font-semibold" title="Temperature">
-              Temp:
+              {{ 'temperatureShort' | translate }}:
             </div>
           </div>
         </div>
         <!-- Precipitation Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden sm:block font-semibold">Precipitation:</div>
+            <div class="hidden sm:block font-semibold">
+              {{ 'precipitation' | translate }}:
+            </div>
             <div class="block sm:hidden font-semibold" title="Precipitation">
-              Precip.
+              {{ 'precipitationShort' | translate }}.
             </div>
           </div>
         </div>
         <!-- Wind Speed Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden sm:block font-semibold">Wind Speed:</div>
+            <div class="hidden sm:block font-semibold">
+              {{ 'windSpeed' | translate }}:
+            </div>
             <div class="block sm:hidden font-semibold" title="Wind Speed">
-              Wind:
+              {{ 'wind' | translate }}:
             </div>
           </div>
         </div>
         <!-- Wind Direction Card -->
         <div class="flex flex-col justify-center items-center">
           <div>
-            <div class="hidden lg:block font-semibold">Wind Direction:</div>
+            <div class="hidden lg:block font-semibold">
+              {{ 'windDirection' | translate }}:
+            </div>
             <div class="block lg:hidden font-semibold" title="Wind Direction">
-              Wdir:
+              {{ 'windDirectionShort' | translate }}:
             </div>
           </div>
         </div>
         <!-- Weather Image Card -->
         <div class="flex flex-col justify-center items-center">
-          <div class="font-semibold">Weather:</div>
+          <div class="font-semibold">{{ 'weather' | translate }}:</div>
         </div>
       </div>
     </div>

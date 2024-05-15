@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WeatherDisplayComponent } from './weather-display.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateModule } from "@ngx-translate/core";
 
 describe('WeatherDisplayComponent', () => {
   let component: WeatherDisplayComponent;
@@ -9,7 +10,7 @@ describe('WeatherDisplayComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [WeatherDisplayComponent]
     });
     fixture = TestBed.createComponent(WeatherDisplayComponent);
