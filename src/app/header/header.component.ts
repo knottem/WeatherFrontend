@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
     { code: 'fr', name: 'Français' }
   ];
   public currentLanguage = this.translate.currentLang;
+  public isSmallScreen = false;
 
   constructor(
     public sharedService: SharedService,
@@ -51,6 +52,8 @@ export class HeaderComponent implements OnInit {
     const item = localStorage.getItem('lastSearched');
     this.lastSearched = item ? JSON.parse(item) : [];
 
+    this.checkScreenSize();
+
     // check every second to see if we need to update the time
     setInterval(() => {
       const newTime = this.updateCurrentTime();
@@ -58,6 +61,15 @@ export class HeaderComponent implements OnInit {
         this.currentTime = newTime;
       }
     }, 1000);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+
+  public checkScreenSize() {
+    this.isSmallScreen = window.innerWidth < 640; // Tailwind's `sm` breakpoint
   }
 
   // Updates the current time in HH:MM format
