@@ -1,7 +1,7 @@
  <!-- Buttons to switch between 3 days and 10 days-->
  <div class="flex">
   <button
-    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4"
+    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
     [ngClass]="{
       'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
         amountOfDays !== 3,
@@ -9,11 +9,11 @@
     }"
     (click)="amountOfDaysChanged(3)"
   >
-    Show 3 days
+    {{ 'weatherDisplay.showThreeDays' | translate }}
   </button>
 
   <button
-    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4"
+    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
     [ngClass]="{
       'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
         amountOfDays !== 10,
@@ -21,7 +21,7 @@
     }"
     (click)="amountOfDaysChanged(10)"
   >
-    Show 10 days
+    {{ 'weatherDisplay.showTenDays' | translate }}
   </button>
 </div>
 
@@ -30,9 +30,10 @@
   <!-- Current Weather Display -->
   <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-semibold">
-        Weather in {{ weather.city.name }} at
-        {{ currentWeather.timestamp.substring(11, 16) }}
+      <h2 class="text-2xl font-semibold" [innerHTML]="'weatherDisplay.weatherAt' |
+      translate: {
+        cityName: weather.city.name,
+        current: currentWeather.timestamp.substring(11, 16)}">
       </h2>
     </div>
     <div
@@ -41,7 +42,9 @@
       <div
         class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
       >
-        <div class="absolute top-2 font-semibold">Temperature:</div>
+        <div class="absolute top-2 font-semibold">
+          {{ 'temperature' | translate }}:
+        </div>
         <div
           class="text-2xl sm:text-3xl mt-5"
           [ngClass]="{
@@ -55,7 +58,9 @@
       <div
         class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
       >
-        <div class="absolute top-2 font-semibold">Precipitation:</div>
+        <div class="absolute top-2 font-semibold">
+          {{ 'precipitation' | translate }}:
+        </div>
         <div class="text-2xl sm:text-3xl mt-5">
           {{ currentWeather.precipitation }} mm
         </div>
@@ -63,7 +68,9 @@
       <div
         class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
       >
-        <div class="absolute top-2 font-semibold">Wind Speed:</div>
+        <div class="absolute top-2 font-semibold">
+          {{ 'windSpeed' | translate }}:
+        </div>
         <div class="text-2xl sm:text-3xl mt-5">
           {{ currentWeather.windSpeed }} m/s
         </div>
@@ -71,7 +78,9 @@
       <div
         class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
       >
-        <div class="absolute top-2 font-semibold">Wind Direction:</div>
+        <div class="absolute top-2 font-semibold">
+          {{ 'windDirection' | translate }}:
+        </div>
         <div class="text-2xl sm:text-3xl mt-5">
           {{ currentWeather.windDirection }}°
         </div>
@@ -79,7 +88,9 @@
       <div
       class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative col-span-2 lg:col-auto"
     >
-      <div class="absolute top-2 font-semibold">Current Weather:</div>
+      <div class="absolute top-2 font-semibold">
+        {{ 'currentWeather' | translate }}:
+      </div>
       <img
         class="h-16 w-16 mt-5"
         [src]="

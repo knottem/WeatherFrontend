@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WeatherTableComponent } from './weather-table.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { TranslateModule } from "@ngx-translate/core";
 
 describe('WeatherTableComponent', () => {
   let component: WeatherTableComponent;
@@ -8,7 +9,7 @@ describe('WeatherTableComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()]
     });
     fixture = TestBed.createComponent(WeatherTableComponent);
     component = fixture.componentInstance;

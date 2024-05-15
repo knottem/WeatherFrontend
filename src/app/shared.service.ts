@@ -14,11 +14,18 @@ export class SharedService {
   private searchQuerySubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public searchQuery$: Observable<string> = this.searchQuerySubject.asObservable();
 
+  weatherSourcesSource = new BehaviorSubject<string[]>([]);
+  public weatherSources$ = this.weatherSourcesSource.asObservable();
+
   // Local storage variables
   private CURRENT_VERSION = '1.0.1';
   private STORAGE_KEY = 'weatherData';
 
   constructor() { }
+
+  setWeatherSources(sources: string[]) {
+    this.weatherSourcesSource.next(sources);
+  }
 
   setUpdatedTime(time: string) {
     this.updatedTimeSource.next(time);
@@ -30,13 +37,13 @@ export class SharedService {
 
   getSearchQuery(): string {
     return this.searchQuerySubject.value;
-  } 
+  }
 
   saveWeatherData(data: any): void {
     const dataWithVersion = { ...data, version: this.CURRENT_VERSION };
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(dataWithVersion));
   }
-  
+
   loadWeatherData(): any {
     //remove old data
     localStorage.removeItem("weather");
@@ -48,7 +55,7 @@ export class SharedService {
     localStorage.removeItem(this.STORAGE_KEY);
     return null;
   }
-  
+
   clearOldData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
   }

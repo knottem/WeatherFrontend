@@ -5,13 +5,15 @@
   <div class="flex justify-between items-center sm:hidden">
     <!-- Logo Container -->
     <div class="flex items-center mt-3">
-      <h2 class="text-xl font-semibold text-gray-800">WeatherApp</h2>
+      <h2 class="text-xl font-semibold text-gray-800">
+        {{ 'header.weatherApp' | translate }}
+      </h2>
     </div>
 
     <!-- Time Container -->
     <div class="flex items-center mt-3">
       <h2 class="text-xl font-semibold text-gray-800">
-        Time: {{ currentTime }}
+        {{ 'time' | translate }}: {{ currentTime }}
       </h2>
     </div>
   </div>
@@ -20,10 +22,10 @@
   <div class="flex-grow w-full mb-0 sm:hidden">
     <form class="flex">
       <input
-        id="searchForm"
+        id="searchForm1"
         type="text"
         class="flex-grow px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-        placeholder="Search for a City"
+        placeholder= " {{ 'header.searchForCity' | translate }} "
         [formControl]="searchQuery"
         [matAutocomplete]="auto"
         (keyup.enter)="onEnterPress()"
@@ -45,17 +47,19 @@
   <div class="hidden sm:flex flex-row justify-between items-center">
     <!-- Logo Container -->
     <div class="flex items-center mt-3">
-      <h2 class="text-xl font-semibold text-gray-800">WeatherApp</h2>
+      <h2 class="text-xl font-semibold text-gray-800">
+        {{ 'header.weatherApp' | translate }}
+      </h2>
     </div>
 
     <!-- Search Container -->
     <div class="flex-grow mx-6 w-auto mb-0">
       <form class="flex">
         <input
-          id="searchForm"
+          id="searchForm2"
           type="text"
           class="flex-grow px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-          placeholder="Search for a City"
+          placeholder=" {{ 'header.searchForCity' | translate }} "
           [formControl]="searchQuery"
           [matAutocomplete]="auto"
           (keyup.enter)="onEnterPress()"
@@ -79,7 +83,7 @@
     <!-- Time Container -->
     <div class="flex items-center mt-3">
       <h2 class="text-xl font-semibold text-gray-800">
-        Time: {{ currentTime }}
+        {{ 'time' | translate }}: {{ currentTime }}
       </h2>
     </div>
   </div>
@@ -88,26 +92,39 @@
   <nav class="flex mt-3">
     <div class="flex flex-row">
       <a
-        class="my-2 px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl"
+        class="my-2 px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl min-w-[120px] text-center"
         routerLink="/"
         [ngClass]="{
           'bg-neutral-100 text-neutral-500 hover:bg-neutral-300':
             !isRouteActive('/'),
           'bg-neutral-300 text-black font-semibold': isRouteActive('/')
         }"
-        >Weather</a
+        >{{ 'weather' | translate }}</a
       >
 
       <a
-        class="my-2 block px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl"
+        class="my-2 block px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl min-w-[120px] text-center"
         routerLink="/about"
         [ngClass]="{
           'bg-neutral-100 text-neutral-500 hover:bg-neutral-300':
             !isRouteActive('/about'),
           'bg-neutral-300 text-black font-semibold': isRouteActive('/about')
         }"
-        >About</a
+        > {{ 'about.title' | translate }}</a
       >
+    </div>
+    <!-- Language Select -->
+    <div class="flex items-center ml-auto">
+      <select #languageSelect (change)="switchLanguage(languageSelect.value)" class="px-2 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent w-[160px]">
+        <option value="" disabled selected>{{ 'header.selectLanguage' | translate }}</option>
+        <option *ngFor="let lang of languages"
+                [value]="lang.code"
+                [disabled]="lang.code === currentLanguage"
+                class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                [ngClass]="{ 'disabled-option': lang.code === currentLanguage }">
+          {{ lang.name }}
+        </option>
+      </select>
     </div>
   </nav>
 </div>
