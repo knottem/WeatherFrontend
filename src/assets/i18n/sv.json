@@ -21,8 +21,9 @@
 	},
 	"currentWeather": "Vädret just nu",
 	"footer": {
-		"sources": "Källor: SMHI och YR",
-		"updated": "Väderdata uppdaterades kl"
+		"sources": "Källor: {{sourceList}}",
+		"updated": "Väderdata uppdaterades kl",
+    "and": "och"
 	},
 	"header": {
 		"searchForCity": "Sök efter en stad",

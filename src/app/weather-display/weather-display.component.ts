@@ -96,6 +96,7 @@ export class WeatherDisplayComponent {
       this.weather.weatherData[availableTimestamps[0]].precipitation
     );
     this.sharedService.setUpdatedTime(this.weather.timestamp.substring(11, 16));
+    this.sharedService.setWeatherSources(this.extractSources(this.weather.message));
 
     if (this.weather.message !== 'Mock data') {
       this.sharedService.saveWeatherData(data);
@@ -230,5 +231,16 @@ export class WeatherDisplayComponent {
 
   public getSunsetSunrise(index: number): string[] {
     return [this.weather.city.sunriseList[index], this.weather.city.sunsetList[index]];
+  }
+
+  private extractSources(message: string): string[] {
+    const match = message.match(/from (.*)/);
+    if (match && match[1]) {
+      const sourcesString = match[1].trim();
+      // Split by comma and then by " and " for the last source
+      const sources = sourcesString.split(/,| and /).map(source => source.trim());
+      return sources;
+    }
+    return [];
   }
 }

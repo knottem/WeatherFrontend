@@ -21,8 +21,9 @@
 	},
 	"currentWeather": "Current Weather",
 	"footer": {
-		"sources": "Sources: SMHI and YR",
-		"updated": "Weather data last updated at "
+		"sources": "Sources: {{sourceList}}",
+		"updated": "Weather data last updated at ",
+    "and": "and"
 	},
 	"header": {
 		"searchForCity": "Search for a City",

@@ -36,7 +36,6 @@ export class HeaderComponent implements OnInit {
     { code: 'de', name: 'Deutsch' },
     { code: 'es', name: 'Español' },
     { code: 'fr', name: 'Français' }
-
   ];
   public currentLanguage = this.translate.currentLang;
 
@@ -172,5 +171,4 @@ export class HeaderComponent implements OnInit {
     this.currentLanguage = language;
     localStorage.setItem('language', language);
   }
-
 }

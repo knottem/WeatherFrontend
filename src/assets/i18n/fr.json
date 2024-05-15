@@ -21,8 +21,9 @@
 	},
 	"currentWeather": "Météo actuelle",
 	"footer": {
-		"sources": "Sources : SMHI et YR",
-		"updated": "Données météorologiques mises à jour pour la dernière fois à"
+		"sources": "Sources : {{sourceList}}",
+		"updated": "Données météorologiques mises à jour pour la dernière fois à",
+    "and": "et"
 	},
 	"header": {
 		"searchForCity": "Rechercher une ville",
