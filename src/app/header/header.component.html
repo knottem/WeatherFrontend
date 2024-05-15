@@ -43,6 +43,19 @@
     </form>
   </div>
 
+  <div class="flex sm:hidden items-center my-auto py-4">
+    <select #languageSelect (change)="switchLanguage(languageSelect.value)" class="px-2 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent w-[160px]">
+      <option value="" disabled selected>{{ 'header.selectLanguage' | translate }}</option>
+      <option *ngFor="let lang of languages"
+              [value]="lang.code"
+              [disabled]="lang.code === currentLanguage"
+              class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              [ngClass]="{ 'disabled-option': lang.code === currentLanguage }">
+        {{ lang.name }}
+      </option>
+    </select>
+  </div>
+
   <!-- Top Section sm+ screens -->
   <div class="hidden sm:flex flex-row justify-between items-center">
     <!-- Logo Container -->
@@ -113,8 +126,9 @@
         > {{ 'about.title' | translate }}</a
       >
     </div>
+
     <!-- Language Select -->
-    <div class="flex items-center ml-auto">
+    <div class="hidden sm:flex items-center ml-auto">
       <select #languageSelect (change)="switchLanguage(languageSelect.value)" class="px-2 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent w-[160px]">
         <option value="" disabled selected>{{ 'header.selectLanguage' | translate }}</option>
         <option *ngFor="let lang of languages"
@@ -126,5 +140,6 @@
         </option>
       </select>
     </div>
+
   </nav>
 </div>
