@@ -1,6 +1,6 @@
 {
   "name": "weather-frontend",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "scripts": {
     "prebuild": "node ./scripts/set-version.js",
     "prestart": "node ./scripts/set-dev-version.js",
