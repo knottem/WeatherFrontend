@@ -27,7 +27,6 @@
 	},
 	"header": {
 		"searchForCity": "Sök efter en stad",
-		"selectLanguage": "Ändra språk",
 		"weatherApp": "Väderapp"
 	},
 	"precipitation": "Nederbörd",

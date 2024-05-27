@@ -27,7 +27,6 @@
 	},
 	"header": {
 		"searchForCity": "Rechercher une ville",
-		"selectLanguage": "Changer de langue",
 		"weatherApp": "MétéoApp"
 	},
 	"precipitation": "Précipitation",
