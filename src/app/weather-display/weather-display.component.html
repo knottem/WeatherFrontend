@@ -1,7 +1,7 @@
  <!-- Buttons to switch between 3 days and 10 days-->
- <div class="flex">
+ <div class="flex justify-center sm:justify-normal">
   <button
-    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
+    class="my-2 sm:ml-3 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
     [ngClass]="{
       'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
         amountOfDays !== 3,
@@ -13,7 +13,7 @@
   </button>
 
   <button
-    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
+    class="my-2 sm:ml-3 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
     [ngClass]="{
       'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
         amountOfDays !== 10,

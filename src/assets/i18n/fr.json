@@ -41,6 +41,10 @@
 		"showThreeDays": "Afficher 3 jours",
 		"weatherAt": "Météo à {{ cityName }} à {{ current }}"
 	},
+  "settings": {
+    "title": "Paramètres",
+    "selectLanguage": "Changer de langue"
+  },
 	"weatherTable": {
 		"afternoon": "Après-midi",
 		"avgWindDirection": "Direction moyenne du vent",

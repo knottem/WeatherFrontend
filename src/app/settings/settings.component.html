@@ -1,0 +1,17 @@
+<!-- settings.component.html -->
+<div class="flex flex-col mx-auto my-3 px-6 py-4 shadow-xl">
+  <h2 class="text-3xl font-bold text-gray-800 mb-6">{{ 'settings.title' | translate }}</h2>
+  <div class="text-gray-700 text-lg space-y-4">
+    <p>{{ 'settings.selectLanguage' | translate }}:</p>
+    <div class="flex flex-col space-y-4">
+      <button
+        *ngFor="let lang of languages"
+        (click)="switchLanguage(lang.code)"
+        [ngClass]="{'bg-blue-500 text-white': currentLanguage === lang.code, 'bg-gray-200 text-gray-800': currentLanguage !== lang.code}"
+        class="px-4 py-2 rounded transition-colors duration-300 ease-in-out w-40"
+      >
+        {{ lang.name }}
+      </button>
+    </div>
+  </div>
+</div>

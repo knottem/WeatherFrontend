@@ -28,7 +28,7 @@
 	"header": {
 		"searchForCity": "Buscar una ciudad",
 		"selectLanguage": "Cambiar idioma",
-		"weatherApp": "Aplicación meteorológica"
+		"weatherApp": "Meteorológica"
 	},
 	"precipitation": "Precipitación",
 	"precipitationShort": "Precip",
@@ -41,6 +41,10 @@
 		"showThreeDays": "Mostrar 3 días",
 		"weatherAt": "El tiempo en {{ cityName }} a las {{ current }}"
 	},
+  "settings": {
+    "title": "Configuración",
+    "selectLanguage": "Seleccionar idioma"
+  },
 	"weatherTable": {
 		"afternoon": "Tarde",
 		"avgWindDirection": "Dirección promedio del viento",
