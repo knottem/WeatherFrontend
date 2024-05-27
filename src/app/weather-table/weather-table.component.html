@@ -2,9 +2,9 @@
   <!-- -->
   <div class="flex justify-between items-center sm:flex-row">
     <!-- Day Label -->
-    <h2 class="text-xs sm:text-2xl font-semibold whitespace-nowrap sm:w-48">
+    <p class="text-base sm:text-xl font-medium whitespace-nowrap sm:w-48">
       {{ 'weatherTable.weather' + dayLabel | translate }}
-    </h2>
+    </p>
 
     <!-- Sunrise and Sunset for larger screens -->
     <div class="hidden sm:flex sm:justify-between sm:w-96 px-6 lg:px-0">
@@ -17,12 +17,10 @@
     </div>
 
     <!-- Click to Maximize/Minimize Text -->
-    <p class="flex sm:hidden text-xs lg:text-sm font-medium text-gray-600 whitespace-nowrap" *ngIf="!isTimeStampLengthOne()">
+    <p class="text-right text-xxs sm:text-left sm:text-xs lg:text-sm font-medium text-gray-600 w-full sm:w-48 whitespace-nowrap" *ngIf="!isTimeStampLengthOne()">
       {{ 'weatherTable.clickTo' | translate }} {{ getWeatherTranslationKey() | translate }}
     </p>
-    <p class="hidden sm:flex text-xs lg:text-sm font-medium text-gray-600 w-48 whitespace-nowrap" *ngIf="!isTimeStampLengthOne()">
-      {{ 'weatherTable.clickTo' | translate }} {{ getWeatherTranslationKey() | translate }}
-    </p>
+
     </div>
     <div class="sm:hidden flex justify-between items-center px-4">
     <!-- Sunrise and Sunset for smaller screens -->
@@ -47,7 +45,7 @@
         Temp. high/low:
       </div>
     </div>
-      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl xl:text-3xl my-2">
         <div
           [ngClass]="{
             'text-red-500': highTemp >= 0,
@@ -72,21 +70,21 @@
       <div class="font-semibold">
         {{ 'precipitation' | translate }}:
       </div>
-      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl my-2">
         {{ totalPrecipitation }} mm
       </div>
     </div>
     <div class="p-2 bg-white rounded shadow h-20">
       <div class="font-semibold">
         {{ 'weatherTable.maxWind' | translate }}:</div>
-      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl my-2">
         {{ maxWindSpeed }} m/s
       </div>
     </div>
     <div class="p-2 bg-white rounded shadow h-20">
       <div class="font-semibold">
         {{ 'weatherTable.avgWindDirection' | translate }}:</div>
-      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl my-2">
         {{ averageWindDirection }}°
       </div>
     </div>
