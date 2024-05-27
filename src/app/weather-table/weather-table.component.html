@@ -45,7 +45,7 @@
         Temp. high/low:
       </div>
     </div>
-      <div class="flex justify-center text-xl sm:text-2xl xl:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl xl:text-3xl my-2">
         <div
           [ngClass]="{
             'text-red-500': highTemp >= 0,
@@ -70,21 +70,21 @@
       <div class="font-semibold">
         {{ 'precipitation' | translate }}:
       </div>
-      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl my-2">
         {{ totalPrecipitation }} mm
       </div>
     </div>
     <div class="p-2 bg-white rounded shadow h-20">
       <div class="font-semibold">
         {{ 'weatherTable.maxWind' | translate }}:</div>
-      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl my-2">
         {{ maxWindSpeed }} m/s
       </div>
     </div>
     <div class="p-2 bg-white rounded shadow h-20">
       <div class="font-semibold">
         {{ 'weatherTable.avgWindDirection' | translate }}:</div>
-      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl">
+      <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl my-2">
         {{ averageWindDirection }}°
       </div>
     </div>

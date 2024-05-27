@@ -46,7 +46,7 @@
           {{ 'temperature' | translate }}:
         </div>
         <div
-          class="text-2xl sm:text-3xl mt-5"
+          class="text-2xl sm:text-3xl lg:mt-5 mt-7"
           [ngClass]="{
             'text-red-500': currentWeather.temperature >= 0,
             'text-blue-500': currentWeather.temperature < 0
@@ -61,7 +61,7 @@
         <div class="absolute top-2 font-semibold">
           {{ 'precipitation' | translate }}:
         </div>
-        <div class="text-2xl sm:text-3xl mt-5">
+        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
           {{ currentWeather.precipitation }} mm
         </div>
       </div>
@@ -71,7 +71,7 @@
         <div class="absolute top-2 font-semibold">
           {{ 'windSpeed' | translate }}:
         </div>
-        <div class="text-2xl sm:text-3xl mt-5">
+        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
           {{ currentWeather.windSpeed }} m/s
         </div>
       </div>
@@ -81,7 +81,7 @@
         <div class="absolute top-2 font-semibold">
           {{ 'windDirection' | translate }}:
         </div>
-        <div class="text-2xl sm:text-3xl mt-5">
+        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
           {{ currentWeather.windDirection }}°
         </div>
       </div>
