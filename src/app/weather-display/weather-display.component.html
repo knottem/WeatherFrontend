@@ -30,11 +30,11 @@
   <!-- Current Weather Display -->
   <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-semibold" [innerHTML]="'weatherDisplay.weatherAt' |
+      <p class="text-base sm:text-xl font-medium whitespace-nowrap sm:w-48" [innerHTML]="'weatherDisplay.weatherAt' |
       translate: {
         cityName: weather.city.name,
         current: currentWeather.timestamp.substring(11, 16)}">
-      </h2>
+      </p>
     </div>
     <div
       class="p-4 bg-neutral-200 rounded grid grid-cols-2 lg:grid-cols-5 gap-4 relative"
