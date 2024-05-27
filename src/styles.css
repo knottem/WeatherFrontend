@@ -11,3 +11,9 @@ html, body {
   overflow-x: hidden;
   max-width: 100%;
 }
+
+.button-standard {
+  @apply my-2 flex-1 px-1 sm:px-4 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl text-center;
+}
+
+

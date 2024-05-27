@@ -26,14 +26,13 @@ import {TranslateService} from "@ngx-translate/core";
           width: 100%;
           min-width: 0;
           margin: 0;
-          flex-direction: column;
         }
       }
     `,
   ],
 })
 export class AppComponent {
-  constructor(private translate: TranslateService) {
+  constructor(translate: TranslateService) {
     // check if the user has a language preference stored in cookies
     const userLang = localStorage.getItem('language');
     if (userLang) {

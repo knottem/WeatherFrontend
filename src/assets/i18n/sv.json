@@ -27,7 +27,6 @@
 	},
 	"header": {
 		"searchForCity": "Sök efter en stad",
-		"selectLanguage": "Ändra språk",
 		"weatherApp": "Väderapp"
 	},
 	"precipitation": "Nederbörd",
@@ -41,6 +40,10 @@
 		"showThreeDays": "Visa 3 dagar",
 		"weatherAt": "Vädret i {{ cityName }} kl {{ current }}"
 	},
+  "settings": {
+    "title": "Inställningar",
+    "selectLanguage": "Ändra språk"
+  },
 	"weatherTable": {
 		"afternoon": "Eftermiddag",
 		"avgWindDirection": "Vindriktning",

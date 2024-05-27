@@ -30,14 +30,6 @@ export class HeaderComponent implements OnInit {
   public cityList: string[] = [];
   public filteredCities: Observable<string[]> = of([]);
   public lastSearched: string[] = [];
-  public languages: { code: string, name: string }[] = [
-    { code: 'en', name: 'English' },
-    { code: 'sv', name: 'Svenska' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'es', name: 'Español' },
-    { code: 'fr', name: 'Français' }
-  ];
-  public currentLanguage = this.translate.currentLang;
   public isSmallScreen = false;
 
   constructor(
@@ -176,11 +168,5 @@ export class HeaderComponent implements OnInit {
 
   isRouteActive(route: string): boolean {
     return this.router.url === route;
-  }
-
-  switchLanguage(language: string) {
-    this.translate.use(language);
-    this.currentLanguage = language;
-    localStorage.setItem('language', language);
   }
 }

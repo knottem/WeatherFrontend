@@ -1,55 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
-import {
-  trigger,
-  style,
-  animate,
-  transition,
-  query,
-  stagger,
-} from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-weather-table',
   templateUrl: './weather-table.component.html',
-  animations: [
-    trigger('fadeInStagger', [
-      transition('* => noAnimation', []),
-      transition('* => animation', [
-        query(
-          ':enter',
-          [
-            style({ opacity: 0, transform: 'translateY(-20px)' }),
-            stagger('5ms', [
-              animate(
-                '100ms ease-out',
-                style({ opacity: 1, transform: 'translateY(0)' })
-              ),
-            ]),
-          ],
-          { optional: true }
-        ),
-        query(
-          ':leave',
-          [
-            stagger('-5ms', [
-              animate('100ms ease-in', style({ opacity: 0, height: '0px' })),
-            ]),
-          ],
-          { optional: true }
-        ),
-      ]),
-    ]),
-    trigger('fadeInExpand', [
-      transition(':enter', [
-        style({ opacity: 0, height: '0px', overflow: 'hidden' }),
-        animate('100ms ease-out', style({ opacity: 1, height: '*' })),
-      ]),
-    ]),
-  ],
+
   standalone: true,
   imports: [CommonModule, TranslateModule]
 })
@@ -74,8 +32,7 @@ export class WeatherTableComponent {
   public maxWindSpeed: number = 0;
   public averageWindDirection: number = 0;
 
-  constructor(private weatherService: WeatherService,
-              private translate: TranslateService) {
+  constructor(private weatherService: WeatherService) {
   }
 
   ngOnInit() {
@@ -229,10 +186,8 @@ export class WeatherTableComponent {
   }
 
   shouldAfternoonSpanTwoColumns(): boolean {
-    if(this.eveningWeather === -1) {
-      return true;
-    }
-    return false;
+    return this.eveningWeather === -1;
+
   }
 
   getWeatherTranslationKey(): string {
