@@ -27,7 +27,6 @@
 	},
 	"header": {
 		"searchForCity": "Suche nach einer Stadt",
-		"selectLanguage": "Sprache ändern",
 		"weatherApp": "WetterApp"
 	},
 	"precipitation": "Niederschlag",
@@ -41,6 +40,10 @@
 		"showThreeDays": "3 Tage anzeigen",
 		"weatherAt": "Wetter in {{ cityName }} um {{ current }} Uhr"
 	},
+  "settings": {
+    "title": "Einstellungen",
+    "selectLanguage": "Sprache ändern"
+  },
 	"weatherTable": {
 		"afternoon": "Nachmittag",
 		"avgWindDirection": "Windrichtung",

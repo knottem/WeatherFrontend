@@ -1,7 +1,7 @@
  <!-- Buttons to switch between 3 days and 10 days-->
- <div class="flex">
+ <div class="flex justify-center sm:justify-normal">
   <button
-    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
+    class="my-2 sm:ml-3 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
     [ngClass]="{
       'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
         amountOfDays !== 3,
@@ -13,7 +13,7 @@
   </button>
 
   <button
-    class="my-2 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
+    class="my-2 sm:ml-3 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
     [ngClass]="{
       'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
         amountOfDays !== 10,
@@ -30,11 +30,11 @@
   <!-- Current Weather Display -->
   <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-2xl font-semibold" [innerHTML]="'weatherDisplay.weatherAt' |
+      <p class="text-base sm:text-xl font-medium whitespace-nowrap sm:w-48" [innerHTML]="'weatherDisplay.weatherAt' |
       translate: {
         cityName: weather.city.name,
         current: currentWeather.timestamp.substring(11, 16)}">
-      </h2>
+      </p>
     </div>
     <div
       class="p-4 bg-neutral-200 rounded grid grid-cols-2 lg:grid-cols-5 gap-4 relative"
@@ -46,7 +46,7 @@
           {{ 'temperature' | translate }}:
         </div>
         <div
-          class="text-2xl sm:text-3xl mt-5"
+          class="text-2xl sm:text-3xl lg:mt-5 mt-7"
           [ngClass]="{
             'text-red-500': currentWeather.temperature >= 0,
             'text-blue-500': currentWeather.temperature < 0
@@ -61,7 +61,7 @@
         <div class="absolute top-2 font-semibold">
           {{ 'precipitation' | translate }}:
         </div>
-        <div class="text-2xl sm:text-3xl mt-5">
+        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
           {{ currentWeather.precipitation }} mm
         </div>
       </div>
@@ -71,7 +71,7 @@
         <div class="absolute top-2 font-semibold">
           {{ 'windSpeed' | translate }}:
         </div>
-        <div class="text-2xl sm:text-3xl mt-5">
+        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
           {{ currentWeather.windSpeed }} m/s
         </div>
       </div>
@@ -81,7 +81,7 @@
         <div class="absolute top-2 font-semibold">
           {{ 'windDirection' | translate }}:
         </div>
-        <div class="text-2xl sm:text-3xl mt-5">
+        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
           {{ currentWeather.windDirection }}°
         </div>
       </div>

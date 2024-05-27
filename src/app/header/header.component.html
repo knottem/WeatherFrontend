@@ -1,20 +1,21 @@
 <!-- app-header-comp.component.html -->
 <div class="container mx-auto px-6 py-4 bg-white shadow-md">
-
   <!-- Top Section: Logo and Time for smaller screens -->
   <div class="flex justify-between items-center sm:hidden">
+
     <!-- Logo Container -->
     <div class="flex items-center mt-3">
-      <h2 class="text-xl font-semibold text-gray-800">
+      <img src="assets/android-chrome-512x512.png" alt="Weather App Logo" class="w-16 h-16 mr-3 rounded-xl mb-3">
+      <p class="text-gray-800 text-base font-medium">
         {{ 'header.weatherApp' | translate }}
-      </h2>
+      </p>
     </div>
 
     <!-- Time Container -->
     <div class="flex items-center mt-3">
-      <h2 class="text-xl font-semibold text-gray-800">
+      <p class="text-gray-800 text-base font-medium">
         {{ 'time' | translate }}: {{ currentTime }}
-      </h2>
+      </p>
     </div>
   </div>
 
@@ -43,30 +44,11 @@
     </form>
   </div>
 
-  <div *ngIf="isSmallScreen" class="flex items-center my-auto py-4">
-    <select
-      #languageSelectMobile
-      (change)="switchLanguage(languageSelectMobile.value)"
-      class="px-2 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent w-[160px]"
-    >
-      <option value="" disabled selected>{{ 'header.selectLanguage' | translate }}</option>
-      <option
-        *ngFor="let lang of languages"
-        [value]="lang.code"
-        [disabled]="lang.code === currentLanguage"
-        class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-        [ngClass]="{ 'disabled-option': lang.code === currentLanguage }"
-      >
-        {{ lang.name }}
-      </option>
-    </select>
-  </div>
-
-
   <!-- Top Section sm+ screens -->
   <div class="hidden sm:flex flex-row justify-between items-center">
     <!-- Logo Container -->
     <div class="flex items-center mt-3">
+      <img src="assets/android-chrome-512x512.png" alt="Weather App Logo" class="w-16 h-16 mr-3 rounded-xl">
       <h2 class="text-xl font-semibold text-gray-800">
         {{ 'header.weatherApp' | translate }}
       </h2>
@@ -110,49 +92,33 @@
 
   <!-- Navigation Bar -->
   <nav class="flex mt-3">
-    <div class="flex flex-row">
-      <a
-        class="my-2 px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl min-w-[120px] text-center"
-        routerLink="/"
+    <div class="flex flex-row w-full">
+      <a class="button-standard min-w-[80px] max-w-[140px]" routerLink="/"
         [ngClass]="{
-          'bg-neutral-100 text-neutral-500 hover:bg-neutral-300':
-            !isRouteActive('/'),
-          'bg-neutral-300 text-black font-semibold': isRouteActive('/')
-        }"
-        >{{ 'weather' | translate }}</a
+        'bg-neutral-100 text-neutral-500 hover:bg-neutral-300': !isRouteActive('/'),
+        'bg-neutral-300 text-black font-semibold': isRouteActive('/')
+      }"
       >
+        {{ 'weather' | translate }}
+      </a>
 
-      <a
-        class="my-2 block px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl min-w-[120px] text-center"
-        routerLink="/about"
+      <a class="button-standard min-w-[80px] max-w-[140px]" routerLink="/about"
         [ngClass]="{
-          'bg-neutral-100 text-neutral-500 hover:bg-neutral-300':
-            !isRouteActive('/about'),
-          'bg-neutral-300 text-black font-semibold': isRouteActive('/about')
-        }"
-        > {{ 'about.title' | translate }}</a
+        'bg-neutral-100 text-neutral-500 hover:bg-neutral-300': !isRouteActive('/about'),
+        'bg-neutral-300 text-black font-semibold': isRouteActive('/about')
+      }"
       >
-    </div>
+        {{ 'about.title' | translate }}
+      </a>
 
-    <!-- Language Select -->
-    <div *ngIf="!isSmallScreen" class="flex items-center ml-auto">
-      <select
-        #languageSelect
-        (change)="switchLanguage(languageSelect.value)"
-        class="px-2 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent w-[160px]"
+      <a class="button-standard min-w-[115px] max-w-[140px]" routerLink="/settings"
+        [ngClass]="{
+        'bg-neutral-100 text-neutral-500 hover:bg-neutral-300': !isRouteActive('/settings'),
+        'bg-neutral-300 text-black font-semibold': isRouteActive('/settings')
+      }"
       >
-        <option value="" disabled selected>{{ 'header.selectLanguage' | translate }}</option>
-        <option
-          *ngFor="let lang of languages"
-          [value]="lang.code"
-          [disabled]="lang.code === currentLanguage"
-          class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-          [ngClass]="{ 'disabled-option': lang.code === currentLanguage }"
-        >
-          {{ lang.name }}
-        </option>
-      </select>
+        {{ 'settings.title' | translate }}
+      </a>
     </div>
-
   </nav>
 </div>

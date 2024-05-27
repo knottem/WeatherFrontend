@@ -1,0 +1,23 @@
+{
+  "name": "WeatherApp",
+  "displayName": "Weather App",
+  "version": "1.0.0",
+  "description": "An Weather App built with Angular and Cordova",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Erik Wallenius",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-android": "^13.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ]
+  }
+}
