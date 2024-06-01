@@ -7,6 +7,6 @@ RUN npm run build
 
 # Stage 2: Setup the NGINX server
 FROM nginx:alpine
-COPY --from=build-step /app/cordova/www /usr/share/nginx/html
+COPY --from=build-step /app/dist/weather-frontend /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
