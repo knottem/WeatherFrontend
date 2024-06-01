@@ -24,17 +24,23 @@ describe('WeatherDisplayComponent', () => {
 
   it('should filter timestamps', () => {
     const now = new Date();
+    const oneHourAgo = new Date(now.getTime() - 3600000).toISOString(); // One hour in the past
+    const oneHourLater = new Date(now.getTime() + 3600000).toISOString(); // One hour in the future
+    const twoHoursLater = new Date(now.getTime() + 7200000).toISOString(); // Two hours in the future
+
     const timestamps = [
-      new Date(now.getTime() - 7200000).toISOString(), // One hour in the future
-      new Date(now.getTime() - 3600000).toISOString(), // One hour in the past
-      now.toISOString(), // Current timestamp
-      new Date(now.getTime() + 3600000).toISOString(), // One hour in the future
-      new Date(now.getTime() + 7200000).toISOString(), // Two hours in the future
+      oneHourAgo,
+      now.toISOString(),
+      oneHourLater,
+      twoHoursLater
     ];
+
     const filteredTimestamps = component.filterTimestamps(timestamps);
     expect(filteredTimestamps.length).toEqual(3);
-    expect(filteredTimestamps[0]).toEqual(timestamps[2]);
-    expect(filteredTimestamps[1]).toEqual(timestamps[3]);
-    expect(filteredTimestamps[2]).toEqual(timestamps[4]);
+    expect(filteredTimestamps).toEqual([
+      now.toISOString(),
+      oneHourLater,
+      twoHoursLater
+    ]);
   });
 });

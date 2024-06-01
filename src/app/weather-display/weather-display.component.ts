@@ -1,13 +1,13 @@
-import {Component, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
-import { CurrentWeather, WeatherData } from '../../models/weather-data';
-import { WeatherService } from '../weather.service';
-import { SharedService } from '../shared.service';
-import { WeatherTableComponent } from '../weather-table/weather-table.component';
-import { DateTime } from 'luxon';
-import { CommonModule } from '@angular/common';
-import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
+import {ChangeDetectorRef, Component, QueryList, ViewChildren} from '@angular/core';
+import {CurrentWeather, WeatherData} from '../../models/weather-data';
+import {WeatherService} from '../weather.service';
+import {SharedService} from '../shared.service';
+import {WeatherTableComponent} from '../weather-table/weather-table.component';
+import {DateTime} from 'luxon';
+import {CommonModule} from '@angular/common';
+import {LoadingIndicatorComponent} from '../loading-indicator/loading-indicator.component';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {environment} from "../../environments/environment";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-weather-display',
@@ -29,9 +29,15 @@ export class WeatherDisplayComponent {
   public currentWeather: CurrentWeather = new CurrentWeather('', 0, 0, 0, 0, 0);
   public currentDays: string[] = [];
   public timestamps: string[][] = [];
-  public isLoaded: boolean = false;
   public updatedTime: string = '';
   public translatedSources: string = '';
+
+  public isLoaded: boolean = false;
+
+  private searchSubscription!: Subscription;
+  private timeSubscription!: Subscription;
+  private sourcesSubscription!: Subscription;
+  private weatherSubscription!: Subscription;
 
   constructor(
     private weatherService: WeatherService,
@@ -41,10 +47,46 @@ export class WeatherDisplayComponent {
   ) {}
 
   ngOnInit() {
-    this.sharedService.searchQuery$.subscribe((query) => {
-      this.getWeather(query);
-    });
+    this.searchSubscription = this.sharedService.searchQuery$
+      .subscribe((city) => {
+        if (city) {
+          this.isLoaded = false;
+          if(city !== this.weather.city.name) {
+            this.getWeather(city);
+            this.cdr.detectChanges();
+          }
+        } else {
+            this.loadInitialWeatherData();
+        }
+      });
 
+    this.timeSubscription = this.sharedService.updatedTime$
+      .subscribe((time) => {
+        this.updatedTime = time;
+      });
+
+    this.sourcesSubscription = this.sharedService.weatherSources$
+      .subscribe((sources) => {
+        this.updateTranslatedSources(sources);
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
+    }
+    if (this.timeSubscription) {
+      this.timeSubscription.unsubscribe();
+    }
+    if (this.sourcesSubscription) {
+      this.sourcesSubscription.unsubscribe();
+    }
+    if (this.weatherSubscription) {
+      this.weatherSubscription.unsubscribe();
+    }
+  }
+
+  private loadInitialWeatherData() {
     const data = this.sharedService.loadWeatherData();
     let weather = null;
     let city = this.defaultCity;
@@ -60,14 +102,6 @@ export class WeatherDisplayComponent {
     } else {
       this.getWeather(city);
     }
-
-    this.sharedService.updatedTime$.subscribe((time) => {
-      this.updatedTime = time;
-    });
-
-    this.sharedService.weatherSources$.subscribe((sources) => {
-      this.updateTranslatedSources(sources);
-    });
   }
 
   private async updateTranslatedSources(sources: string[]) {
@@ -104,8 +138,19 @@ export class WeatherDisplayComponent {
       return;
     }
     this.isLoaded = false;
+    const data = this.sharedService.loadWeatherData();
+    if (data !== null && data.city.name.toLowerCase() === str.toLowerCase()) {
+      const cachedTime = new Date(data.timestamp).getTime();
+      const currentTime = new Date().getTime();
+      const timeDifference = currentTime - cachedTime;
+      if (timeDifference < 60 * 60 * 1000) {
+        this.processWeatherData(data);
+        return;
+      }
 
-    this.weatherService.getWeather(str).subscribe((data) => {
+    }
+
+    this.weatherSubscription = this.weatherService.getWeather(str).subscribe((data) => {
       this.processWeatherData(data);
     });
   }
@@ -252,7 +297,6 @@ export class WeatherDisplayComponent {
     return image;
   }
 
-   // should return a boolean depending on timestamp we'll ignore sunrise/sunset for now
    public isDayTime(timestamp: string): boolean {
     const sunriseHour = parseInt(this.weather.city.sunriseList[0].substring(11, 13));
     const sunsetHour = parseInt(this.weather.city.sunsetList[0].substring(11,13));
@@ -268,9 +312,7 @@ export class WeatherDisplayComponent {
     const match = message.match(/from (.*)/);
     if (match && match[1]) {
       const sourcesString = match[1].trim();
-      // Split by comma and then by " and " for the last source
-      const sources = sourcesString.split(/,| and /).map(source => source.trim());
-      return sources;
+      return sourcesString.split(/,| and /).map(source => source.trim());
     }
     return [];
   }
