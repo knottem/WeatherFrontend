@@ -6,10 +6,11 @@
   <div class="flex justify-center items-center w-full rounded-2xl space-x-10 bg-[#d9e9ea]">
     <img src="assets/android-chrome-512x512.png" alt="Weather App Logo" class="h-16 w-16">
     <span class="text-gray-800 text-lg font-medium">WeatherApp</span>
-    <ion-button (click)="openSearch()" fill="clear" color="dark" size="large">
+    <ion-button fill="clear" color="dark" size="large" >
       <ion-icon src="assets/icons/search-outline.svg"></ion-icon>
     </ion-button>
   </div>
+  <div class="absolute right-0 top-0 bottom-0 h-20 w-2/6 cursor-pointer" (click)="openSearch()"></div>
 </div>
 
 <div class="container mx-auto px-6 py-2 bg-white shadow-md hidden sm:block">
