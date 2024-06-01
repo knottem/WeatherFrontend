@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeaderComponent } from './header.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TranslateModule } from "@ngx-translate/core";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import {IonicModule} from "@ionic/angular";
 
 describe('HeaderCompComponent', () => {
   let component: HeaderComponent;
@@ -15,8 +17,11 @@ describe('HeaderCompComponent', () => {
       imports: [MatAutocompleteModule,
                 HttpClientTestingModule,
                 ReactiveFormsModule,
-                TranslateModule.forRoot()],
-      providers: [HeaderComponent]
+                FormsModule,
+                TranslateModule.forRoot(),
+                IonicModule.forRoot()],
+      providers: [HeaderComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;

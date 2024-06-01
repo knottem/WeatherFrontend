@@ -2,8 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root {
+  --app-width: 80%;
+  --app-min-width: 600px;
+  --app-max-width: 1400px;
+  --ion-toolbar-background: #f6f8fc;
+}
+
+.content-wrapper {
+  width: var(--app-width);
+  min-width: var(--app-min-width);
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .content-wrapper {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  app-root,
+  app-header,
+  app-footer,
+  router-outlet {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+}
+
 html {
-  overflow-y: scroll;
+  overflow-y: auto;
 
 }
 

@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 import { TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import { TranslateHttpLoader} from "@ngx-translate/http-loader";
+import { IonicModule} from "@ionic/angular";
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { TranslateHttpLoader} from "@ngx-translate/http-loader";
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
+    IonicModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterComponent } from './footer.component';
 import { TranslateModule } from "@ngx-translate/core";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 
 describe('FooterCompComponent', () => {
   let component: FooterComponent;
@@ -9,7 +10,8 @@ describe('FooterCompComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [FooterComponent],
-      imports: [TranslateModule.forRoot()]
+      imports: [TranslateModule.forRoot()],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 

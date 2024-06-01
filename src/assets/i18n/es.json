@@ -2,9 +2,9 @@
 	"about": {
 		"backendLink": "WeatherApi (backend)",
 		"backendLinkDescription": "Sumérgete en el código backend en GitHub.",
-		"content1-part1": "Este proyecto, una aplicación integral de pronóstico del tiempo, se está desarrollando como parte de mi tesis en",
-		"content1-part2": ". La aplicación integra datos de múltiples fuentes confiables para brindar actualizaciones meteorológicas en tiempo real.",
-		"content2": "La interfaz de la aplicación está construida utilizando Angular junto con Tailwind CSS por sus capacidades de diseño flexibles y responsivos. Esta combinación permite una interfaz fácil de usar a la que se puede acceder en una variedad de dispositivos y tamaños de pantalla.",
+    "content1-part1": "Este proyecto, una aplicación integral de pronóstico del tiempo, se desarrolló originalmente como parte de mi tesis en",
+    "content1-part2": ", y ahora se está desarrollando más como un pasatiempo. La aplicación integra datos de múltiples fuentes confiables para brindar actualizaciones meteorológicas en tiempo real.",
+    "content2": "La interfaz de la aplicación está construida utilizando Angular, Tailwind CSS e Ionic porque ofrecen gran flexibilidad y capacidad de respuesta. Esta combinación hace que sea fácil para la aplicación funcionar en todo tipo de dispositivos y tamaños de pantalla. Además, también estoy trabajando en una aplicación para Android como plataforma inicial.",
 		"content3": "En el backend, estoy utilizando Java con Spring Boot. El backend es responsable de obtener y procesar datos meteorológicos de SMHI y YR, dos servicios meteorológicos de buena reputación. Al combinar datos de estas fuentes, la aplicación garantiza una previsión meteorológica más completa y precisa.",
 		"content4-link": "Símbolos meteorológicos del Yr",
 		"content4-part1": "Las imágenes meteorológicas utilizadas en la aplicación provienen de",
@@ -22,7 +22,7 @@
 	"currentWeather": "Clima actual",
 	"footer": {
 		"sources": "Fuentes: {{sourceList}}",
-		"updated": "Los datos meteorológicos se actualizaron por última vez a las",
+		"updated": "Última actualización: ",
     "and": "y"
 	},
 	"header": {
