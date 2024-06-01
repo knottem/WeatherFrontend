@@ -17,6 +17,7 @@ export class SharedService {
   weatherSourcesSource = new BehaviorSubject<string[]>([]);
   public weatherSources$ = this.weatherSourcesSource.asObservable();
 
+
   // Local storage variables
   private CURRENT_VERSION = '1.0.1';
   private STORAGE_KEY = 'weatherData';

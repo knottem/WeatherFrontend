@@ -1,51 +1,20 @@
 <!-- app-header-comp.component.html -->
-<div class="container mx-auto px-6 py-4 bg-white shadow-md">
-  <!-- Top Section: Logo and Time for smaller screens -->
-  <div class="flex justify-between items-center sm:hidden">
+<!-- Top Section: Logo and Time for smaller screens -->
+<div class="container mx-auto px-2 py-2 shadow-md sm:hidden">
 
-    <!-- Logo Container -->
-    <div class="flex items-center mt-3">
-      <img src="assets/android-chrome-512x512.png" alt="Weather App Logo" class="w-16 h-16 mr-3 rounded-xl mb-3">
-      <p class="text-gray-800 text-base font-medium">
-        {{ 'header.weatherApp' | translate }}
-      </p>
-    </div>
-
-    <!-- Time Container -->
-    <div class="flex items-center mt-3">
-      <p class="text-gray-800 text-base font-medium">
-        {{ 'time' | translate }}: {{ currentTime }}
-      </p>
-    </div>
+  <!-- Logo and Title Container -->
+  <div class="flex justify-center items-center w-full rounded-2xl space-x-10 bg-[#d9e9ea]">
+    <img src="assets/android-chrome-512x512.png" alt="Weather App Logo" class="h-16 w-16">
+    <span class="text-gray-800 text-lg font-medium">WeatherApp</span>
+    <ion-button (click)="openSearch()" fill="clear" color="dark" size="large">
+      <ion-icon src="assets/icons/search-outline.svg"></ion-icon>
+    </ion-button>
   </div>
+</div>
 
-  <!-- Search Container for smaller screens -->
-  <div class="flex-grow w-full mb-0 sm:hidden">
-    <form class="flex">
-      <input
-        id="searchForm1"
-        type="text"
-        class="flex-grow px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-        placeholder= " {{ 'header.searchForCity' | translate }} "
-        [formControl]="searchQuery"
-        [matAutocomplete]="auto"
-        (keyup.enter)="onEnterPress()"
-        #searchInput
-        #trigger="matAutocompleteTrigger"
-      />
-      <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="onCitySelected($event)"
-      >
-        <mat-option *ngFor="let city of filteredCities | async" [value]="city">
-          {{ city }}
-        </mat-option>
-      </mat-autocomplete>
-    </form>
-  </div>
-
+<div class="container mx-auto px-6 py-2 bg-white shadow-md hidden sm:block">
   <!-- Top Section sm+ screens -->
-  <div class="hidden sm:flex flex-row justify-between items-center">
+  <div class="flex flex-row justify-between items-center">
     <!-- Logo Container -->
     <div class="flex items-center mt-3">
       <img src="assets/android-chrome-512x512.png" alt="Weather App Logo" class="w-16 h-16 mr-3 rounded-xl">
@@ -54,71 +23,31 @@
       </h2>
     </div>
 
+
     <!-- Search Container -->
-    <div class="flex-grow mx-6 w-auto mb-0">
-      <form class="flex">
-        <input
-          id="searchForm2"
-          type="text"
-          class="flex-grow px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-          placeholder=" {{ 'header.searchForCity' | translate }} "
-          [formControl]="searchQuery"
-          [matAutocomplete]="auto"
-          (keyup.enter)="onEnterPress()"
-          #searchInput
-          #trigger="matAutocompleteTrigger"
-        />
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="onCitySelected($event)"
-        >
-          <mat-option
-            *ngFor="let city of filteredCities | async"
-            [value]="city"
-          >
-            {{ city }}
-          </mat-option>
-        </mat-autocomplete>
-      </form>
+    <div class="flex-grow mx-6 w-auto mb-0 relative">
+      <ion-searchbar class="ion-border-radius"
+        [(ngModel)]="searchQuery"
+        placeholder="{{ 'header.searchForCity' | translate }}"
+        (ionInput)="onSearchInput($event)"
+        (ionFocus)="onSearchbarFocus()"
+        (ionBlur)="onSearchbarBlur()"
+        (keydown)="onEnterPress($event)"
+        style="--border-radius: 10px;"
+      ></ion-searchbar>
+      <div *ngIf="(filteredCities | async)?.length" class="autocomplete-list absolute w-full">
+        <div *ngFor="let city of filteredCities | async" (click)="onCitySelected(city)">
+          {{ city }}
+        </div>
+      </div>
     </div>
 
     <!-- Time Container -->
-    <div class="flex items-center mt-3">
+    <div class="flex mt-3">
+      <ion-icon src="assets/icons/time-outline.svg" class="text-3xl"></ion-icon>
       <h2 class="text-xl font-semibold text-gray-800">
-        {{ 'time' | translate }}: {{ currentTime }}
+        {{ currentTime }}
       </h2>
     </div>
   </div>
-
-  <!-- Navigation Bar -->
-  <nav class="flex mt-3">
-    <div class="flex flex-row w-full">
-      <a class="button-standard min-w-[80px] max-w-[140px]" routerLink="/"
-        [ngClass]="{
-        'bg-neutral-100 text-neutral-500 hover:bg-neutral-300': !isRouteActive('/'),
-        'bg-neutral-300 text-black font-semibold': isRouteActive('/')
-      }"
-      >
-        {{ 'weather' | translate }}
-      </a>
-
-      <a class="button-standard min-w-[80px] max-w-[140px]" routerLink="/about"
-        [ngClass]="{
-        'bg-neutral-100 text-neutral-500 hover:bg-neutral-300': !isRouteActive('/about'),
-        'bg-neutral-300 text-black font-semibold': isRouteActive('/about')
-      }"
-      >
-        {{ 'about.title' | translate }}
-      </a>
-
-      <a class="button-standard min-w-[115px] max-w-[140px]" routerLink="/settings"
-        [ngClass]="{
-        'bg-neutral-100 text-neutral-500 hover:bg-neutral-300': !isRouteActive('/settings'),
-        'bg-neutral-300 text-black font-semibold': isRouteActive('/settings')
-      }"
-      >
-        {{ 'settings.title' | translate }}
-      </a>
-    </div>
-  </nav>
 </div>

@@ -2,9 +2,9 @@
 	"about": {
 		"backendLink": "VäderApi (Backend)",
 		"backendLinkDescription": "Dyk in i backend-koden på GitHub.",
-		"content1-part1": "Detta projekt, en omfattande väderprognosapplikation, utvecklas som en del av mitt examensarbete på ",
-		"content1-part2": ". Applikationen integrerar data från flera pålitliga källor för att leverera väderuppdateringar i realtid.",
-		"content2": "Applikationens frontend är byggd med Angular tillsammans med Tailwind CSS för dess flexibla och responsiva designmöjligheter. Denna kombination möjliggör ett användarvänligt gränssnitt som är tillgängligt på en mängd olika enheter och skärmstorlekar.",
+    "content1-part1": "Detta projekt, en omfattande väderprognosapplikation, utvecklades ursprungligen som en del av mitt examensarbete på",
+    "content1-part2": ", och utvecklas nu vidare som en hobby. Applikationen integrerar data från flera pålitliga källor för att leverera väderuppdateringar i realtid.",
+    "content2": "Appens frontend är byggd med Angular, Tailwind CSS och Ionic eftersom de erbjuder stor flexibilitet och responsivitet. Denna kombination gör det lättare för appen att fungera på alla typer av enheter och skärmstorlekar. Dessutom jobbar jag på en Android-app som en startplattform.",
 		"content3": "Backend använder sig av Java med Spring Boot. Backend ansvarar för att hämta och bearbeta väderdata från SMHI och YR, två välrenommerade meteorologiska tjänster. Genom att kombinera data från dessa källor säkerställer applikationen en mer omfattande och korrekt väderprognos.",
 		"content4-link": "Yr vädersymboler",
 		"content4-part1": "Väderbilderna som används i applikationen kommer från",

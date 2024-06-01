@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList } from '@angular/core';
+import {Component, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
 import { CurrentWeather, WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { SharedService } from '../shared.service';
@@ -6,7 +6,8 @@ import { WeatherTableComponent } from '../weather-table/weather-table.component'
 import { DateTime } from 'luxon';
 import { CommonModule } from '@angular/common';
 import { LoadingIndicatorComponent } from '../loading-indicator/loading-indicator.component';
-import { TranslateModule } from "@ngx-translate/core";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-weather-display',
@@ -30,10 +31,13 @@ export class WeatherDisplayComponent {
   public timestamps: string[][] = [];
   public isLoaded: boolean = false;
   public updatedTime: string = '';
+  public translatedSources: string = '';
 
   constructor(
     private weatherService: WeatherService,
-    private sharedService: SharedService
+    private translate: TranslateService,
+    private sharedService: SharedService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -56,6 +60,32 @@ export class WeatherDisplayComponent {
     } else {
       this.getWeather(city);
     }
+
+    this.sharedService.updatedTime$.subscribe((time) => {
+      this.updatedTime = time;
+    });
+
+    this.sharedService.weatherSources$.subscribe((sources) => {
+      this.updateTranslatedSources(sources);
+    });
+  }
+
+  private async updateTranslatedSources(sources: string[]) {
+    const formattedSources = await this.formatSources(sources);
+    this.translate.get('footer.sources', { sourceList: formattedSources }).subscribe((res: string) => {
+      this.translatedSources = res;
+      this.cdr.detectChanges();
+    });
+  }
+
+  private async formatSources(sources: string[]): Promise<string> {
+    if (sources.length === 0) return '';
+    if (sources.length === 1) return sources[0];
+
+    const and = await this.translate.get('footer.and').toPromise();
+    const allButLast = sources.slice(0, -1).join(', ');
+    const last = sources[sources.length - 1];
+    return `${allButLast} ${and} ${last}`;
   }
 
   public amountOfDaysChanged(num: number): void {
@@ -74,6 +104,7 @@ export class WeatherDisplayComponent {
       return;
     }
     this.isLoaded = false;
+
     this.weatherService.getWeather(str).subscribe((data) => {
       this.processWeatherData(data);
     });

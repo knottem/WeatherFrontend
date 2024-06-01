@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
+import { environment } from "../../environments/environment";
 
 @Component({
   selector: 'app-about',
@@ -9,4 +10,4 @@ import { TranslateModule } from "@ngx-translate/core";
   imports: [CommonModule, TranslateModule],
   })
 
-export class AboutComponent {}
+export class AboutComponent{}

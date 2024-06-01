@@ -1,0 +1,30 @@
+<div class="search-container">
+  <div class="container mx-auto px-2 py-2">
+    <div class="flex bg-[#d9e9ea] h-16 search-wrapper">
+    <ion-searchbar
+    [(ngModel)]="searchQuery"
+    showCancelButton="always"
+    placeholder="{{ 'header.searchForCity' | translate }}"
+    (ionInput)="onSearchInput($event)"
+    (ionFocus)="onSearchbarFocus()"
+    (ionBlur)="onSearchbarBlur()"
+    (ionCancel)="onCancel()"
+    (keydown)="onEnterPress($event)"
+    class="searchbar"
+  ></ion-searchbar>
+    </div>
+  </div>
+
+  <div *ngIf="!searchQuery">
+    <h2 class="list-title">Recently Searched</h2>
+    <div *ngFor="let city of lastSearched" class="list-item" (click)="onCitySelected(city)">
+      {{ city }}
+    </div>
+  </div>
+  <div *ngIf="searchQuery && (filteredCities | async)?.length">
+    <h2 class="list-title">Search Results</h2>
+    <div *ngFor="let city of filteredCities | async" class="list-item" (click)="onCitySelected(city)">
+      {{ city }}
+    </div>
+  </div>
+</div>

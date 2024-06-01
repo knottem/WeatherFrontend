@@ -1,0 +1,37 @@
+.search-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 0; /* Remove padding to ensure full-width */
+  background-color: #ffffff;
+}
+
+ion-searchbar.searchbar {
+  --border-radius: 0.75rem;
+}
+
+.search-wrapper {
+  border-radius: 16px; /* Manually add border radius to ensure it applies */
+  overflow: hidden; /* Ensure rounded corners by hiding overflow */
+}
+
+.list-title {
+  font-size: 1.2em;
+  margin: 16px 0 8px;
+  color: #333;
+  padding: 0 16px; /* Add padding to align with the search bar */
+}
+
+.list-item {
+  padding: 12px 16px; /* Add padding to align with the search bar */
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.list-item:hover {
+  background-color: #f0f0f0;
+}
