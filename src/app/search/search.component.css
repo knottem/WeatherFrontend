@@ -7,6 +7,8 @@
   z-index: 1000;
   padding: 0; /* Remove padding to ensure full-width */
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
 }
 
 ion-searchbar.searchbar {
@@ -16,6 +18,11 @@ ion-searchbar.searchbar {
 .search-wrapper {
   border-radius: 16px; /* Manually add border radius to ensure it applies */
   overflow: hidden; /* Ensure rounded corners by hiding overflow */
+}
+
+.search-results {
+  max-height: 80%;
+  overflow-y: auto; /* Add scroll to the results */
 }
 
 .list-title {
@@ -30,6 +37,7 @@ ion-searchbar.searchbar {
   border-bottom: 1px solid #ddd;
   cursor: pointer;
   transition: background-color 0.3s;
+  list-style: none;
 }
 
 .list-item:hover {
