@@ -44,6 +44,11 @@
     "title": "Settings",
     "selectLanguage": "Change language"
   },
+  "search": {
+    "favorites": "Favorites",
+    "recently": "Recently Searched",
+    "results": "Search Results"
+  },
 	"weatherTable": {
 		"afternoon": "Afternoon",
 		"avgWindDirection": "Avg Wind Direction",
