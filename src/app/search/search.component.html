@@ -1,0 +1,54 @@
+<div class="search-container">
+  <div class="container mx-auto px-2 py-2 shadow-md">
+    <div class="flex bg-[#d9e9ea] h-16 search-wrapper">
+    <ion-searchbar
+    [(ngModel)]="searchQuery"
+    showCancelButton="always"
+    placeholder="{{ 'header.searchForCity' | translate }}"
+    (ionInput)="onSearchInput($event)"
+    (ionCancel)="onCancel()"
+    (keydown)="onEnterPress($event)"
+    class="searchbar"
+  ></ion-searchbar>
+    </div>
+  </div>
+
+  <div class="search-results" id="search-results">
+    <div *ngIf="!searchQuery">
+      <div *ngIf="favoriteCities.length !== 0">
+      <h2 class="list-title">{{ 'search.favorites' | translate }}</h2>
+      <div *ngFor="let city of favoriteCities"  class="list-item clickable-area" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
+        <span>{{ city }}</span>
+        <ion-icon
+          src="assets/icons/star.svg"
+          (click)="toggleFavorite(city); $event.stopPropagation()"
+          (keydown)="onKeyPressFavorite($event, city)">
+        </ion-icon>
+      </div>
+      </div>
+      <div *ngIf="lastSearched.length !== 0">
+      <h2 class="list-title">{{ 'search.recently' | translate }}</h2>
+      <div *ngFor="let city of lastSearchedCities()" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
+        <span>{{ city }}</span>
+        <ion-icon
+          [src]="isFavorite(city) ? 'assets/icons/star.svg' : 'assets/icons/star-outline.svg'"
+          (click)="toggleFavorite(city); $event.stopPropagation()"
+          (keydown)="onKeyPressFavorite($event, city)">
+        </ion-icon>
+      </div>
+        </div>
+    </div>
+
+    <div *ngIf="searchQuery && (filteredCities | async)?.length">
+      <h2 class="list-title">{{ 'search.results' | translate }}</h2>
+      <div *ngFor="let city of filteredCities | async" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
+        <span>{{ city }}</span>
+        <ion-icon
+          [src]="isFavorite(city) ? 'assets/icons/star.svg' : 'assets/icons/star-outline.svg'"
+          (click)="toggleFavorite(city); $event.stopPropagation()"
+          (keydown)="onKeyPressFavorite($event, city)">
+        </ion-icon>
+      </div>
+    </div>
+  </div>
+</div>

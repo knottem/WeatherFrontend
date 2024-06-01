@@ -117,4 +117,19 @@
     <br />
   </div>
 
+  <div class="flex justify-between items-start sm:items-center mx-2">
+    <div *ngIf="updatedTime === ''">
+      <p class="text-gray-600 text-xs sm:text-sm" [innerHTML]="translatedSources"></p>
+    </div>
+    <div *ngIf="updatedTime !== ''">
+      <p class="text-gray-600 text-xs sm:text-sm">
+          <span class="block sm:inline">
+            {{ 'footer.updated' | translate }} {{ updatedTime }}.
+          </span>
+        <span class="block sm:inline" [innerHTML]="translatedSources"></span>
+      </p>
+    </div>
+
+  </div>
+
 </div>

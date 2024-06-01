@@ -1,46 +1,43 @@
 import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
+import { RefresherCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
   template: `
-      <app-header></app-header>
-      <app-error-comp></app-error-comp>
-      <router-outlet></router-outlet>
-      <app-footer></app-footer>
-  `,
-  styles: [
-    `
-      :host {
-        display: flex;
-        flex-direction: column;
-        width: 80%;
-        min-width: 600px;
-        max-width: 1400px;
-        margin: 0 auto;
-        font-family: Roboto, sans-serif;
-      }
+    <ion-app>
+      <ion-content>
+        <div class="content-wrapper">
+            <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
+            <app-header></app-header>
+            <app-error-comp></app-error-comp>
+            <router-outlet></router-outlet>
+        </div>
+      </ion-content>
+      <div class="content-wrapper">
+        <ion-footer>
+          <ion-toolbar>
+            <app-footer></app-footer>
+          </ion-toolbar>
+        </ion-footer>
+      </div>
 
-      @media (max-width: 1024px) {
-        :host {
-          width: 100%;
-          min-width: 0;
-          margin: 0;
-        }
-      }
-    `,
-  ],
+    </ion-app>
+  `,
+  styles: []
 })
 export class AppComponent {
   constructor(translate: TranslateService) {
-    // check if the user has a language preference stored in cookies
+    translate.setDefaultLang('en');
     const userLang = localStorage.getItem('language');
     if (userLang) {
-      translate.setDefaultLang(userLang);
       translate.use(userLang);
-    } else {
-      translate.setDefaultLang('en');
-      translate.use('en');
     }
+  }
+
+  doRefresh(event: RefresherCustomEvent) {
+    location.reload();
   }
 }

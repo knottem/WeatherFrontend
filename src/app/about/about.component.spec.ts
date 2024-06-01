@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AboutComponent } from './about.component';
 import { TranslateModule } from "@ngx-translate/core";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -8,7 +9,8 @@ describe('AboutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()]
+      imports: [TranslateModule.forRoot()],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 
