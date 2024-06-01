@@ -6,8 +6,6 @@
     showCancelButton="always"
     placeholder="{{ 'header.searchForCity' | translate }}"
     (ionInput)="onSearchInput($event)"
-    (ionFocus)="onSearchbarFocus()"
-    (ionBlur)="onSearchbarBlur()"
     (ionCancel)="onCancel()"
     (keydown)="onEnterPress($event)"
     class="searchbar"
@@ -15,16 +13,18 @@
     </div>
   </div>
 
-  <div *ngIf="!searchQuery">
-    <h2 class="list-title">Recently Searched</h2>
-    <div *ngFor="let city of lastSearched" class="list-item" (click)="onCitySelected(city)">
-      {{ city }}
+  <div class="search-results">
+    <div *ngIf="!searchQuery">
+      <h2 class="list-title">Recently Searched</h2>
+      <div *ngFor="let city of lastSearched" class="list-item" (click)="onCitySelected(city)">
+        {{ city }}
+      </div>
     </div>
-  </div>
-  <div *ngIf="searchQuery && (filteredCities | async)?.length">
-    <h2 class="list-title">Search Results</h2>
-    <div *ngFor="let city of filteredCities | async" class="list-item" (click)="onCitySelected(city)">
-      {{ city }}
+    <div *ngIf="searchQuery && (filteredCities | async)?.length">
+      <h2 class="list-title">Search Results</h2>
+      <div *ngFor="let city of filteredCities | async" class="list-item" (click)="onCitySelected(city)">
+        {{ city }}
+      </div>
     </div>
   </div>
 </div>

@@ -53,18 +53,6 @@ export class SearchComponent implements OnInit {
     return this.cityList.filter(city => city.toLowerCase().includes(value.toLowerCase()));
   }
 
-  public onSearchbarFocus() {
-    if (this.searchQuery.trim() === '') {
-      this.filteredCities = of([...this.lastSearched].reverse());
-    }
-  }
-
-  public onSearchbarBlur() {
-    setTimeout(() => {
-      this.filteredCities = of([]);
-    }, 100);
-  }
-
   public onSearchInput(event: any) {
     const query = event.target.value.toLowerCase();
     if (query.length > 0) {
