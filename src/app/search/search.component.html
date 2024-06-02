@@ -15,17 +15,23 @@
 
   <div class="search-results" id="search-results">
     <div *ngIf="!searchQuery">
+
       <div *ngIf="favoriteCities.length !== 0">
-      <h2 class="list-title">{{ 'search.favorites' | translate }}</h2>
-      <div *ngFor="let city of favoriteCities"  class="list-item clickable-area" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
-        <span>{{ city }}</span>
-        <ion-icon
-          src="assets/icons/star.svg"
-          (click)="toggleFavorite(city); $event.stopPropagation()"
-          (keydown)="onKeyPressFavorite($event, city)">
-        </ion-icon>
+        <h2 class="list-title">{{ 'search.favorites' | translate }}</h2>
+        <div cdkDropList (cdkDropListDropped)="drop($event)" class="drop-list">
+          <div *ngFor="let city of favoriteCities; let i = index">
+            <div class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)"  cdkDragLockAxis="y" cdkDrag [cdkDragStartDelay]="100">
+              <span>{{ city }}</span>
+              <ion-icon
+                src="assets/icons/star.svg"
+                (click)="toggleFavorite(city); $event.stopPropagation()"
+                (keydown)="onKeyPressFavorite($event, city)">
+              </ion-icon>
+            </div>
+          </div>
+        </div>
       </div>
-      </div>
+
       <div *ngIf="lastSearched.length !== 0">
       <h2 class="list-title">{{ 'search.recently' | translate }}</h2>
       <div *ngFor="let city of lastSearchedCities()" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">

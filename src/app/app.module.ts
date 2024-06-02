@@ -15,6 +15,7 @@ import { FooterComponent } from './footer/footer.component';
 import { TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import { TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { IonicModule} from "@ionic/angular";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { IonicModule} from "@ionic/angular";
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
+    DragDropModule,
     IonicModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
