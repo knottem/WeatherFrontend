@@ -1,6 +1,6 @@
-<div class="search-container">
-  <div class="container mx-auto px-2 py-2 shadow-md">
-    <div class="flex bg-[#d9e9ea] h-16 search-wrapper">
+<div class="fixed inset-0 bg-white flex flex-col lg:flex lg:mx-auto lg:w-[80%] lg:shadow">
+  <div class="w-full mx-auto px-2 py-2 shadow-md bg-[#d9e9ea]">
+    <div class="flex h-16 search-wrapper">
     <ion-searchbar
     [(ngModel)]="searchQuery"
     showCancelButton="always"
@@ -15,17 +15,23 @@
 
   <div class="search-results" id="search-results">
     <div *ngIf="!searchQuery">
+
       <div *ngIf="favoriteCities.length !== 0">
-      <h2 class="list-title">{{ 'search.favorites' | translate }}</h2>
-      <div *ngFor="let city of favoriteCities"  class="list-item clickable-area" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
-        <span>{{ city }}</span>
-        <ion-icon
-          src="assets/icons/star.svg"
-          (click)="toggleFavorite(city); $event.stopPropagation()"
-          (keydown)="onKeyPressFavorite($event, city)">
-        </ion-icon>
+        <h2 class="list-title">{{ 'search.favorites' | translate }}</h2>
+        <div cdkDropList (cdkDropListDropped)="drop($event)" class="drop-list">
+          <div *ngFor="let city of favoriteCities; let i = index">
+            <div class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)"  cdkDragLockAxis="y" cdkDrag [cdkDragStartDelay]="100">
+              <span>{{ city }}</span>
+              <ion-icon
+                src="assets/icons/star.svg"
+                (click)="toggleFavorite(city); $event.stopPropagation()"
+                (keydown)="onKeyPressFavorite($event, city)">
+              </ion-icon>
+            </div>
+          </div>
+        </div>
       </div>
-      </div>
+
       <div *ngIf="lastSearched.length !== 0">
       <h2 class="list-title">{{ 'search.recently' | translate }}</h2>
       <div *ngFor="let city of lastSearchedCities()" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">

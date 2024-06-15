@@ -38,7 +38,7 @@
 	"weatherDisplay": {
 		"showTenDays": "10 Tage anzeigen",
 		"showThreeDays": "3 Tage anzeigen",
-		"weatherAt": "Wetter in {{ cityName }} um {{ current }} Uhr"
+		"weatherAt": "Aktuelles Wetter in {{ cityName }}"
 	},
   "settings": {
     "title": "Einstellungen",

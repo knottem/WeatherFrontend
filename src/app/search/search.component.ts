@@ -7,6 +7,7 @@ import { SharedService } from '../shared.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonicModule, Platform } from "@ionic/angular";
 import { FormsModule } from "@angular/forms";
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-search',
@@ -15,7 +16,9 @@ import { FormsModule } from "@angular/forms";
     CommonModule,
     IonicModule,
     FormsModule,
-    TranslateModule
+    TranslateModule,
+    CdkDropList,
+    CdkDrag
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
@@ -43,8 +46,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this.getCityList();
-    this.loadLastSearched();
-    this.loadFavoriteCities();
+    this.loadSavedData();
     this.addKeyboardListeners();
   }
 
@@ -52,18 +54,19 @@ export class SearchComponent implements OnInit {
     this.removeKeyboardListeners();
   }
 
-  private loadLastSearched() {
-    const item = localStorage.getItem(this.LAST_SEARCHED_KEY);
-    this.lastSearched = item ? JSON.parse(item) : [];
+  private loadSavedData() {
+    const favorites = localStorage.getItem(this.FAVORITE_CITIES_KEY);
+    this.favoriteCities = favorites ? JSON.parse(favorites) : [];
+
+    const searched = localStorage.getItem(this.LAST_SEARCHED_KEY);
+    this.lastSearched = searched ? JSON.parse(searched) : [];
+
     this.lastSearched = this.lastSearched.filter(city => !this.favoriteCities.includes(city));
   }
 
-  private loadFavoriteCities() {
-    const favorites = localStorage.getItem(this.FAVORITE_CITIES_KEY);
-    this.favoriteCities = favorites ? JSON.parse(favorites) : [];
-  }
 
-  // list of 3 last searched cities that are not in favorites list so we need to filter out the favorites before returning
+
+  // list of 3 last searched cities that are not in favorites list, so we need to filter out the favorites before returning
   public lastSearchedCities(): string[] {
     return this.lastSearched.filter(city => !this.favoriteCities.includes(city)).slice(-3).reverse();
   }
@@ -74,12 +77,6 @@ export class SearchComponent implements OnInit {
       this.favoriteCities.splice(index, 1);
     } else {
       this.favoriteCities.push(city);
-      // Remove from last searched if it's being added to favorites
-      const lastSearchedIndex = this.lastSearched.indexOf(city);
-      if (lastSearchedIndex > -1) {
-        this.lastSearched.splice(lastSearchedIndex, 1);
-        localStorage.setItem('lastSearched', JSON.stringify(this.lastSearched));
-      }
     }
     localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
   }
@@ -119,7 +116,6 @@ export class SearchComponent implements OnInit {
       searchResults.style.maxHeight = '80%';
     }
   }
-
 
   onCancel() {
     this.router.navigate(['/']); // Navigate back to the previous page
@@ -216,6 +212,11 @@ export class SearchComponent implements OnInit {
     if (event.key === 'Enter' || event.key === ' ') {
       this.toggleFavorite(city);
     }
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.favoriteCities, event.previousIndex, event.currentIndex);
+    localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
   }
 
 }

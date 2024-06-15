@@ -1,6 +1,6 @@
 {
   "name": "weather-frontend",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Weather frontend application",
   "scripts": {
     "prebuild": "node ./scripts/set-version.js",
@@ -26,12 +26,13 @@
     "@angular/platform-browser-dynamic": "^17.3.5",
     "@angular/router": "^17.3.5",
     "@capacitor/android": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
     "@capacitor/cli": "^6.0.0",
     "@capacitor/core": "^6.0.0",
-    "@capacitor/splash-screen": "^6.0.0",
     "@ionic/angular": "^8.2.0",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
+    "angular-svg-icon": "^17.0.0",
     "luxon": "^3.4.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.2",

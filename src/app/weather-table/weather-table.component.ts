@@ -3,13 +3,14 @@ import { WeatherData } from '../../models/weather-data';
 import { WeatherService } from '../weather.service';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
+import { MatTable } from "@angular/material/table";
 
 @Component({
   selector: 'app-weather-table',
   templateUrl: './weather-table.component.html',
 
   standalone: true,
-  imports: [CommonModule, TranslateModule]
+  imports: [CommonModule, TranslateModule, MatTable]
 })
 export class WeatherTableComponent {
   @Input() dayLabel: string = '';

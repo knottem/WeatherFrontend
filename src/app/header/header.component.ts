@@ -10,24 +10,6 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styles: [`
-
-    .autocomplete-list {
-      border: 1px solid #ddd;
-      background-color: white;
-      position: absolute;
-      z-index: 1000;
-      max-height: 200px;
-      overflow-y: auto;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .autocomplete-list div {
-      padding: 8px;
-      cursor: pointer;
-    }
-
-    .autocomplete-list div:hover {
-      background-color: #eee;
-    }
   `]
 
 })
