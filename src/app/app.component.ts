@@ -39,7 +39,10 @@ export class AppComponent {
     }
 
     App.addListener('backButton', () => {
-      if(this.isAtBaseRoute()){
+      if(['/',
+          '/about',
+          '/settings'
+          ].includes(this.router.url)){
         App.minimizeApp();
       } else {
         window.history.back();
@@ -51,9 +54,4 @@ export class AppComponent {
     location.reload();
   }
 
-  private isAtBaseRoute(): boolean {
-    // Add the routes that are considered base routes
-    const baseRoutes = ['/', '/about', '/settings'];
-    return baseRoutes.includes(this.router.url);
-  }
 }
