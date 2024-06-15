@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import { RefresherCustomEvent } from '@ionic/angular';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,14 @@ export class AppComponent {
     if (userLang) {
       translate.use(userLang);
     }
+
+    App.addListener('backButton', ({canGoBack}) => {
+      if(!canGoBack){
+        App.exitApp();
+      } else {
+        window.history.back();
+      }
+    });
   }
 
   doRefresh(event: RefresherCustomEvent) {
