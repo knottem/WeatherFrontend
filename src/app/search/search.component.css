@@ -1,16 +1,3 @@
-.search-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-  padding: 0; /* Remove padding to ensure full-width */
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-}
-
 ion-searchbar.searchbar {
   --border-radius: 0.75rem;
 }
