@@ -39,7 +39,7 @@
     <div class="p-2 bg-white rounded shadow h-20">
       <div>
       <div class="hidden sm:block font-semibold">
-        {{ 'weatherTable.temperatureHL' | translate }}:
+        {{ 'temperatureShort' | translate }}:
       </div>
       <div class="block sm:hidden font-semibold" title="Temperature">
         Temp. high/low:
@@ -85,7 +85,7 @@
       <div class="font-semibold">
         {{ 'weatherTable.avgWindDirection' | translate }}:</div>
       <div class="flex justify-center text-xl sm:text-2xl lg:text-3xl my-2">
-        {{ averageWindDirection }}°
+        <img [src]="'assets/icons/wind-direction.svg'" [ngStyle]="{'transform': 'rotate(' + averageWindDirection + 'deg)'}" alt="Wind Direction Icon" class="h-8 w-8">
       </div>
     </div>
     <div
@@ -162,7 +162,7 @@
   <div *ngIf="showWeather" class="p-1 sm:p-4 bg-neutral-200 rounded">
     <!-- Full days weather navigation -->
     <div>
-      <div class="grid grid-cols-6 grid-rows-1 gap-2 lg:gap-0 px-1 sm:px-0">
+      <div class="grid grid-cols-5 grid-rows-1 gap-2 lg:gap-0 px-1 sm:px-0">
         <!-- Time Card -->
         <div class="flex flex-col justify-center items-center">
           <div class="font-semibold">{{ 'time' | translate }}:</div>
@@ -200,17 +200,6 @@
             </div>
           </div>
         </div>
-        <!-- Wind Direction Card -->
-        <div class="flex flex-col justify-center items-center">
-          <div>
-            <div class="hidden lg:block font-semibold">
-              {{ 'windDirection' | translate }}:
-            </div>
-            <div class="block lg:hidden font-semibold" title="Wind Direction">
-              {{ 'windDirectionShort' | translate }}:
-            </div>
-          </div>
-        </div>
         <!-- Weather Image Card -->
         <div class="flex flex-col justify-center items-center">
           <div class="font-semibold">{{ 'weather' | translate }}:</div>
@@ -220,7 +209,7 @@
     <!-- Full days weather data -->
     <ng-template ngFor let-hour [ngForOf]="timestamps" let-i="index">
       <div class="bg-white shadow-2xl rounded sm:rounded-xl my-1">
-        <div class="grid grid-cols-6 grid-rows-1 gap-2 lg:gap-0">
+        <div class="grid grid-cols-5 grid-rows-1 gap-2 lg:gap-0">
           <!-- Time Card -->
           <div class="flex flex-col justify-center items-center">
             <div class="text-sm sm:text-base lg:text-xl">
@@ -245,17 +234,12 @@
               {{ weather.weatherData[hour].precipitation }} mm
             </div>
           </div>
-          <!-- Wind Speed Card -->
-          <div class="flex flex-col justify-center items-center">
-            <div class="text-sm sm:text-base lg:text-xl whitespace-nowrap">
-              {{ weather.weatherData[hour].windSpeed }} m/s
-            </div>
-          </div>
-          <!-- Wind Direction Card -->
-          <div class="flex flex-col justify-center items-center">
-            <div class="text-sm sm:text-base lg:text-xl">
-              {{ weather.weatherData[hour].windDirection }}°
-            </div>
+          <!-- Wind  Card -->
+          <div class="flex justify-center items-center">
+            <img [src]="'assets/icons/wind-direction.svg'"
+                 [ngStyle]="{'transform': 'rotate(' + weather.weatherData[hour].windDirection + 'deg)'}"
+                 alt="{{ weather.weatherData[hour].windDirection }}°" class="h-6 w-6">
+            <span>{{ weather.weatherData[hour].windSpeed }} m/s</span>
           </div>
           <!-- Weather Image Card -->
           <div
