@@ -1,109 +1,49 @@
- <!-- Buttons to switch between 3 days and 10 days-->
- <div class="flex justify-center sm:justify-normal">
-  <button
-    class="my-2 sm:ml-3 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
-    [ngClass]="{
-      'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
-        amountOfDays !== 3,
-      'bg-neutral-300 text-black font-extrabold': amountOfDays === 3
-    }"
-    (click)="amountOfDaysChanged(3)"
-  >
-    {{ 'weatherDisplay.showThreeDays' | translate }}
-  </button>
-
-  <button
-    class="my-2 sm:ml-3 block rounded-xl px-7 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 min-w-[140px] text-center"
-    [ngClass]="{
-      'bg-neutral-100 text-neutral-500 text-primary-700 hover:bg-neutral-300 font-medium':
-        amountOfDays !== 10,
-      'bg-neutral-300 text-black font-extrabold': amountOfDays == 10
-    }"
-    (click)="amountOfDaysChanged(10)"
-  >
-    {{ 'weatherDisplay.showTenDays' | translate }}
-  </button>
-</div>
-
 <app-loading-indicator *ngIf="!isLoaded"></app-loading-indicator>
 <div *ngIf="isLoaded">
   <!-- Current Weather Display -->
-  <div class="p-3 bg-white shadow-2xl rounded-xl mb-4">
-    <div class="flex justify-between items-center">
-      <p class="text-base sm:text-xl font-medium whitespace-nowrap sm:w-48" [innerHTML]="'weatherDisplay.weatherAt' |
-      translate: {
-        cityName: weather.city.name,
-        current: currentWeather.timestamp.substring(11, 16)}">
-      </p>
+  <div class="p-4 bg-white shadow-lg rounded-lg text-black mb-4 mx-2 mt-4 ">
+    <div class="flex justify-between items-center mb-4">
+      <p class="text-lg font-base"> {{ 'weatherDisplay.weatherAt' | translate: {cityName: weather.city.name } }} - {{ currentWeather.timestamp.substring(11, 16) }}</p>
     </div>
-    <div
-      class="p-4 bg-neutral-200 rounded grid grid-cols-2 lg:grid-cols-5 gap-4 relative"
-    >
-      <div
-        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
-      >
-        <div class="absolute top-2 font-semibold">
-          {{ 'temperature' | translate }}:
+    <div class="flex justify-between sm:block">
+      <div class="flex flex-col justify-around sm:flex-row">
+        <div class="flex items-center mb-4 sm:mb-0">
+          <img class="h-8 w-8 mr-1 mt-2 ml-1 sm:mt-0 sm:ml-0 sm:h-10 sm:w-10" src="assets/icons/temperature.svg" alt="Temperature Icon">
+          <div>
+            <div class="text-sm sm:text-base">{{ 'temperature' | translate }}</div>
+            <div class="text-lg sm:text-xl" [ngClass]="{ 'text-red-500': currentWeather.temperature >= 0, 'text-blue-500': currentWeather.temperature < 0 }">
+              {{ currentWeather.temperature }}°C
+            </div>
+          </div>
         </div>
-        <div
-          class="text-2xl sm:text-3xl lg:mt-5 mt-7"
-          [ngClass]="{
-            'text-red-500': currentWeather.temperature >= 0,
-            'text-blue-500': currentWeather.temperature < 0
-          }"
-        >
-          {{ currentWeather.temperature }}°C
+        <div class="flex items-center mb-4 sm:mb-0">
+          <img class="h-8 w-8 mr-2 mt-2 sm:mt-0 sm:h-10 sm:w-10" src="assets/icons/precipitation.svg" alt="Precipitation Icon">
+          <div>
+            <div class="text-sm sm:text-base">{{ 'precipitation' | translate }}</div>
+            <div class="text-lg sm:text-xl">{{ currentWeather.precipitation }} mm</div>
+          </div>
         </div>
-      </div>
-      <div
-        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
-      >
-        <div class="absolute top-2 font-semibold">
-          {{ 'precipitation' | translate }}:
+        <div class="flex items-center">
+          <img [src]="'assets/icons/wind-direction.svg'" [ngStyle]="{'transform': 'rotate(' + currentWeather.windDirection + 'deg)'}" alt="Wind Direction Icon" class="h-8 w-8 mr-2 mt-2 sm:mt-1 sm:h-10 sm:w-10">
+          <div>
+            <div class="text-sm sm:text-base">{{ 'wind' | translate }}</div>
+            <div class="text-lg sm:text-xl">{{ currentWeather.windSpeed }} m/s</div>
+          </div>
         </div>
-        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
-          {{ currentWeather.precipitation }} mm
-        </div>
-      </div>
-      <div
-        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
-      >
-        <div class="absolute top-2 font-semibold">
-          {{ 'windSpeed' | translate }}:
-        </div>
-        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
-          {{ currentWeather.windSpeed }} m/s
+        <div class="items-center hidden sm:block">
+          <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
         </div>
       </div>
-      <div
-        class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative"
-      >
-        <div class="absolute top-2 font-semibold">
-          {{ 'windDirection' | translate }}:
-        </div>
-        <div class="text-2xl sm:text-3xl lg:mt-5 mt-7">
-          {{ currentWeather.windDirection }}°
-        </div>
+      <div class="flex items-center mt-4 sm:hidden">
+        <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
       </div>
-      <div
-      class="p-2 bg-white rounded shadow flex flex-col justify-center items-center relative col-span-2 lg:col-auto"
-    >
-      <div class="absolute top-2 font-semibold">
-        {{ 'currentWeather' | translate }}:
-      </div>
-      <img
-        class="h-16 w-16 mt-5"
-        [src]="
-          getWeatherConditionImage(
-            currentWeather.weatherCode,
-            isDayTime(currentWeather.timestamp)
-          )
-        "
-        [title]="getWeatherConditionDescription(currentWeather.weatherCode)"
-        alt="Weather Condition"
-      />
     </div>
-    </div>
+  </div>
+
+  <div *ngIf="updatedTime !== ''" class="flex justify-center">
+    <p class="text-gray-600 text-xs">
+      <span [innerHTML]="translatedSources"></span>
+    </p>
   </div>
 
   <!-- Weather Data Display -->
@@ -118,18 +58,12 @@
   </div>
 
   <div class="flex justify-between items-start sm:items-center mx-2">
-    <div *ngIf="updatedTime === ''">
-      <p class="text-gray-600 text-xs sm:text-sm" [innerHTML]="translatedSources"></p>
-    </div>
     <div *ngIf="updatedTime !== ''">
       <p class="text-gray-600 text-xs sm:text-sm">
           <span class="block sm:inline">
             {{ 'footer.updated' | translate }} {{ updatedTime }}.
           </span>
-        <span class="block sm:inline" [innerHTML]="translatedSources"></span>
       </p>
     </div>
-
   </div>
-
 </div>

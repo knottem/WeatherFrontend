@@ -17,11 +17,9 @@ import {Subscription} from "rxjs";
 })
 export class WeatherDisplayComponent {
 
-  @ViewChildren(WeatherTableComponent)
-  private weatherTableComponent!: QueryList<WeatherTableComponent>;
-
   private defaultCity: string = 'stockholm';
-  public amountOfDays: number = 3;
+
+  public amountOfDays: number = 10;
 
   private imageCache = new Map<string, string>();
 
@@ -120,17 +118,6 @@ export class WeatherDisplayComponent {
     const allButLast = sources.slice(0, -1).join(', ');
     const last = sources[sources.length - 1];
     return `${allButLast} ${and} ${last}`;
-  }
-
-  public amountOfDaysChanged(num: number): void {
-    this.isLoaded = false;
-    this.amountOfDays = num;
-    this.weatherTableComponent.forEach((table) => {
-      table.showWeather = false;
-    });
-    setTimeout(() => {
-      this.isLoaded = true;
-    }, Math.floor(Math.random() * 300) + 100);
   }
 
   private getWeather(str: string) {

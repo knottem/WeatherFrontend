@@ -61,7 +61,7 @@ export class WeatherService {
     18: './assets/images/weathericons/46.svg',
     19: './assets/images/weathericons/09.svg',
     20: './assets/images/weathericons/10.svg',
-    21: './assets/images/weathericons/33.svg', // thunder - not really accurate picture
+    21: './assets/images/weathericons/30.svg', // thunder - not really accurate picture
     22: './assets/images/weathericons/47.svg',
     23: './assets/images/weathericons/12.svg',
     25: './assets/images/weathericons/44d.svg',
@@ -98,7 +98,7 @@ export class WeatherService {
 
   constructor(private http: HttpClient) {}
 
-  getWeather(city: string): Observable<any> { 
+  getWeather(city: string): Observable<any> {
       return this.http.get<any>(`${environment.apiUrl}/weather/${city}`).pipe(
         //delay(1000)
       );
@@ -136,5 +136,5 @@ export class WeatherService {
       })
     );
   }
-  
-}                                                                                 
+
+}

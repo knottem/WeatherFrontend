@@ -38,7 +38,7 @@
   "weatherDisplay": {
     "showTenDays": "Show 10 days",
     "showThreeDays": "Show 3 days",
-    "weatherAt": "Weather in {{ cityName }} at {{ current }}"
+    "weatherAt": "Current Weather in {{ cityName }}"
   },
   "settings": {
     "title": "Settings",
@@ -61,7 +61,8 @@
 		"night": "Night",
 		"sunrise": "Sunrise",
 		"sunset": "Sunset",
-		"temperatureHL": "Temperature high/low",
+		"temperatureH": "Temp high",
+    "temperatureL": "Temp low",
 		"weatherFriday": "Friday's weather",
 		"weatherMonday": "Monday's weather",
 		"weatherSaturday": "Saturday's weather",

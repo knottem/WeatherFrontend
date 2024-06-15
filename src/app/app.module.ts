@@ -16,6 +16,7 @@ import { TranslateModule, TranslateLoader} from "@ngx-translate/core";
 import { TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { IonicModule} from "@ionic/angular";
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AngularSvgIconModule } from "angular-svg-icon";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatInputModule,
     ReactiveFormsModule,
     DragDropModule,
+    AngularSvgIconModule,
     IonicModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
