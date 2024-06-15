@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import { RefresherCustomEvent } from '@ionic/angular';
 import { App } from '@capacitor/app';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -30,16 +31,16 @@ import { App } from '@capacitor/app';
   styles: []
 })
 export class AppComponent {
-  constructor(translate: TranslateService) {
+  constructor(translate: TranslateService, private router: Router) {
     translate.setDefaultLang('en');
     const userLang = localStorage.getItem('language');
     if (userLang) {
       translate.use(userLang);
     }
 
-    App.addListener('backButton', ({canGoBack}) => {
-      if(!canGoBack){
-        App.exitApp();
+    App.addListener('backButton', () => {
+      if(this.isAtBaseRoute()){
+        App.minimizeApp();
       } else {
         window.history.back();
       }
@@ -48,5 +49,11 @@ export class AppComponent {
 
   doRefresh(event: RefresherCustomEvent) {
     location.reload();
+  }
+
+  private isAtBaseRoute(): boolean {
+    // Add the routes that are considered base routes
+    const baseRoutes = ['/', '/about', '/settings'];
+    return baseRoutes.includes(this.router.url);
   }
 }
