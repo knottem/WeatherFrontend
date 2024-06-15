@@ -29,6 +29,7 @@
   app-root,
   app-header,
   app-footer,
+  app-search,
   router-outlet {
     width: 100%;
     min-width: 0;
