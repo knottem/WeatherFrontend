@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {Observable, of, throwError} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError, delay } from 'rxjs/operators';
+import {ErrorService} from "./error.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root'
@@ -96,12 +98,62 @@ export class WeatherService {
     53: './assets/images/weathericons/50.svg',
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private errorService: ErrorService,
+    private translate: TranslateService  // Inject TranslateService
+  ) {}
 
   getWeather(city: string): Observable<any> {
-      return this.http.get<any>(`${environment.apiUrl}/weather/${city}`).pipe(
-        //delay(1000)
-      );
+    const apis = this.getSelectedApis();
+
+    let url = `${environment.apiUrl}/weather/${city}`;
+    if (apis && apis.length > 0) {
+      if (apis.includes('fmi') && apis.length === 1) {
+        console.warn("FMI can't be used alone, using default of all APIs.");
+      } else {
+        url += `?apis=${apis.join(',')}`;
+      }
+    }
+
+    return this.http.get<any>(url).pipe(
+      catchError((error: HttpErrorResponse) => this.handleError(error))
+    );
+  }
+
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = this.translate.instant('error.unexpected_error_occurred');  // Default message
+
+    if (error.error && typeof error.error === 'object') {
+      const errorDetail = error.error.error;
+      const apiList = errorDetail.split(': ')[1]?.split(', ') || [];
+      const apiNames = apiList.join(', ');
+
+      if (apiList.length > 1) {
+        errorMessage = this.translate.instant('error.services_unavailable', { apis: apiNames });
+      } else if (apiList.length === 1) {
+        errorMessage = this.translate.instant('error.service_unavailable', { api: apiNames });
+      } else {
+        errorMessage = this.translate.instant('error.one_or_more_services_unavailable');
+      }
+
+      this.errorService.setError(errorMessage);
+    } else if (error.error instanceof ErrorEvent) {
+      errorMessage = this.translate.instant('error.network_error', { message: error.error.message });
+      this.errorService.setError(errorMessage);
+    } else {
+      errorMessage = this.translate.instant('error.server_error', { status: error.status });
+      this.errorService.setError(errorMessage);
+    }
+
+    return throwError(() => new Error(errorMessage));
+  }
+
+
+  private getSelectedApis(): string[] {
+    const apis = localStorage.getItem('apis');
+    return apis ? JSON.parse(apis) : [];
   }
 
   getCityList(): Observable<string[]> {

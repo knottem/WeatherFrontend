@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div *ngIf="searchQuery && (filteredCities | async)?.length">
+    <div *ngIf="searchQuery">
       <h2 class="list-title">{{ 'search.results' | translate }}</h2>
       <div *ngFor="let city of filteredCities | async" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
         <span>{{ city }}</span>
@@ -54,6 +54,9 @@
           (click)="toggleFavorite(city); $event.stopPropagation()"
           (keydown)="onKeyPressFavorite($event, city)">
         </ion-icon>
+      </div>
+      <div *ngIf="(filteredCities | async)?.length  === 0 " class="list-item no-search">
+        <span>{{ 'search.noResults' | translate }}</span>
       </div>
     </div>
   </div>

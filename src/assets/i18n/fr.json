@@ -42,7 +42,9 @@
 	},
   "settings": {
     "title": "Paramètres",
-    "selectLanguage": "Changer de langue"
+    "selectLanguage": "Changer de langue",
+    "selectApi": "Sélectionner l'API",
+    "noResults": "Aucun résultat trouvé"
   },
   "search": {
     "favorites": "Favoris",
@@ -75,5 +77,13 @@
 	"wind": "Vent",
 	"windDirection": "Direction du vent",
 	"windDirectionShort": "Wdir",
-	"windSpeed": "Vitesse du vent"
+	"windSpeed": "Vitesse du vent",
+  "error": {
+    "unexpected_error_occurred": "Une erreur inattendue est survenue.",
+    "services_unavailable": "Les services suivants sont actuellement désactivés : {{apis}}. Veuillez réessayer plus tard ou choisir un autre service.",
+    "service_unavailable": "Le service {{api}} est actuellement désactivé. Veuillez réessayer plus tard ou choisir un autre service.",
+    "one_or_more_services_unavailable": "Un ou plusieurs services météorologiques sont actuellement désactivés. Veuillez réessayer plus tard.",
+    "network_error": "Erreur réseau : {{message}}",
+    "server_error": "Erreur du serveur : Le serveur a renvoyé un code d'état inattendu {{status}}. Veuillez réessayer plus tard."
+  }
 }

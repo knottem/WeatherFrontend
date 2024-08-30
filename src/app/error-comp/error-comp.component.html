@@ -1,0 +1,13 @@
+<div *ngIf="errorMessage" class="swipe-card">
+  <ion-card>
+    <ion-button fill="clear" size="small" class="close-button" (click)="dismissError()">
+      <ion-icon name="close" src="assets/icons/close.svg"></ion-icon>
+    </ion-button>
+    <ion-card-header>
+      <ion-card-title>Error</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{ errorMessage }}
+    </ion-card-content>
+  </ion-card>
+</div>
