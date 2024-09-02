@@ -84,6 +84,8 @@
     "service_unavailable": "Der Dienst {{api}} ist derzeit deaktiviert. Bitte versuchen Sie es später erneut oder wählen Sie einen anderen Dienst.",
     "one_or_more_services_unavailable": "Ein oder mehrere Wetterdienste sind derzeit deaktiviert. Bitte versuchen Sie es später erneut.",
     "network_error": "Netzwerkfehler: {{message}}",
-    "server_error": "Serverfehler: Der Server hat einen unerwarteten Statuscode {{status}} zurückgegeben. Bitte versuchen Sie es später erneut."
+    "server_error": "Serverfehler: Der Server hat einen unerwarteten Statuscode {{status}} zurückgegeben. Bitte versuchen Sie es später erneut.",
+    "timeout_error": "Die Anfrage hat zu lange gedauert, um zu antworten. Bitte überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.",
+    "network_unavailable": "Keine Internetverbindung erkannt. Bitte überprüfen Sie Ihre Netzwerkeinstellungen und versuchen Sie es erneut."
   }
 }

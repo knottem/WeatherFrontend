@@ -84,6 +84,8 @@
     "service_unavailable": "Le service {{api}} est actuellement désactivé. Veuillez réessayer plus tard ou choisir un autre service.",
     "one_or_more_services_unavailable": "Un ou plusieurs services météorologiques sont actuellement désactivés. Veuillez réessayer plus tard.",
     "network_error": "Erreur réseau : {{message}}",
-    "server_error": "Erreur du serveur : Le serveur a renvoyé un code d'état inattendu {{status}}. Veuillez réessayer plus tard."
+    "server_error": "Erreur du serveur : Le serveur a renvoyé un code d'état inattendu {{status}}. Veuillez réessayer plus tard.",
+    "timeout_error": "La demande a pris trop de temps pour répondre. Veuillez vérifier votre connexion Internet ou réessayer plus tard.",
+    "network_unavailable": "Aucune connexion Internet détectée. Veuillez vérifier vos paramètres réseau et réessayer."
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, of, throwError} from 'rxjs';
+import {Observable, of, throwError, timeout, TimeoutError} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { catchError, delay } from 'rxjs/operators';
 import {ErrorService} from "./error.service";
@@ -10,6 +10,8 @@ import {TranslateService} from "@ngx-translate/core";
   providedIn: 'root'
 })
 export class WeatherService {
+
+  timeoutMs = 10000;
 
   private weatherConditions: { [key: number]: string } = {
     1: 'Clear sky',
@@ -117,15 +119,22 @@ export class WeatherService {
     }
 
     return this.http.get<any>(url).pipe(
-      catchError((error: HttpErrorResponse) => this.handleError(error))
+      timeout(this.timeoutMs),
+      catchError((error: HttpErrorResponse | TimeoutError ) => this.handleError(error))
     );
   }
 
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = this.translate.instant('error.unexpected_error_occurred');  // Default message
+  private handleError(error: HttpErrorResponse | TimeoutError): Observable<never> {
+    let errorMessage = this.translate.instant('error.unexpected_error_occurred');
 
-    if (error.error && typeof error.error === 'object') {
+    if (error instanceof TimeoutError) {
+      errorMessage = this.translate.instant('error.timeout_error');
+      this.errorService.setError(errorMessage);
+    } else if (!navigator.onLine) {
+      errorMessage = this.translate.instant('error.network_unavailable'); // Translate the offline error message
+      this.errorService.setError(errorMessage);
+    } else if (error.error && typeof error.error === 'object') {
       const errorDetail = error.error.error;
       const apiList = errorDetail.split(': ')[1]?.split(', ') || [];
       const apiNames = apiList.join(', ');
