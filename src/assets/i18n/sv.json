@@ -42,14 +42,15 @@
 	},
   "settings": {
     "title": "Inställningar",
-    "selectLanguage": "Ändra språk",
-    "selectApi": "Ändra API",
-    "noResults": "Inga resultat hittades"
+    "selectLanguage": "Välj språk",
+    "selectApi": "Välj datakällor (API:er)",
+    "apiNote": "Obs: FMI kan inte väljas som enda API på grund av ofullständig täckning av data."
   },
   "search": {
     "favorites": "Favoriter",
     "recently": "Nyligen Sökt",
-    "results": "Sökresultat"
+    "results": "Sökresultat",
+    "noResults": "Inga resultat hittades"
   },
 	"weatherTable": {
 		"afternoon": "Eftermiddag",

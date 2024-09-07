@@ -43,13 +43,14 @@
   "settings": {
     "title": "Paramètres",
     "selectLanguage": "Changer de langue",
-    "selectApi": "Sélectionner l'API",
-    "noResults": "Aucun résultat trouvé"
+    "selectApi": "Sélectionner les sources de données (API)",
+    "apiNote": "Remarque : FMI ne peut pas être sélectionné comme seule API en raison d'une couverture de données incomplète."
   },
   "search": {
     "favorites": "Favoris",
     "recently": "Recherches Récentes",
-    "results": "Résultats de Recherche"
+    "results": "Résultats de Recherche",
+    "noResults": "Aucun résultat trouvé"
   },
 	"weatherTable": {
 		"afternoon": "Après-midi",

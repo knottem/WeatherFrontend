@@ -43,7 +43,8 @@
   "settings": {
     "title": "Einstellungen",
     "selectLanguage": "Sprache ändern",
-    "selectApi": "API auswählen"
+    "selectApi": "Datenquellen (APIs) auswählen",
+    "apiNote": "Hinweis: FMI kann nicht als einzige API ausgewählt werden, da die Datenabdeckung unvollständig ist."
   },
   "search": {
     "favorites": "Favoriten",

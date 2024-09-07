@@ -42,8 +42,9 @@
   },
   "settings": {
     "title": "Settings",
-    "selectLanguage": "Change language",
-    "selectApi": "Change API"
+    "selectLanguage": "Select language",
+    "selectApi": "Choose Data Sources (APIs)",
+    "apiNote": "Note: FMI cannot be selected as the sole API due to incomplete data coverage. "
   },
   "search": {
     "favorites": "Favorites",

@@ -41,7 +41,9 @@ export class SettingsComponent {
     }
   }
 
-  switchLanguage(language: string) {
+  switchLanguage(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const language = selectElement.value;
     this.translate.use(language);
     this.currentLanguage = language;
     localStorage.setItem('language', language);
