@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { WeatherService } from './weather.service';
 import { HttpClient } from '@angular/common/http';
+import {ErrorService} from "./error.service";
+import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
+import {of} from "rxjs";
 
 describe('WeatherService', () => {
   let service: WeatherService;
@@ -9,11 +12,19 @@ describe('WeatherService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [WeatherService]
+      imports: [
+        HttpClientTestingModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useValue: { getTranslation: () => of({}) }  // Mocking empty translations
+          }
+        })
+      ],
+      providers: [WeatherService, ErrorService, TranslateService]
     });
     httpTestingController = TestBed.inject(HttpTestingController);
-    service = new WeatherService(TestBed.inject(HttpClient));
+    service = new WeatherService(TestBed.inject(HttpClient), TestBed.inject(ErrorService), TestBed.inject(TranslateService));
   });
 
   it('should be created', () => {
