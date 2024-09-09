@@ -80,6 +80,7 @@
 	"windDirectionShort": "Wdir",
 	"windSpeed": "Vindhastighet",
   "error": {
+    "title": "Fel",
     "unexpected_error_occurred": "Ett oväntat fel uppstod.",
     "services_unavailable": "Följande tjänster är för närvarande avstängda: {{apis}}. Försök igen senare eller välj en annan tjänst.",
     "service_unavailable": "{{api}}-tjänsten är för närvarande avstängd. Försök igen senare eller välj en annan tjänst.",

@@ -80,6 +80,7 @@
 	"windDirectionShort": "Wdir",
 	"windSpeed": "Vitesse du vent",
   "error": {
+    "title": "Erreur",
     "unexpected_error_occurred": "Une erreur inattendue est survenue.",
     "services_unavailable": "Les services suivants sont actuellement désactivés : {{apis}}. Veuillez réessayer plus tard ou choisir un autre service.",
     "service_unavailable": "Le service {{api}} est actuellement désactivé. Veuillez réessayer plus tard ou choisir un autre service.",
