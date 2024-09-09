@@ -42,12 +42,15 @@
 	},
   "settings": {
     "title": "Inställningar",
-    "selectLanguage": "Ändra språk"
+    "selectLanguage": "Välj språk",
+    "selectApi": "Välj datakällor (API:er)",
+    "apiNote": "Obs: FMI kan inte väljas som enda API på grund av ofullständig täckning av data."
   },
   "search": {
     "favorites": "Favoriter",
     "recently": "Nyligen Sökt",
-    "results": "Sökresultat"
+    "results": "Sökresultat",
+    "noResults": "Inga resultat hittades"
   },
 	"weatherTable": {
 		"afternoon": "Eftermiddag",
@@ -75,5 +78,16 @@
 	"wind": "Vind",
 	"windDirection": "Vindriktning",
 	"windDirectionShort": "Wdir",
-	"windSpeed": "Vindhastighet"
+	"windSpeed": "Vindhastighet",
+  "error": {
+    "title": "Fel",
+    "unexpected_error_occurred": "Ett oväntat fel uppstod.",
+    "services_unavailable": "Följande tjänster är för närvarande avstängda: {{apis}}. Försök igen senare eller välj en annan tjänst.",
+    "service_unavailable": "{{api}}-tjänsten är för närvarande avstängd. Försök igen senare eller välj en annan tjänst.",
+    "one_or_more_services_unavailable": "En eller flera vädertjänster är för närvarande avstängda. Försök igen senare.",
+    "network_error": "Nätverksfel: {{message}}",
+    "server_error": "Serverfel: Servern returnerade oväntad statuskod {{status}}. Försök igen senare.",
+    "timeout_error": "Begäran tog för lång tid att svara. Kontrollera din internetanslutning eller försök igen senare.",
+    "network_unavailable": "Ingen internetanslutning upptäckt. Kontrollera dina nätverksinställningar och försök igen."
+  }
 }

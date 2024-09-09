@@ -18,6 +18,7 @@ import {Subscription} from "rxjs";
 export class WeatherDisplayComponent {
 
   private defaultCity: string = 'stockholm';
+  private currentCity: string = '';
 
   public amountOfDays: number = 10;
 
@@ -45,11 +46,31 @@ export class WeatherDisplayComponent {
   ) {}
 
   ngOnInit() {
+    const data = this.sharedService.loadWeatherData();
+    if (data !== null) {
+      this.currentCity = data.city.name;
+    } else {
+      this.currentCity = sessionStorage.getItem('currentCity') || this.defaultCity;
+    }
+    const currentApis = this.getSelectedApis();
+    const previousApis = this.getPreviousApis();
+    if (JSON.stringify(currentApis) !== JSON.stringify(previousApis)) {
+      this.isLoaded = false;
+      this.getWeather(this.currentCity);
+    } else {
+      this.loadInitialWeatherData();
+    }
+
+    // Store the current APIs in sessionStorage for future comparison
+    this.storePreviousApis(currentApis);
+
     this.searchSubscription = this.sharedService.searchQuery$
       .subscribe((city) => {
         if (city) {
           this.isLoaded = false;
           if(city !== this.weather.city.name) {
+            this.currentCity = city; // Update the current city
+            sessionStorage.setItem('currentCity', this.currentCity);
             this.getWeather(city);
             this.cdr.detectChanges();
           }
@@ -82,6 +103,28 @@ export class WeatherDisplayComponent {
     if (this.weatherSubscription) {
       this.weatherSubscription.unsubscribe();
     }
+  }
+
+  private getPreviousApis(): string[] {
+    const apis = sessionStorage.getItem('previousApis');
+    return apis ? JSON.parse(apis) : [];
+
+  }
+
+  private getSelectedApis(): string[] {
+    const apis = localStorage.getItem('apis');
+    return apis ? JSON.parse(apis) : [];
+
+  }
+
+  private storePreviousApis(apis: string[]) {
+    sessionStorage.setItem('previousApis', JSON.stringify(apis));
+  }
+
+  private areApisSame(): boolean {
+    const previousApis = this.getPreviousApis();
+    const currentApis = this.getSelectedApis();
+    return JSON.stringify(previousApis) === JSON.stringify(currentApis);
   }
 
   private loadInitialWeatherData() {
@@ -121,16 +164,17 @@ export class WeatherDisplayComponent {
   }
 
   private getWeather(str: string) {
+    this.isLoaded = false;
+    this.cdr.detectChanges();
     if (str === '') {
       return;
     }
-    this.isLoaded = false;
     const data = this.sharedService.loadWeatherData();
     if (data !== null && data.city.name.toLowerCase() === str.toLowerCase()) {
       const cachedTime = new Date(data.timestamp).getTime();
       const currentTime = new Date().getTime();
       const timeDifference = currentTime - cachedTime;
-      if (timeDifference < 60 * 60 * 1000) {
+      if (this.areApisSame() && timeDifference < 60 * 60 * 1000) {
         this.processWeatherData(data);
         return;
       }
@@ -138,6 +182,7 @@ export class WeatherDisplayComponent {
     }
 
     this.weatherSubscription = this.weatherService.getWeather(str).subscribe((data) => {
+      this.storePreviousApis(this.getSelectedApis());
       this.processWeatherData(data);
     });
   }
@@ -166,6 +211,7 @@ export class WeatherDisplayComponent {
     }
     document.title = `${this.weather.city.name} - Weather`;
     this.isLoaded = true;
+    this.cdr.detectChanges();
   }
 
   // return a list of days starting with today, tomorrow and then the next 8 days as weekdays

@@ -47,6 +47,9 @@ import { AngularSvgIconModule } from "angular-svg-icon";
     })
   ],
   providers: [WeatherService],
+  exports: [
+    ErrorCompComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

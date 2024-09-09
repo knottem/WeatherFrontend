@@ -42,12 +42,15 @@
 	},
   "settings": {
     "title": "Paramètres",
-    "selectLanguage": "Changer de langue"
+    "selectLanguage": "Changer de langue",
+    "selectApi": "Sélectionner les sources de données (API)",
+    "apiNote": "Remarque : FMI ne peut pas être sélectionné comme seule API en raison d'une couverture de données incomplète."
   },
   "search": {
     "favorites": "Favoris",
     "recently": "Recherches Récentes",
-    "results": "Résultats de Recherche"
+    "results": "Résultats de Recherche",
+    "noResults": "Aucun résultat trouvé"
   },
 	"weatherTable": {
 		"afternoon": "Après-midi",
@@ -75,5 +78,16 @@
 	"wind": "Vent",
 	"windDirection": "Direction du vent",
 	"windDirectionShort": "Wdir",
-	"windSpeed": "Vitesse du vent"
+	"windSpeed": "Vitesse du vent",
+  "error": {
+    "title": "Erreur",
+    "unexpected_error_occurred": "Une erreur inattendue est survenue.",
+    "services_unavailable": "Les services suivants sont actuellement désactivés : {{apis}}. Veuillez réessayer plus tard ou choisir un autre service.",
+    "service_unavailable": "Le service {{api}} est actuellement désactivé. Veuillez réessayer plus tard ou choisir un autre service.",
+    "one_or_more_services_unavailable": "Un ou plusieurs services météorologiques sont actuellement désactivés. Veuillez réessayer plus tard.",
+    "network_error": "Erreur réseau : {{message}}",
+    "server_error": "Erreur du serveur : Le serveur a renvoyé un code d'état inattendu {{status}}. Veuillez réessayer plus tard.",
+    "timeout_error": "La demande a pris trop de temps pour répondre. Veuillez vérifier votre connexion Internet ou réessayer plus tard.",
+    "network_unavailable": "Aucune connexion Internet détectée. Veuillez vérifier vos paramètres réseau et réessayer."
+  }
 }

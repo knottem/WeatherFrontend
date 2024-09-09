@@ -42,12 +42,15 @@
   },
   "settings": {
     "title": "Settings",
-    "selectLanguage": "Change language"
+    "selectLanguage": "Select language",
+    "selectApi": "Choose Data Sources (APIs)",
+    "apiNote": "Note: FMI cannot be selected as the sole API due to incomplete data coverage. "
   },
   "search": {
     "favorites": "Favorites",
     "recently": "Recently Searched",
-    "results": "Search Results"
+    "results": "Search Results",
+    "noResults": "No results found"
   },
 	"weatherTable": {
 		"afternoon": "Afternoon",
@@ -76,5 +79,16 @@
 	"wind": "Wind",
 	"windDirection": "Wind Direction",
 	"windDirectionShort": "Wdir",
-	"windSpeed": "Wind Speed"
+	"windSpeed": "Wind Speed",
+  "error": {
+    "title": "Error",
+    "unexpected_error_occurred": "An unexpected error occurred.",
+    "services_unavailable": "The following services are currently turned off: {{apis}}. Please try again later or choose a different service.",
+    "service_unavailable": "The {{api}} service is currently turned off. Please try again later or choose a different service.",
+    "one_or_more_services_unavailable": "One or more weather services are currently turned off. Please try again later.",
+    "network_error": "Network Error: {{message}}",
+    "server_error": "Server Error: The server returned an unexpected status code {{status}}. Please try again later.",
+    "timeout_error": "The request took too long to respond. Please check your internet connection or try again later.",
+    "network_unavailable": "No internet connection detected. Please check your network settings and try again."
+  }
 }

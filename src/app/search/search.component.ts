@@ -47,11 +47,6 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.getCityList();
     this.loadSavedData();
-    this.addKeyboardListeners();
-  }
-
-  ngOnDestroy() {
-    this.removeKeyboardListeners();
   }
 
   private loadSavedData() {
@@ -83,38 +78,6 @@ export class SearchComponent implements OnInit {
 
   isFavorite(city: string): boolean {
     return this.favoriteCities.includes(city);
-  }
-
-  addKeyboardListeners() {
-    this.subscriptions.add(
-      this.platform.keyboardDidShow.subscribe(ev => {
-        this.onKeyboardShow(ev);
-      })
-    );
-    this.subscriptions.add(
-      this.platform.keyboardDidHide.subscribe(() => {
-        this.onKeyboardHide();
-      })
-    );
-  }
-
-  removeKeyboardListeners() {
-    this.subscriptions.unsubscribe();
-  }
-
-  onKeyboardShow(ev: any) {
-    const {keyboardHeight} = ev;
-    const searchResults = document.getElementById('search-results');
-    if (searchResults) {
-      searchResults.style.maxHeight = `calc(80vh - ${keyboardHeight}px - 50px)` // 50px is for "suggestions" above the keyboard
-    }
-  }
-
-  onKeyboardHide() {
-    const searchResults = document.getElementById('search-results');
-    if (searchResults) {
-      searchResults.style.maxHeight = '80%';
-    }
   }
 
   onCancel() {

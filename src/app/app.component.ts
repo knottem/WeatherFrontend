@@ -3,6 +3,7 @@ import {TranslateService} from "@ngx-translate/core";
 import { RefresherCustomEvent } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import {Router} from "@angular/router";
+import { ErrorService } from './error.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import {Router} from "@angular/router";
                 <ion-refresher-content></ion-refresher-content>
             </ion-refresher>
             <app-header></app-header>
-            <app-error-comp></app-error-comp>
+            <app-error-comp [errorMessage]="errorMessage"></app-error-comp>
             <router-outlet></router-outlet>
         </div>
       </ion-content>
@@ -31,7 +32,13 @@ import {Router} from "@angular/router";
   styles: []
 })
 export class AppComponent {
-  constructor(translate: TranslateService, private router: Router) {
+  errorMessage: string | null = null;
+
+  constructor(
+    translate: TranslateService,
+    private router: Router,
+    private errorService: ErrorService  // Inject the ErrorService
+  ) {
     translate.setDefaultLang('en');
     const userLang = localStorage.getItem('language');
     if (userLang) {
@@ -39,14 +46,15 @@ export class AppComponent {
     }
 
     App.addListener('backButton', () => {
-      if(['/',
-          '/about',
-          '/settings'
-          ].includes(this.router.url)){
+      if(this.router.url === '/') {
         App.minimizeApp();
       } else {
-        window.history.back();
+        this.router.navigate(['/']);
       }
+    });
+
+    this.errorService.getError().subscribe(message => {
+      this.errorMessage = message;
     });
   }
 
