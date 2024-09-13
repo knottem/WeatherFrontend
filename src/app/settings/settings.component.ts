@@ -10,10 +10,11 @@ import {environment} from "../../environments/environment";
   standalone: true,
   imports: [CommonModule, TranslateModule, IonicModule, FormsModule],
   templateUrl: './settings.component.html',
-  //styleUrl: './settings.component.css'
+  styleUrl: './settings.component.css',
 })
 export class SettingsComponent {
 
+  // All the languages that the app supports
   public languages: { code: string, name: string }[] = [
     { code: 'en', name: 'English' },
     { code: 'sv', name: 'Svenska' },
@@ -22,7 +23,8 @@ export class SettingsComponent {
     { code: 'fr', name: 'Français' }
   ];
 
-  public apis = [
+  // All the APIs that the app supports
+  public apis: { name: string, value: string}[] = [
     { name: 'SMHI', value: 'smhi' },
     { name: 'YR', value: 'yr'},
     { name: 'FMI', value: 'fmi'}
