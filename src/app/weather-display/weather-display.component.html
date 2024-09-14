@@ -102,10 +102,10 @@
               </div>
             </td>
             <td class="border px-1 lg:px-4 py-2">
-              <div class="flex justify-center items-center text-base lg:text-lg" [ngClass]="{ 'text-red-500': currentWeather.temperature >= 0, 'text-blue-500': currentWeather.temperature < 0 }">{{ highTempPerDay[i] }}°C</div>
+              <div class="flex justify-center items-center text-base lg:text-lg" [ngClass]="{ 'text-red-500': highTempPerDay[i] >= 0, 'text-blue-500': highTempPerDay[i] < 0 }">{{ highTempPerDay[i] }}°C</div>
             </td>
             <td class="border px-1 lg:px-4 py-2">
-              <div class="flex justify-center items-center text-base lg:text-lg" [ngClass]="{ 'text-red-500': currentWeather.temperature >= 0, 'text-blue-500': currentWeather.temperature < 0 }">{{ lowTempPerDay[i] }}°C</div>
+              <div class="flex justify-center items-center text-base lg:text-lg" [ngClass]="{ 'text-red-500': lowTempPerDay[i] >= 0, 'text-blue-500': lowTempPerDay[i] < 0 }">{{ lowTempPerDay[i] }}°C</div>
             </td>
             <td class="border px-1 lg:px-4 py-2">
               <div class="flex justify-center">
