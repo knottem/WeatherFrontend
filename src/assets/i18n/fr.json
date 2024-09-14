@@ -89,5 +89,28 @@
     "server_error": "Erreur du serveur : Le serveur a renvoyé un code d'état inattendu {{status}}. Veuillez réessayer plus tard.",
     "timeout_error": "La demande a pris trop de temps pour répondre. Veuillez vérifier votre connexion Internet ou réessayer plus tard.",
     "network_unavailable": "Aucune connexion Internet détectée. Veuillez vérifier vos paramètres réseau et réessayer."
-  }
+  },
+  "Monday": "Lundi",
+  "Tuesday": "Mardi",
+  "Wednesday": "Mercredi",
+  "Thursday": "Jeudi",
+  "Friday": "Vendredi",
+  "Saturday": "Samedi",
+  "Sunday": "Dimanche",
+  "Today": "Aujourd'hui",
+  "Tomorrow": "Demain",
+  "shortDays": {
+    "Today": "Auj.",
+    "Tomorrow": "Dem.",
+    "Monday": "Lun",
+    "Tuesday": "Mar",
+    "Wednesday": "Mer",
+    "Thursday": "Jeu",
+    "Friday": "Ven",
+    "Saturday": "Sam",
+    "Sunday": "Dim"
+  },
+  "dayOfWeek": "Jour",
+  "daytime": "Journée",
+  "nighttime": "Nuit"
 }

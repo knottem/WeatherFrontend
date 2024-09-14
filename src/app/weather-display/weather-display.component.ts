@@ -1,8 +1,7 @@
-import {ChangeDetectorRef, Component, QueryList, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {CurrentWeather, WeatherData} from '../../models/weather-data';
 import {WeatherService} from '../weather.service';
 import {SharedService} from '../shared.service';
-import {WeatherTableComponent} from '../weather-table/weather-table.component';
 import {DateTime} from 'luxon';
 import {CommonModule} from '@angular/common';
 import {LoadingIndicatorComponent} from '../loading-indicator/loading-indicator.component';
@@ -12,8 +11,9 @@ import {Subscription} from "rxjs";
 @Component({
   selector: 'app-weather-display',
   templateUrl: './weather-display.component.html',
+  styleUrls: ['./weather-display.component.css'],
   standalone: true,
-  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent, TranslateModule],
+  imports: [CommonModule, LoadingIndicatorComponent, TranslateModule],
 })
 export class WeatherDisplayComponent {
 
@@ -27,6 +27,7 @@ export class WeatherDisplayComponent {
   public weather: WeatherData = new WeatherData();
   public currentWeather: CurrentWeather = new CurrentWeather('', 0, 0, 0, 0, 0);
   public currentDays: string[] = [];
+  public currentDates: string[] = [];
   public timestamps: string[][] = [];
   public updatedTime: string = '';
   public translatedSources: string = '';
@@ -37,6 +38,17 @@ export class WeatherDisplayComponent {
   private timeSubscription!: Subscription;
   private sourcesSubscription!: Subscription;
   private weatherSubscription!: Subscription;
+
+
+  // Arrays to store weather data for the next 10 days
+  public allWeatherData: WeatherData[] = [];
+  public allSunsetSunriseData: string[][] = [];
+  public expandedDayIndex: number | null = null;
+  public highTempPerDay: number[] = [];
+  public lowTempPerDay: number[] = [];
+  public nightWeather: number[] = [];
+  public dayWeather: number[] = [];
+  public totalPrecipitationPerDay: number[] = [];
 
   constructor(
     private weatherService: WeatherService,
@@ -195,6 +207,7 @@ export class WeatherDisplayComponent {
     );
     this.timestamps = this.getTimeStamps(availableTimestamps);
     this.currentDays = this.getDay();
+    this.currentDates = this.getDates();
     this.currentWeather = new CurrentWeather(
       availableTimestamps[0],
       this.weather.weatherData[availableTimestamps[0]].temperature,
@@ -203,6 +216,7 @@ export class WeatherDisplayComponent {
       this.weather.weatherData[availableTimestamps[0]].windDirection,
       this.weather.weatherData[availableTimestamps[0]].precipitation
     );
+    this.prepareWeatherData();
     this.sharedService.setUpdatedTime(this.weather.timestamp.substring(11, 16));
     this.sharedService.setWeatherSources(this.extractSources(this.weather.message));
 
@@ -233,6 +247,15 @@ export class WeatherDisplayComponent {
 
     return days;
   }
+
+  private getDates(): string[] {
+    const dates: string[] = [];
+    for (let i = 0; i < 10; i++) {
+      dates.push(DateTime.local().plus({ days: i }).toFormat('yyyy-MM-dd'));
+    }
+    return dates;
+  }
+
 
   // return a list of timestamps for the next 10 days
   private getTimeStamps(timestamps: string[]): string[][] {
@@ -322,17 +345,19 @@ export class WeatherDisplayComponent {
   // should return an image path depending on weather code and timestamp
   public getWeatherConditionImage(code: number, day: boolean): string {
     const cacheKey = `${code}-${day ? 'day' : 'night'}`;
-    if (this.imageCache.has(cacheKey)) {
-      this.imageCache.get(cacheKey) as string;
+    if (!this.imageCache.has(cacheKey)) {
+      const image = this.weatherService.getWeatherConditionImage(code, day);
+      this.imageCache.set(cacheKey, image);
+      return image;
     }
-    const image = this.weatherService.getWeatherConditionImage(code, day);
-    this.imageCache.set(cacheKey, image);
-    return image;
+    return this.imageCache.get(cacheKey) as string;
   }
 
-   public isDayTime(timestamp: string): boolean {
-    const sunriseHour = parseInt(this.weather.city.sunriseList[0].substring(11, 13));
-    const sunsetHour = parseInt(this.weather.city.sunsetList[0].substring(11,13));
+
+  // should return a boolean depending on timestamp and sunrise/sunset
+  public isDayTime(timestamp: string, dayIndex: number): boolean {
+    const sunriseHour = parseInt(this.allSunsetSunriseData[dayIndex][0].substring(11, 13));
+    const sunsetHour = parseInt(this.allSunsetSunriseData[dayIndex][1].substring(11, 13));
     const hour = parseInt(timestamp.substring(11, 13));
     return hour >= sunriseHour && hour <= sunsetHour;
   }
@@ -349,4 +374,87 @@ export class WeatherDisplayComponent {
     }
     return [];
   }
+
+  public prepareWeatherData() {
+    this.allWeatherData = [];
+    this.allSunsetSunriseData = [];
+    for (let i = 0; i < this.amountOfDays; i++) {
+      this.allWeatherData.push(this.getWeatherDataForDay(this.timestamps[i]));
+      this.allSunsetSunriseData.push(this.getSunsetSunrise(i));
+    }
+
+    this.allWeatherData.forEach((day, i) => {
+      const timestamps = Object.keys(day.weatherData);
+      const temps = timestamps.map(ts => day.weatherData[ts].temperature);
+
+      // High and low temperatures for the day, rounded to the nearest integer
+      this.highTempPerDay[i] = Math.round(Math.max(...temps));
+      this.lowTempPerDay[i] = Math.round(Math.min(...temps));
+
+      // Total precipitation for the day, rounded to the nearest integer (or 1 if between 0 and 1)
+      let totalPrecipitation = timestamps.reduce((total, ts) => total + day.weatherData[ts].precipitation, 0);
+      if (totalPrecipitation > 0 && totalPrecipitation <= 1)
+        this.totalPrecipitationPerDay[i] = 1;
+       else {
+        this.totalPrecipitationPerDay[i] = Math.round(totalPrecipitation);
+      }
+
+      // Get the previous day's timestamps, if available
+      const previousDayTimestamps = i > 0 ? Object.keys(this.allWeatherData[i - 1].weatherData) : [];
+
+      // Night weather: previous day's night (18:00-23:59) + current day's early morning (00:00-05:59)
+      const previousNightTimes = previousDayTimestamps.filter(ts => {
+        const hour = parseInt(ts.substring(11, 13), 10);
+        return hour >= 18; // Previous day's night (18:00 - 23:59)
+      });
+      const earlyMorningTimes = timestamps.filter(ts => {
+        const hour = parseInt(ts.substring(11, 13), 10);
+        return hour < 6; // Current day's early morning (00:00 - 05:59)
+      });
+
+      const nightTimes = [...previousNightTimes, ...earlyMorningTimes];
+
+      // Assign the night weather condition based on the previous night
+      this.nightWeather[i] = this.getMostCommonWeatherCode(nightTimes, day) || -1;
+
+      // Day weather: current day's times between 06:00 and 17:59
+      const dayTimes = timestamps.filter(ts => {
+        const hour = parseInt(ts.substring(11, 13), 10);
+        return hour >= 6 && hour < 18; // Daytime hours (06:00 - 17:59)
+      });
+
+      // Assign the day weather condition based on the current day
+      this.dayWeather[i] = this.getMostCommonWeatherCode(dayTimes, day) || -1;
+    });
+
+    this.cdr.detectChanges();
+  }
+
+  toggleDay(index: number): void {
+    this.expandedDayIndex = this.expandedDayIndex === index ? null : index;
+  }
+
+  getHourlyTimestamps(dayIndex: number): string[] {
+    return Object.keys(this.allWeatherData[dayIndex].weatherData);  // Return all timestamps (hours) for the specific day
+  }
+
+  getMostCommonWeatherCode(timestamps: string[], day: WeatherData): number {
+    if (timestamps.length === 0) {
+      return -1; // Return a default value if the array is empty
+    }
+    const codeMap = new Map<number, number>();
+
+    timestamps.forEach(ts => {
+      const weatherDataEntry = day.weatherData[ts];
+      // Check if the weather data exists for this timestamp
+      if (weatherDataEntry && weatherDataEntry.weatherCode !== undefined) {
+        const code = weatherDataEntry.weatherCode;
+        codeMap.set(code, (codeMap.get(code) || 0) + 1);
+      }
+    });
+
+    // Return the most common weather code
+    return Array.from(codeMap).reduce((prev, curr) => curr[1] > prev[1] ? curr : prev)[0];
+  }
+
 }

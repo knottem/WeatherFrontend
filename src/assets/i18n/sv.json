@@ -89,5 +89,28 @@
     "server_error": "Serverfel: Servern returnerade oväntad statuskod {{status}}. Försök igen senare.",
     "timeout_error": "Begäran tog för lång tid att svara. Kontrollera din internetanslutning eller försök igen senare.",
     "network_unavailable": "Ingen internetanslutning upptäckt. Kontrollera dina nätverksinställningar och försök igen."
-  }
+  },
+  "Monday": "Måndag",
+  "Tuesday": "Tisdag",
+  "Wednesday": "Onsdag",
+  "Thursday": "Torsdag",
+  "Friday": "Fredag",
+  "Saturday": "Lördag",
+  "Sunday": "Söndag",
+  "Today": "Idag",
+  "Tomorrow": "Imorgon",
+  "shortDays": {
+    "Today": "Idag",
+    "Tomorrow": "Imorgon",
+    "Monday": "Mån",
+    "Tuesday": "Tis",
+    "Wednesday": "Ons",
+    "Thursday": "Tor",
+    "Friday": "Fre",
+    "Saturday": "Lör",
+    "Sunday": "Sön"
+  },
+  "night": "Natt",
+  "dayWeather": "Dag",
+  "dayOfWeek": "Dygn"
 }

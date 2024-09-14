@@ -90,5 +90,26 @@
     "server_error": "Server Error: The server returned an unexpected status code {{status}}. Please try again later.",
     "timeout_error": "The request took too long to respond. Please check your internet connection or try again later.",
     "network_unavailable": "No internet connection detected. Please check your network settings and try again."
-  }
+  },
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "Friday": "Friday",
+  "Saturday": "Saturday",
+  "Sunday": "Sunday",
+  "shortDays": {
+    "Today": "Today",
+    "Tomorrow": "Tmw",
+    "Monday": "Mon",
+    "Tuesday": "Tue",
+    "Wednesday": "Wed",
+    "Thursday": "Thu",
+    "Friday": "Fri",
+    "Saturday": "Sat",
+    "Sunday": "Sun"
+  },
+  "night": "Night",
+  "dayWeather": "Daytime",
+  "dayOfWeek": "Day"
 }
