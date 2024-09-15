@@ -111,5 +111,6 @@
   },
   "night": "Night",
   "dayWeather": "Daytime",
-  "dayOfWeek": "Day"
+  "dayOfWeek": "Day",
+  "humidity": "Humidity"
 }

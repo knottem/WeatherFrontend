@@ -111,6 +111,6 @@
     "Sunday": "Dim"
   },
   "dayOfWeek": "Jour",
-  "daytime": "Journée",
-  "nighttime": "Nuit"
+  "dayWeather": "Journée",
+  "night": "Nuit"
 }

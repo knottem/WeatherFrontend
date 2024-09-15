@@ -112,5 +112,6 @@
   },
   "night": "Natt",
   "dayWeather": "Dag",
-  "dayOfWeek": "Dygn"
+  "dayOfWeek": "Dygn",
+  "humidity": "Luftfuktighet"
 }

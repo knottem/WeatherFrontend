@@ -115,8 +115,8 @@
               </div>
             </td>
             <td class="border px-1 lg:px-4 py-2">
-              <div class="flex justify-center">
-                <img *ngIf="dayWeather[i] !== undefined"
+              <div class="flex justify-center h-8">
+                <img *ngIf="dayWeather[i] !== -1"
                    [src]="getWeatherConditionImage(dayWeather[i], true)"
                    alt="Day Weather Icon" class="h-8 w-8" />
               </div>
@@ -136,8 +136,8 @@
 
                 <tr class="text-sm lg:text-lg">
 
-                  <th class="px-1 lg:px-4 py-2 w-2/12">
-                    <div class="flex justify-center">
+                  <th class="px-1 lg:px-4 py-2 w-2/12 ">
+                    <div class="flex justify-center mb-5">
                       {{ 'Time' | translate }}
                     </div>
                   </th>
@@ -147,22 +147,25 @@
                       <span class="block sm:hidden">{{ 'temperatureShort' | translate }}</span>
                       <span class="hidden sm:block">{{ 'temperature' | translate }}</span>
                     </div>
+                    <div class="flex justify-center">°C</div>
                   </th>
 
                   <th class="px-1 lg:px-4 py-2">
                     <div class="flex justify-center">
                       {{ 'wind' | translate }}
                     </div>
+                    <div class="flex justify-center">m/s</div>
                   </th>
 
                   <th class="px-1 lg:px-4 py-2">
                     <div class="flex justify-center">
-                      Humidity
+                      {{ 'humidity' | translate }}
                     </div>
+                    <div class="flex justify-center">%</div>
                   </th>
 
                   <th class="px-1 lg:px-4 py-2">
-                    <div class="flex justify-center">
+                    <div class="flex justify-center mb-5">
                       {{ 'weather' | translate }}
                     </div>
                   </th>
@@ -172,6 +175,7 @@
                       <span class="block sm:hidden">{{ 'precipitationShort' | translate }}</span>
                       <span class="hidden sm:block">{{ 'precipitation' | translate }}</span>
                     </div>
+                    <div class="flex justify-center">mm</div>
                   </th>
 
                 </tr>
@@ -195,7 +199,7 @@
                          'text-red-500': allWeatherData[i].weatherData[timestamp].temperature >= 0,
                          'text-blue-500': allWeatherData[i].weatherData[timestamp].temperature < 0 }
                           ">
-                      {{ allWeatherData[i].weatherData[timestamp].temperature }}°C
+                      {{ allWeatherData[i].weatherData[timestamp].temperature }}°
                     </div>
                   </td>
 
@@ -205,14 +209,14 @@
                       <img [src]="'assets/icons/wind-direction.svg'"
                            [ngStyle]="{'transform': 'rotate(' + allWeatherData[i].weatherData[timestamp].windDirection + 'deg)'}"
                            alt="{{ allWeatherData[i].weatherData[timestamp].windDirection }}°" class="h-6 w-6">
-                      <span>{{ allWeatherData[i].weatherData[timestamp].windSpeed }} m/s</span>
+                      <span>{{ allWeatherData[i].weatherData[timestamp].windSpeed }}</span>
                     </div>
                   </td>
 
                   <!-- Humidity -->
                   <td class="border px-1 lg:px-4 py-2">
                     <div class="flex justify-center items-center text-base lg:text-lg">
-                      --% <!-- Humidity data is not available in the API for now -->
+                      -- <!-- Humidity data is not available in the API for now -->
                     </div>
                   </td>
 
@@ -227,7 +231,7 @@
                   <!-- Precipitation -->
                   <td class="border px-0 lg:px-4 py-2">
                     <div class="flex justify-center text-base lg:text-lg">
-                      {{ allWeatherData[i].weatherData[timestamp].precipitation }} mm
+                      {{ allWeatherData[i].weatherData[timestamp].precipitation }}
                     </div>
                   </td>
 

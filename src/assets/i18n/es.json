@@ -111,6 +111,6 @@
     "Sunday": "Dom"
   },
   "dayOfWeek": "Día",
-  "daytime": "Día",
-  "nighttime": "Noche"
+  "dayWeather": "Día",
+  "night": "Noche"
 }

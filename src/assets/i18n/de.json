@@ -111,6 +111,6 @@
     "Sunday": "So"
   },
   "dayOfWeek": "Tag",
-  "daytime": "Tageszeit",
-  "nighttime": "Nacht"
+  "dayWeather": "Tageszeit",
+  "night": "Nacht"
 }
