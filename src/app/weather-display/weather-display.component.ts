@@ -430,6 +430,12 @@ export class WeatherDisplayComponent {
     this.cdr.detectChanges();
   }
 
+  toggleDayMobile(index: number): void {
+    if(window.innerWidth < 768) {
+      this.toggleDay(index);
+    }
+  }
+
   toggleDay(index: number): void {
     this.expandedDayIndex = this.expandedDayIndex === index ? null : index;
   }
