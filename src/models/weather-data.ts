@@ -21,6 +21,7 @@ export class WeatherData {
         windSpeed: number;
         windDirection: number;
         precipitation: number;
+        humidity: number;
       };
     };
 
@@ -59,7 +60,7 @@ export class CurrentWeather {
         this.windSpeed = windSpeed;
         this.windDirection = windDirection;
         this.precipitation = precipitation;
-      } 
+      }
 }
 
 
