@@ -89,5 +89,28 @@
     "server_error": "Serverfehler: Der Server hat einen unerwarteten Statuscode {{status}} zurückgegeben. Bitte versuchen Sie es später erneut.",
     "timeout_error": "Die Anfrage hat zu lange gedauert, um zu antworten. Bitte überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.",
     "network_unavailable": "Keine Internetverbindung erkannt. Bitte überprüfen Sie Ihre Netzwerkeinstellungen und versuchen Sie es erneut."
-  }
+  },
+  "Monday": "Montag",
+  "Tuesday": "Dienstag",
+  "Wednesday": "Mittwoch",
+  "Thursday": "Donnerstag",
+  "Friday": "Freitag",
+  "Saturday": "Samstag",
+  "Sunday": "Sonntag",
+  "Today": "Heute",
+  "Tomorrow": "Morgen",
+  "shortDays": {
+    "Today": "Htg",
+    "Tomorrow": "Mgn",
+    "Monday": "Mo",
+    "Tuesday": "Di",
+    "Wednesday": "Mi",
+    "Thursday": "Do",
+    "Friday": "Fr",
+    "Saturday": "Sa",
+    "Sunday": "So"
+  },
+  "dayOfWeek": "Tag",
+  "dayWeather": "Tageszeit",
+  "night": "Nacht"
 }

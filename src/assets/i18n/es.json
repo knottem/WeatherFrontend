@@ -89,5 +89,28 @@
     "server_error": "Error del servidor: El servidor devolvió un código de estado inesperado {{status}}. Por favor, inténtelo de nuevo más tarde.",
     "timeout_error": "La solicitud tardó demasiado en responder. Por favor, compruebe su conexión a Internet o inténtelo de nuevo más tarde.",
     "network_unavailable": "No se detectó conexión a Internet. Por favor, revise su configuración de red e inténtelo de nuevo."
-  }
+  },
+  "Monday": "Lunes",
+  "Tuesday": "Martes",
+  "Wednesday": "Miércoles",
+  "Thursday": "Jueves",
+  "Friday": "Viernes",
+  "Saturday": "Sábado",
+  "Sunday": "Domingo",
+  "Today": "Hoy",
+  "Tomorrow": "Mañana",
+  "shortDays": {
+    "Today": "Hoy",
+    "Tomorrow": "Mañ.",
+    "Monday": "Lun",
+    "Tuesday": "Mar",
+    "Wednesday": "Mié",
+    "Thursday": "Jue",
+    "Friday": "Vie",
+    "Saturday": "Sáb",
+    "Sunday": "Dom"
+  },
+  "dayOfWeek": "Día",
+  "dayWeather": "Día",
+  "night": "Noche"
 }

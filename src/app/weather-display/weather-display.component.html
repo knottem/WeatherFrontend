@@ -1,5 +1,6 @@
 <app-loading-indicator *ngIf="!isLoaded"></app-loading-indicator>
 <div *ngIf="isLoaded">
+
   <!-- Current Weather Display -->
   <div class="p-4 bg-white shadow-lg rounded-lg text-black mb-4 mx-2 mt-4 ">
     <div class="flex justify-between items-center mb-4">
@@ -30,16 +31,19 @@
             <div class="text-lg sm:text-xl">{{ currentWeather.windSpeed }} m/s</div>
           </div>
         </div>
+        <!-- Weather Condition Image -->
         <div class="items-center hidden sm:block">
-          <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
+          <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp, 0))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
         </div>
       </div>
       <div class="flex items-center mt-4 sm:hidden">
-        <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
+        <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp, 0))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
       </div>
+
     </div>
   </div>
 
+  <!-- Sources Display -->
   <div *ngIf="updatedTime !== ''" class="flex justify-center">
     <p class="text-gray-600 text-xs">
       <span [innerHTML]="translatedSources"></span>
@@ -47,23 +51,225 @@
   </div>
 
   <!-- Weather Data Display -->
-  <div *ngFor="let i of [].constructor(amountOfDays); let index = index">
-    <app-weather-table
-      [dayLabel]="currentDays[index]"
-      [weather]="getWeatherDataForDay(timestamps[index])"
-      [sunsetSunrise]="getSunsetSunrise(index)"
-    >
-    </app-weather-table>
-    <br />
-  </div>
+  <div class="table-container">
+    <table class="table-fixed min-w-full bg-white shadow-lg rounded-lg">
+      <thead>
+        <tr>
+          <th class="px-4 py-2 w-2/12">
+            <div class="flex justify-center text-sm lg:text-lg">
+              {{ 'dayOfWeek' | translate }}
+            </div>
+          </th>
+          <th class="px-1 py-2">
+            <div class="flex justify-center text-sm lg:text-lg">
+              <span class="block sm:hidden">H</span>
+              <span class="hidden sm:block">High</span>
+            </div>
+          </th>
+          <th class="px-1 py-2">
+            <div class="flex justify-center text-sm lg:text-lg">
+              <span class="block sm:hidden">L</span>
+              <span class="hidden sm:block">Low</span>
+            </div>
+          </th>
+          <th class="px-4 py-2">
+            <div class="flex justify-center text-sm lg:text-lg">
+              {{ 'night' | translate }}
+            </div>
+          </th>
+          <th class="px-4 py-2">
+            <div class="flex justify-center text-sm lg:text-lg">
+              {{ 'dayWeather' | translate }}
+            </div>
+          </th>
+          <th class="px-4 py-2 w-1/5">
+            <div class="flex justify-center text-sm lg:text-lg ">
+              <span class="block sm:hidden">{{ 'precipitationShort' | translate }}</span>
+              <span class="hidden sm:block">{{ 'precipitation' | translate }}</span>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let day of allWeatherData; let i = index">
+          <!-- Main row -->
+          <tr (click)="toggleDay(i)" class="cursor-pointer">
+            <td class="border px-4 py-2">
+              <div class="flex justify-center text-base lg:text-lg">
+                <span class="block sm:hidden">{{ 'shortDays.' + currentDays[i] | translate }}</span>
+                <!-- Show full version for larger screens -->
+                <span class="hidden sm:block">{{ currentDays[i] | translate }}</span>
+              </div>
+            </td>
+            <td class="border px-1 lg:px-4 py-2">
+              <div class="flex justify-center items-center text-base lg:text-lg" [ngClass]="{ 'text-red-500': highTempPerDay[i] >= 0, 'text-blue-500': highTempPerDay[i] < 0 }">{{ highTempPerDay[i] }}°C</div>
+            </td>
+            <td class="border px-1 lg:px-4 py-2">
+              <div class="flex justify-center items-center text-base lg:text-lg" [ngClass]="{ 'text-red-500': lowTempPerDay[i] >= 0, 'text-blue-500': lowTempPerDay[i] < 0 }">{{ lowTempPerDay[i] }}°C</div>
+            </td>
+            <td class="border px-1 lg:px-4 py-2">
+              <div class="flex justify-center">
+                <img *ngIf="nightWeather[i] !== -1"
+                   [src]="getWeatherConditionImage(nightWeather[i], false)"
+                   alt="Night Weather Icon" class="h-8 w-8" />
+              </div>
+            </td>
+            <td class="border px-1 lg:px-4 py-2">
+              <div class="flex justify-center h-8">
+                <img *ngIf="dayWeather[i] !== -1"
+                   [src]="getWeatherConditionImage(dayWeather[i], true)"
+                   alt="Day Weather Icon" class="h-8 w-8" />
+              </div>
+            </td>
+            <td class="border px-0 lg:px-4 py-2">
+              <div class="flex justify-center items-center text-base lg:text-lg">{{ totalPrecipitationPerDay[i] }} mm</div>
+            </td>
+          </tr>
 
-  <div class="flex justify-between items-start sm:items-center mx-2">
-    <div *ngIf="updatedTime !== ''">
-      <p class="text-gray-600 text-xs sm:text-sm">
+          <!-- Expanded row -->
+          <tr *ngIf="expandedDayIndex === i">
+            <td colspan="6" class="border bg-gray-100" >
+            <table (click)="toggleDayMobile(i)" class="table-fixed w-full">
+
+              <!-- Headers for the hourly weather data -->
+              <thead (click)="toggleDay(i)" class="cursor-pointer">
+
+                <tr class="text-sm lg:text-lg">
+
+                  <th class="px-1 lg:px-4 py-2 w-2/12 ">
+                    <div class="flex justify-center mb-5">
+                      {{ 'Time' | translate }}
+                    </div>
+                  </th>
+
+                  <th class="px-1 lg:px-4 py-2">
+                    <div class="flex justify-center">
+                      <span class="block sm:hidden">{{ 'temperatureShort' | translate }}</span>
+                      <span class="hidden sm:block">{{ 'temperature' | translate }}</span>
+                    </div>
+                    <div class="flex justify-center">°C</div>
+                  </th>
+
+                  <th class="px-1 lg:px-4 py-2">
+                    <div class="flex justify-center">
+                      {{ 'wind' | translate }}
+                    </div>
+                    <div class="flex justify-center">m/s</div>
+                  </th>
+
+                  <th class="px-1 lg:px-4 py-2">
+                    <div class="flex justify-center">
+                      {{ 'humidity' | translate }}
+                    </div>
+                    <div class="flex justify-center">%</div>
+                  </th>
+
+                  <th class="px-1 lg:px-4 py-2">
+                    <div class="flex justify-center mb-5">
+                      {{ 'weather' | translate }}
+                    </div>
+                  </th>
+
+                  <th class="px-1 lg:px-4 py-2 w-1/5">
+                    <div class="flex justify-center">
+                      <span class="block sm:hidden">{{ 'precipitationShort' | translate }}</span>
+                      <span class="hidden sm:block">{{ 'precipitation' | translate }}</span>
+                    </div>
+                    <div class="flex justify-center">mm</div>
+                  </th>
+
+                </tr>
+              </thead>
+
+              <!-- Hourly weather data -->
+              <tbody>
+                <tr *ngFor="let timestamp of getHourlyTimestamps(i)">
+
+                  <!-- Time -->
+                  <td class="border px-1 lg:px-4 py-2">
+                    <div class="flex justify-center text-base lg:text-lg">
+                      {{ timestamp.substring(11, 16) }}
+                    </div>
+                  </td>
+
+                  <!-- Temperature -->
+                  <td class="border px-1 lg:px-4 py-2">
+                    <div class="flex justify-center text-base lg:text-lg"
+                         [ngClass]="{
+                         'text-red-500': allWeatherData[i].weatherData[timestamp].temperature >= 0,
+                         'text-blue-500': allWeatherData[i].weatherData[timestamp].temperature < 0 }
+                          ">
+                      {{ allWeatherData[i].weatherData[timestamp].temperature }}°
+                    </div>
+                  </td>
+
+                  <!-- Wind -->
+                  <td class="border px-1 lg:px-4 py-2">
+                    <div class="flex justify-center items-center text-base lg:text-lg">
+                      <img [src]="'assets/icons/wind-direction.svg'"
+                           [ngStyle]="{'transform': 'rotate(' + allWeatherData[i].weatherData[timestamp].windDirection + 'deg)'}"
+                           alt="{{ allWeatherData[i].weatherData[timestamp].windDirection }}°" class="h-6 w-6">
+                      <span>{{ allWeatherData[i].weatherData[timestamp].windSpeed }}</span>
+                    </div>
+                  </td>
+
+                  <!-- Humidity -->
+                  <td class="border px-1 lg:px-4 py-2">
+                    <div class="flex justify-center items-center text-base lg:text-lg">
+                      -- <!-- Humidity data is not available in the API for now -->
+                    </div>
+                  </td>
+
+                  <!-- Weather Condition Image -->
+                  <td class="border px-1 lg:px-4 py-2">
+                    <div class="flex justify-center">
+                      <img class="h-8 w-8" [src]="getWeatherConditionImage(allWeatherData[i].weatherData[timestamp].weatherCode,
+                      isDayTime(timestamp, i))" alt="Weather Icon" />
+                    </div>
+                  </td>
+
+                  <!-- Precipitation -->
+                  <td class="border px-0 lg:px-4 py-2">
+                    <div class="flex justify-center text-base lg:text-lg">
+                      {{ allWeatherData[i].weatherData[timestamp].precipitation }}
+                    </div>
+                  </td>
+
+
+                </tr>
+
+
+                <tr (click)="toggleDay(i)" class="cursor-pointer">
+                  <td colspan="6" class="px-4 text-center bg-gray-100 py-4 pb-4">
+                    <div class="flex justify-center items-center font-medium">
+                      <div class="flex justify-between items-center w-full lg:w-2/3">
+                        <span>{{ 'weatherTable.sunrise' | translate }}: {{ allSunsetSunriseData[i][0].substring(11, 16) }}</span>
+                        <span class="text-center mx-4">{{ currentDates[i] | date: 'yyyy-MM-dd' }}</span>
+                        <span>{{ 'weatherTable.sunset' | translate }}: {{ allSunsetSunriseData[i][1].substring(11, 16) }}</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+          </td>
+          </tr>
+
+        </ng-container>
+      </tbody>
+    </table>
+
+    <div class="flex justify-between items-start sm:items-center mx-2 mt-4">
+      <div *ngIf="updatedTime !== ''">
+        <p class="text-gray-600 text-xs sm:text-sm">
           <span class="block sm:inline">
             {{ 'footer.updated' | translate }} {{ updatedTime }}.
           </span>
-      </p>
+        </p>
+      </div>
     </div>
+
   </div>
+
 </div>
