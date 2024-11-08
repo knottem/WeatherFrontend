@@ -4,6 +4,7 @@ import { RefresherCustomEvent } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import {Router} from "@angular/router";
 import { ErrorService } from './error.service';
+import {SharedService} from "./shared.service";
 
 @Component({
   selector: 'app-root',
@@ -37,12 +38,16 @@ export class AppComponent {
   constructor(
     translate: TranslateService,
     private router: Router,
-    private errorService: ErrorService  // Inject the ErrorService
+    private errorService: ErrorService,  // Inject the ErrorService
+    private sharedService: SharedService
   ) {
     translate.setDefaultLang('en');
-    const userLang = localStorage.getItem('language');
-    if (userLang) {
-      translate.use(userLang);
+    const settings = this.sharedService.loadUserSettings();
+    if (settings.language) {
+      translate.use(settings.language);
+    }
+    if (settings.darkMode == "on") {
+      document.documentElement.classList.add('dark')
     }
 
     App.addListener('backButton', () => {

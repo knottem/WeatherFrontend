@@ -44,7 +44,8 @@
     "title": "Settings",
     "selectLanguage": "Select language",
     "selectApi": "Choose Data Sources (APIs)",
-    "apiNote": "Note: FMI cannot be selected as the sole API due to incomplete data coverage. "
+    "apiNote": "Note: FMI cannot be selected as the sole API due to incomplete data coverage. ",
+    "darkMode": "Dark mode"
   },
   "search": {
     "favorites": "Favorites",

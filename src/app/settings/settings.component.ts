@@ -4,6 +4,7 @@ import { CommonModule } from "@angular/common";
 import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {environment} from "../../environments/environment";
+import {SharedService} from "../shared.service";
 
 @Component({
   selector: 'app-settings',
@@ -13,6 +14,8 @@ import {environment} from "../../environments/environment";
   styleUrl: './settings.component.css',
 })
 export class SettingsComponent {
+
+  public isDarkMode = false;
 
   // All the languages that the app supports
   public languages: { code: string, name: string }[] = [
@@ -34,7 +37,7 @@ export class SettingsComponent {
   public version: string = environment.apiVersion;
   public selectedApis: string[];
 
-  constructor(public translate: TranslateService) {
+  constructor(public translate: TranslateService, private sharedService: SharedService,) {
     const userApis = localStorage.getItem('apis');
     if (userApis) {
       this.selectedApis = JSON.parse(userApis);
@@ -43,12 +46,32 @@ export class SettingsComponent {
     }
   }
 
+  ngOnInit(){
+    const settings = JSON.parse(localStorage.getItem("userSettings") || "{}");
+    this.isDarkMode = settings.darkMode === "on"
+  }
+
+  toggleDarkMode(){
+    this.isDarkMode = !this.isDarkMode
+    const settings = this.sharedService.loadUserSettings();
+    settings.darkMode = this.isDarkMode ? "on" : "off";
+    this.sharedService.saveUserSettings(settings);
+
+    if(this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
+
   switchLanguage(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     const language = selectElement.value;
     this.translate.use(language);
     this.currentLanguage = language;
-    localStorage.setItem('language', language);
+    const settings = this.sharedService.loadUserSettings();
+    settings.language = language;
+    this.sharedService.saveUserSettings(settings);
   }
 
   onApiChange(api: string, event: Event) {

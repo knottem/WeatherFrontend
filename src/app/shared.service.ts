@@ -21,6 +21,8 @@ export class SharedService {
   // Local storage variables
   private CURRENT_VERSION = '1.0.1';
   private STORAGE_KEY = 'weatherData';
+  private SETTINGS_STORAGE_KEY = "userSettings";
+  private CURRENT_SETTINGS_VERSION = "1.0.1"
 
   constructor() { }
 
@@ -55,6 +57,24 @@ export class SharedService {
     }
     localStorage.removeItem(this.STORAGE_KEY);
     return null;
+  }
+
+  saveUserSettings(settings: any): void {
+    const settingsWithVersion = { ...settings, version: this.CURRENT_SETTINGS_VERSION };
+    localStorage.setItem(this.SETTINGS_STORAGE_KEY, JSON.stringify(settingsWithVersion));
+  }
+
+  loadUserSettings(): any {
+    // Remove old formats or outdated versions if needed
+    const data = JSON.parse(localStorage.getItem(this.SETTINGS_STORAGE_KEY) || "{}");
+
+    if (data && data.version === this.CURRENT_SETTINGS_VERSION) {
+      return data;
+    }
+
+    // Clean up old or incompatible data
+    localStorage.removeItem(this.SETTINGS_STORAGE_KEY);
+    return { darkMode: "off", language: "en" }; // Default settings
   }
 
   clearOldData(): void {
