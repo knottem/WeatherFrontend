@@ -9,7 +9,7 @@
     "content4-link": "Yr Weather Symbols",
     "content4-part1": "The Weather images used in the application are sourced from ",
     "content4-part2": ", contributing to the visual appeal and easy interpretation of weather conditions.",
-    "content5": "The application is currently in development. If you have any questions or feedback, feel free to contact me through the links below.",
+    "developmentDisclaimer": "The application is currently in development. If you have any questions or feedback, feel free to contact me through the links below. Please note that this website is being developed with a mobile-first approach, so it may not display perfectly on desktop screens at times.",
     "frontendLink": "WeatherFrontend",
     "frontendLinkDescription": "Explore the frontend code on GitHub.",
     "linkedin": "My LinkedIn",

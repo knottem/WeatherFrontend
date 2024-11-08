@@ -10,6 +10,7 @@
 		"content4-part1": "Die in der Anwendung verwendeten Wetterbilder stammen von",
 		"content4-part2": ", was zur optischen Attraktivität und einfachen Interpretation der Wetterbedingungen beiträgt.",
 		"content5": "Die Anwendung befindet sich derzeit in der Entwicklung. Wenn Sie Fragen oder Feedback haben, können Sie mich gerne über die unten stehenden Links kontaktieren.",
+    "developmentDisclaimer": "Die Anwendung befindet sich derzeit in Entwicklung. Wenn Sie Fragen oder Feedback haben, können Sie mich gerne über die untenstehenden Links kontaktieren. Bitte beachten Sie, dass diese Website mit einem Mobile-First-Ansatz entwickelt wird und möglicherweise nicht immer optimal auf Desktop-Bildschirmen angezeigt wird.",
 		"frontendLink": "WetterFrontend",
 		"frontendLinkDescription": "Erkunden Sie den Frontend-Code auf GitHub.",
 		"linkedin": "Mein LinkedIn",
