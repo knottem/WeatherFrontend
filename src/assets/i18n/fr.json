@@ -45,7 +45,8 @@
     "title": "Paramètres",
     "selectLanguage": "Changer de langue",
     "selectApi": "Sélectionner les sources de données (API)",
-    "apiNote": "Remarque : FMI ne peut pas être sélectionné comme seule API en raison d'une couverture de données incomplète."
+    "apiNote": "Remarque : FMI ne peut pas être sélectionné comme seule API en raison d'une couverture de données incomplète.",
+    "darkMode": "Dark mode"
   },
   "search": {
     "favorites": "Favoris",
@@ -81,7 +82,7 @@
 	"windDirectionShort": "Wdir",
 	"windSpeed": "Vitesse du vent",
   "error": {
-    "title": "Erreur",
+    "title": "Message d'erreur",
     "unexpected_error_occurred": "Une erreur inattendue est survenue.",
     "services_unavailable": "Les services suivants sont actuellement désactivés : {{apis}}. Veuillez réessayer plus tard ou choisir un autre service.",
     "service_unavailable": "Le service {{api}} est actuellement désactivé. Veuillez réessayer plus tard ou choisir un autre service.",
@@ -89,7 +90,9 @@
     "network_error": "Erreur réseau : {{message}}",
     "server_error": "Erreur du serveur : Le serveur a renvoyé un code d'état inattendu {{status}}. Veuillez réessayer plus tard.",
     "timeout_error": "La demande a pris trop de temps pour répondre. Veuillez vérifier votre connexion Internet ou réessayer plus tard.",
-    "network_unavailable": "Aucune connexion Internet détectée. Veuillez vérifier vos paramètres réseau et réessayer."
+    "network_unavailable": "Aucune connexion Internet détectée. Veuillez vérifier vos paramètres réseau et réessayer.",
+    "fmiError": "FMI ne peut pas être utilisé seul. Veuillez sélectionner au moins une autre API.",
+    "singleApiError": "Vous devez sélectionner au moins une API."
   },
   "Monday": "Lundi",
   "Tuesday": "Mardi",

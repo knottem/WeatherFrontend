@@ -5,17 +5,17 @@ import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {environment} from "../../environments/environment";
 import {SharedService} from "../shared.service";
+import {ErrorService} from "../error.service";
+import {MatFormField, MatOption, MatSelect} from "@angular/material/select";
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IonicModule, FormsModule],
+  imports: [CommonModule, TranslateModule, IonicModule, FormsModule, MatSelect, MatOption, MatFormField],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css',
 })
 export class SettingsComponent {
-
-  public isDarkMode = false;
 
   // All the languages that the app supports
   public languages: { code: string, name: string }[] = [
@@ -32,36 +32,28 @@ export class SettingsComponent {
     { name: 'YR', value: 'yr'},
     { name: 'FMI', value: 'fmi'}
   ]
-
+  isDarkMode: boolean = false;
   public currentLanguage = this.translate.currentLang;
   public version: string = environment.apiVersion;
   public selectedApis: string[];
 
-  constructor(public translate: TranslateService, private sharedService: SharedService,) {
-    const userApis = localStorage.getItem('apis');
+  constructor(public translate: TranslateService,
+              private sharedService: SharedService,
+              private errorService: ErrorService,) {
+    this.sharedService.darkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
+    const settings = this.sharedService.loadUserSettings();
+    const userApis = settings.apis;
     if (userApis) {
-      this.selectedApis = JSON.parse(userApis);
+      this.selectedApis = userApis;
     } else {
       this.selectedApis = ['smhi', 'yr', 'fmi'];
     }
   }
 
-  ngOnInit(){
-    const settings = JSON.parse(localStorage.getItem("userSettings") || "{}");
-    this.isDarkMode = settings.darkMode === "on"
-  }
-
   toggleDarkMode(){
-    this.isDarkMode = !this.isDarkMode
-    const settings = this.sharedService.loadUserSettings();
-    settings.darkMode = this.isDarkMode ? "on" : "off";
-    this.sharedService.saveUserSettings(settings);
-
-    if(this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    this.sharedService.toggleDarkMode();
   }
 
   switchLanguage(event: Event) {
@@ -79,19 +71,22 @@ export class SettingsComponent {
 
     if (isSelected) {
       if(this.selectedApis.length === 2 && api !== 'fmi' && this.selectedApis.includes('fmi')) {
-        console.warn("FMI can't be used alone. Please keep at least one other API selected.");
+        this.errorService.setTranslatedError("error.fmiError");
         return;
       }
 
       if (this.selectedApis.length > 1) {
         this.selectedApis = this.selectedApis.filter(a => a !== api);
       } else {
-        console.warn('You must have at least one API selected.');
+        this.errorService.setTranslatedError("error.singleApiError")
+        return;
       }
     } else {
       this.selectedApis.push(api);
     }
-    localStorage.setItem('apis', JSON.stringify(this.selectedApis));
+    const settings = this.sharedService.loadUserSettings();
+    settings.apis = this.selectedApis;
+    this.sharedService.saveUserSettings(settings)
   }
 
 }

@@ -1,1 +1,31 @@
+/* Custom styling for mat-form-field */
+::ng-deep .custom-mat-form-field .mat-form-field-flex {
+  padding: 0.25rem 0.5rem; /* Reduce padding */
+  border-radius: 0.375rem; /* Border radius to match */
+  background-color: #f3f4f6; /* Light background color */
+  border: 1px solid #d1d5db; /* Light border color */
+}
 
+::ng-deep .dark .custom-mat-form-field .mat-form-field-flex {
+  background-color: #374151; /* Dark background color */
+  border: 1px solid #4b5563; /* Dark border color */
+}
+
+::ng-deep .custom-mat-form-field .mat-select-placeholder,
+::ng-deep .custom-mat-form-field .mat-select-value {
+  font-size: 0.875rem; /* Adjust font size */
+  color: #111827; /* Text color in light mode */
+}
+
+::ng-deep body.dark .custom-mat-form-field .mat-select-placeholder,
+::ng-deep body.dark .custom-mat-form-field .mat-select-value {
+  color: #d1d5db; /* Text color in dark mode */
+}
+
+::ng-deep .custom-mat-form-field .mat-form-field-outline {
+  border-color: transparent; /* Hide default outline */
+}
+
+::ng-deep .custom-mat-form-field .mat-form-field-label {
+  display: none; /* Remove label above the input */
+}

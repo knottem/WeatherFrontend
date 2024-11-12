@@ -45,7 +45,8 @@
     "title": "Inställningar",
     "selectLanguage": "Välj språk",
     "selectApi": "Välj datakällor (API:er)",
-    "apiNote": "Obs: FMI kan inte väljas som enda API på grund av ofullständig täckning av data."
+    "apiNote": "Obs: FMI kan inte väljas som enda API på grund av ofullständig täckning av data.",
+    "darkMode": "Dark mode"
   },
   "search": {
     "favorites": "Favoriter",
@@ -81,7 +82,7 @@
 	"windDirectionShort": "Wdir",
 	"windSpeed": "Vindhastighet",
   "error": {
-    "title": "Fel",
+    "title": "Felmeddelande",
     "unexpected_error_occurred": "Ett oväntat fel uppstod.",
     "services_unavailable": "Följande tjänster är för närvarande avstängda: {{apis}}. Försök igen senare eller välj en annan tjänst.",
     "service_unavailable": "{{api}}-tjänsten är för närvarande avstängd. Försök igen senare eller välj en annan tjänst.",
@@ -89,7 +90,9 @@
     "network_error": "Nätverksfel: {{message}}",
     "server_error": "Serverfel: Servern returnerade oväntad statuskod {{status}}. Försök igen senare.",
     "timeout_error": "Begäran tog för lång tid att svara. Kontrollera din internetanslutning eller försök igen senare.",
-    "network_unavailable": "Ingen internetanslutning upptäckt. Kontrollera dina nätverksinställningar och försök igen."
+    "network_unavailable": "Ingen internetanslutning upptäckt. Kontrollera dina nätverksinställningar och försök igen.",
+    "fmiError": "FMI kan inte användas ensam. Vänligen välj minst en annan API.",
+    "singleApiError": "Du måste ha minst en API vald."
   },
   "Monday": "Måndag",
   "Tuesday": "Tisdag",

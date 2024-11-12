@@ -45,7 +45,8 @@
     "title": "Einstellungen",
     "selectLanguage": "Sprache ändern",
     "selectApi": "Datenquellen (APIs) auswählen",
-    "apiNote": "Hinweis: FMI kann nicht als einzige API ausgewählt werden, da die Datenabdeckung unvollständig ist."
+    "apiNote": "Hinweis: FMI kann nicht als einzige API ausgewählt werden, da die Datenabdeckung unvollständig ist.",
+    "darkMode": "Dark mode"
   },
   "search": {
     "favorites": "Favoriten",
@@ -81,7 +82,7 @@
 	"windDirectionShort": "Wdir",
 	"windSpeed": "Windstärke",
   "error": {
-    "title": "Fehler",
+    "title": "Fehlermeldung",
     "unexpected_error_occurred": "Ein unerwarteter Fehler ist aufgetreten.",
     "services_unavailable": "Die folgenden Dienste sind derzeit deaktiviert: {{apis}}. Bitte versuchen Sie es später erneut oder wählen Sie einen anderen Dienst.",
     "service_unavailable": "Der Dienst {{api}} ist derzeit deaktiviert. Bitte versuchen Sie es später erneut oder wählen Sie einen anderen Dienst.",
@@ -89,7 +90,9 @@
     "network_error": "Netzwerkfehler: {{message}}",
     "server_error": "Serverfehler: Der Server hat einen unerwarteten Statuscode {{status}} zurückgegeben. Bitte versuchen Sie es später erneut.",
     "timeout_error": "Die Anfrage hat zu lange gedauert, um zu antworten. Bitte überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.",
-    "network_unavailable": "Keine Internetverbindung erkannt. Bitte überprüfen Sie Ihre Netzwerkeinstellungen und versuchen Sie es erneut."
+    "network_unavailable": "Keine Internetverbindung erkannt. Bitte überprüfen Sie Ihre Netzwerkeinstellungen und versuchen Sie es erneut.",
+    "fmiError": "FMI kann nicht allein verwendet werden. Bitte wähle mindestens eine weitere API aus.",
+    "singleApiError": "Du musst mindestens eine API auswählen."
   },
   "Monday": "Montag",
   "Tuesday": "Dienstag",
