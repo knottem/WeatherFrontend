@@ -5,13 +5,15 @@ import { App } from '@capacitor/app';
 import {Router} from "@angular/router";
 import { ErrorService } from './error.service';
 import {SharedService} from "./shared.service";
+import {Keyboard} from "@capacitor/keyboard";
+import {Capacitor} from "@capacitor/core";
 
 @Component({
   selector: 'app-root',
   template: `
-    <ion-app>
-      <ion-content>
-        <div class="content-wrapper">
+    <ion-app class="bg-primary" id="app-root">
+      <ion-content >
+        <div class="content-wrapper bg-primary">
             <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
                 <ion-refresher-content></ion-refresher-content>
             </ion-refresher>
@@ -21,9 +23,9 @@ import {SharedService} from "./shared.service";
         </div>
       </ion-content>
       <div class="content-wrapper">
-        <ion-footer>
+        <ion-footer [class.hide-footer]="isKeyboardOpen && isMobile">
           <ion-toolbar>
-            <app-footer></app-footer>
+            <app-footer ></app-footer>
           </ion-toolbar>
         </ion-footer>
       </div>
@@ -34,6 +36,9 @@ import {SharedService} from "./shared.service";
 })
 export class AppComponent {
   errorMessage: string | null = null;
+  isKeyboardOpen = false;
+  isMobile = Capacitor.getPlatform() !== 'web';
+
 
   constructor(
     translate: TranslateService,
@@ -46,8 +51,15 @@ export class AppComponent {
     if (settings.language) {
       translate.use(settings.language);
     }
-    if (settings.darkMode == "on") {
-      document.documentElement.classList.add('dark')
+
+    if(this.isMobile) {
+      Keyboard.addListener('keyboardWillShow', () => {
+        this.isKeyboardOpen = true;
+      });
+
+      Keyboard.addListener('keyboardWillHide', () => {
+        this.isKeyboardOpen = false;
+      });
     }
 
     App.addListener('backButton', () => {
@@ -62,6 +74,22 @@ export class AppComponent {
       this.errorMessage = message;
     });
   }
+
+  ngOnInit(){
+    // Setting brightness after loaded.
+    const settings = this.sharedService.loadUserSettings();
+    if(!this.isMobile){
+      if(settings.brightness){
+        const adjustedLevel = 70 + (settings.brightness * 0.3);
+        const appElement = document.getElementById('app-root');
+        if (appElement) {
+          appElement.style.filter = `brightness(${adjustedLevel}%)`;
+        }
+      }
+    }
+  }
+
+
 
   doRefresh(event: RefresherCustomEvent) {
     location.reload();

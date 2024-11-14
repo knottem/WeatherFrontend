@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,7 +17,11 @@ import { TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { IonicModule} from "@ionic/angular";
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AngularSvgIconModule } from "angular-svg-icon";
+import {SharedService} from "./shared.service";
 
+export function initializeAppFactory(sharedService: SharedService) {
+  return () => sharedService.initializeApp();
+}
 
 @NgModule({
   declarations: [
@@ -46,7 +50,16 @@ import { AngularSvgIconModule } from "angular-svg-icon";
       }
     })
   ],
-  providers: [WeatherService],
+  providers: [
+    WeatherService,
+    SharedService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAppFactory,
+      deps: [SharedService],
+      multi: true
+    }
+  ],
   exports: [
     ErrorCompComponent
   ],
