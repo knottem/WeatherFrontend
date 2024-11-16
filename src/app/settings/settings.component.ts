@@ -8,6 +8,8 @@ import {SharedService} from "../shared.service";
 import {ErrorService} from "../error.service";
 import {MatFormField, MatOption, MatSelect} from "@angular/material/select";
 import { ScreenBrightness } from '@capacitor-community/screen-brightness';
+import {WeatherService} from "../weather.service";
+import {ApiStatus} from "../../models/weather-data";
 
 @Component({
   selector: 'app-settings',
@@ -42,7 +44,7 @@ export class SettingsComponent {
   constructor(public translate: TranslateService,
               private sharedService: SharedService,
               private errorService: ErrorService,
-              private platform: Platform
+              private weatherService: WeatherService
               ) {
     this.sharedService.darkMode$.subscribe(isDark => {
       this.isDarkMode = isDark;
@@ -55,6 +57,23 @@ export class SettingsComponent {
       this.selectedApis = ['smhi', 'yr', 'fmi'];
     }
     this.brightnessLevel = this.sharedService.loadUserSettings().brightness || 100;
+
+    /*
+    this.weatherService.getApiStatus().subscribe({
+      next: (data: ApiStatus[]) => {
+        const activeApis = data
+          .filter((api: ApiStatus) => api.enabled)
+          .map((api: ApiStatus) => api.api.toLowerCase());
+        this.selectedApis = activeApis;
+
+        console.log('Active APIs:', activeApis);
+      },
+      error: (err) => {
+        console.error('Error fetching API status:', err);
+      },
+    });
+
+     */
   }
 
   toggleDarkMode(){
@@ -94,23 +113,10 @@ export class SettingsComponent {
     this.sharedService.saveUserSettings(settings)
   }
 
-  async onBrightnessChange(event: Event) {
+  onBrightnessChange(event: Event) {
     const level = (event.target as HTMLInputElement).valueAsNumber;
     this.brightnessLevel = level;
-    this.sharedService.saveBrightnessSetting(level);
-
-    if (this.platform.is('android') || this.platform.is('ios')) {
-      const brightness = level / 100
-      await ScreenBrightness.setBrightness({ brightness });
-      const {brightness: currentBrightness} = await ScreenBrightness.getBrightness();
-      console.log({brightness: currentBrightness})
-    } else {
-      const adjustedLevel = 70 + (level * 0.3);
-      const appElement = document.getElementById('app-root');
-      if (appElement) {
-        appElement.style.filter = `brightness(${adjustedLevel}%)`;
-      }
-    }
+    this.sharedService.setBrightnessSetting(level);
   }
 
 }
