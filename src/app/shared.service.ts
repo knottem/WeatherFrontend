@@ -4,6 +4,8 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { Preferences } from '@capacitor/preferences';
 import { SplashScreen } from '@capacitor/splash-screen';
 import {Capacitor} from "@capacitor/core";
+import {ScreenBrightness} from "@capacitor-community/screen-brightness";
+import {Platform} from "@ionic/angular";
 
 @Injectable({
   providedIn: 'root'
@@ -31,21 +33,21 @@ export class SharedService {
   private SETTINGS_STORAGE_KEY = "userSettings";
   private CURRENT_SETTINGS_VERSION = "1.0.1"
 
-  constructor() { }
+  constructor(private platform: Platform) { }
 
   async initializeApp(): Promise<void> {
     return new Promise(async (resolve) => {
       const settings = this.loadUserSettings();
       const isDarkMode = settings.darkMode === "on";
       this.darkModeSubject.next(isDarkMode);
-      this.setAndroidStatusBar(isDarkMode)
+
       if (isDarkMode) {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
       }
-
       await SplashScreen.hide();
+      this.setAndroidStatusBar(isDarkMode);
       resolve();
     });
   }
@@ -85,6 +87,33 @@ export class SharedService {
     localStorage.setItem(this.SETTINGS_STORAGE_KEY, JSON.stringify(settingsWithVersion));
   }
 
+  saveBrightnessSetting(level: number): void {
+    const settings = JSON.parse(localStorage.getItem(this.SETTINGS_STORAGE_KEY) || '{}');
+    settings.brightness = level;
+
+    // Ensure to keep the version and other existing settings
+    const settingsWithVersion = {
+      ...settings,
+      version: this.CURRENT_SETTINGS_VERSION,
+    };
+
+    localStorage.setItem(this.SETTINGS_STORAGE_KEY, JSON.stringify(settingsWithVersion));
+  }
+
+  async setBrightnessSetting(level: number): Promise<void> {
+    if (this.platform.is('android') || this.platform.is('ios')) {
+      const brightness = level / 100
+      await ScreenBrightness.setBrightness({ brightness });
+    } else {
+      const adjustedLevel = 70 + (level * 0.3);
+      const appElement = document.getElementById('app-root');
+      if (appElement) {
+        appElement.style.filter = `brightness(${adjustedLevel}%)`;
+      }
+    }
+    this.saveBrightnessSetting(level)
+  }
+
   loadUserSettings(): any {
     // Remove old formats or outdated versions if needed
     const data = JSON.parse(localStorage.getItem(this.SETTINGS_STORAGE_KEY) || "{}");
@@ -92,9 +121,15 @@ export class SharedService {
       return data;
     }
 
-    // Clean up old or incompatible data if we didnt load any correct data.
+    // Clean up old or incompatible data if we didn't load any correct data.
     localStorage.removeItem(this.SETTINGS_STORAGE_KEY);
-    return { darkMode: "off", language: "en" }; // Default settings
+    // default settings
+    return {
+      darkMode: "off",
+      language: "en",
+      apis: ["yr", "fmi", "smhi"],
+      brightness: 100
+    };
   }
 
   loadDarkModeFromStorage(): boolean {

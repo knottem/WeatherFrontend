@@ -2,12 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   --app-width: 80%;
   --app-min-width: 600px;
   --app-max-width: 1400px;
-  --ion-toolbar-background: #f6f8fc;
+  --ion-background-color: ;
+  @apply bg-primary
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+.text-primary {
+  @apply text-gray-800 dark:text-gray-200;
+}
+
+.text-secondary {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.text-weatherCard {
+  @apply text-gray-800 dark:text-gray-300
+}
+
+.bg-header {
+  @apply bg-[#d9e9ea] dark:bg-[#303234]
+}
+
+.bg-primary {
+  @apply bg-white dark:bg-[#2e2f33];
+}
+
+.bg-secondary {
+  @apply bg-gray-50 dark:bg-[#2e2f33];
+}
+
+.bg-card {
+  @apply bg-white dark:bg-[#222428]
+}
+
+html.dark .dark-filter-white {
+  filter: invert(1) brightness(2);
+}
+
+.hide-footer {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
 }
 
 .content-wrapper {
@@ -39,12 +82,6 @@
 
 html {
   overflow-y: auto;
-
-}
-
-html, body {
-  overflow-x: hidden;
-  max-width: 100%;
 }
 
 .button-standard {
