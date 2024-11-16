@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
-import { RefresherCustomEvent } from '@ionic/angular';
+import {Platform, RefresherCustomEvent} from '@ionic/angular';
 import { App } from '@capacitor/app';
 import {Router} from "@angular/router";
 import { ErrorService } from './error.service';
@@ -44,7 +44,8 @@ export class AppComponent {
     translate: TranslateService,
     private router: Router,
     private errorService: ErrorService,  // Inject the ErrorService
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private platform: Platform
   ) {
     translate.setDefaultLang('en');
     const settings = this.sharedService.loadUserSettings();
@@ -76,17 +77,12 @@ export class AppComponent {
   }
 
   ngOnInit(){
-    // Setting brightness after loaded.
-    const settings = this.sharedService.loadUserSettings();
-    if(!this.isMobile){
-      if(settings.brightness){
-        const adjustedLevel = 70 + (settings.brightness * 0.3);
-        const appElement = document.getElementById('app-root');
-        if (appElement) {
-          appElement.style.filter = `brightness(${adjustedLevel}%)`;
-        }
-      }
-    }
+    this.platform.ready().then(() => {
+      // Setting brightness after platform is ready
+      const settings = this.sharedService.loadUserSettings();
+      const brightness = settings.brightness ?? 100;
+      this.sharedService.setBrightnessSetting(brightness);
+    });
   }
 
 
