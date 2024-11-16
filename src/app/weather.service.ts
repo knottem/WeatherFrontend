@@ -69,6 +69,7 @@ export class WeatherService {
     21: './assets/images/weathericons/30.svg', // thunder - not really accurate picture
     22: './assets/images/weathericons/47.svg',
     23: './assets/images/weathericons/12.svg',
+    24: './assets/images/weathericons/48.svg',
     25: './assets/images/weathericons/44d.svg',
     26: './assets/images/weathericons/49.svg',
     27: './assets/images/weathericons/50.svg',
