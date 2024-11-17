@@ -282,15 +282,16 @@ export class WeatherDisplayComponent {
     return timestampsSets;
   }
 
-  // return a list of timestamps that are later than the current hour
+// Return a list of timestamps that are later than the current hour and on the same day
   public filterTimestamps(timestamps: string[]): string[] {
     const now = new Date();
-    const currentHour = now.getHours();
-
     return timestamps.filter((timestamp) => {
       const timestampDate = new Date(timestamp);
-      const timestampHour = timestampDate.getHours();
-      return timestampHour >= currentHour || timestampDate > now;
+      return (
+        timestampDate.toDateString() === now.toDateString() &&
+        timestampDate.getHours() >= now.getHours() ||
+        timestampDate > now
+      );
     });
   }
 
