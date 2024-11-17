@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorCompComponent } from './error-comp.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 describe('ErrorCompComponent', () => {
   let component: ErrorCompComponent;
@@ -8,6 +9,7 @@ describe('ErrorCompComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       declarations: [ErrorCompComponent]
     });
     fixture = TestBed.createComponent(ErrorCompComponent);

@@ -7,9 +7,7 @@ import {environment} from "../../environments/environment";
 import {SharedService} from "../shared.service";
 import {ErrorService} from "../error.service";
 import {MatFormField, MatOption, MatSelect} from "@angular/material/select";
-import { ScreenBrightness } from '@capacitor-community/screen-brightness';
 import {WeatherService} from "../weather.service";
-import {ApiStatus} from "../../models/weather-data";
 
 @Component({
   selector: 'app-settings',

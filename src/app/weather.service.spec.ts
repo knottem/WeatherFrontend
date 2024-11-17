@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import {ErrorService} from "./error.service";
 import {TranslateLoader, TranslateModule, TranslateService} from "@ngx-translate/core";
 import {of} from "rxjs";
+import {SharedService} from "./shared.service";
 
 describe('WeatherService', () => {
   let service: WeatherService;
@@ -24,7 +25,7 @@ describe('WeatherService', () => {
       providers: [WeatherService, ErrorService, TranslateService]
     });
     httpTestingController = TestBed.inject(HttpTestingController);
-    service = new WeatherService(TestBed.inject(HttpClient), TestBed.inject(ErrorService), TestBed.inject(TranslateService));
+    service = new WeatherService(TestBed.inject(HttpClient), TestBed.inject(ErrorService), TestBed.inject(TranslateService), TestBed.inject(SharedService));
   });
 
   it('should be created', () => {
