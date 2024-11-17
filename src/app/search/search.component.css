@@ -8,14 +8,13 @@ ion-searchbar.searchbar {
 }
 
 .search-results {
-  max-height: 80%;
+  flex-grow: 1;
   overflow-y: auto; /* Add scroll to the results */
 }
 
 .list-title {
   font-size: 1.2em;
   margin: 16px 0 8px;
-  color: #333;
   padding: 0 16px;
 }
 
@@ -29,10 +28,16 @@ ion-searchbar.searchbar {
   transition: background-color 0.3s;
   list-style: none;
   outline: none;
+  @apply hover:bg-[#f0f0f0] dark:hover:bg-[#262626]
 }
 
-.list-item:hover {
-  background-color: #f0f0f0;
+.list-item.dark {
+  background-color: #333;
+  border-bottom: 1px solid #444;
+}
+
+.no-search {
+  border-bottom: none;
 }
 
 ion-icon {

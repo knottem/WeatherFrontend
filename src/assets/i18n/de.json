@@ -10,6 +10,7 @@
 		"content4-part1": "Die in der Anwendung verwendeten Wetterbilder stammen von",
 		"content4-part2": ", was zur optischen Attraktivität und einfachen Interpretation der Wetterbedingungen beiträgt.",
 		"content5": "Die Anwendung befindet sich derzeit in der Entwicklung. Wenn Sie Fragen oder Feedback haben, können Sie mich gerne über die unten stehenden Links kontaktieren.",
+    "developmentDisclaimer": "Die Anwendung befindet sich derzeit in Entwicklung. Wenn Sie Fragen oder Feedback haben, können Sie mich gerne über die untenstehenden Links kontaktieren. Bitte beachten Sie, dass diese Website mit einem Mobile-First-Ansatz entwickelt wird und möglicherweise nicht immer optimal auf Desktop-Bildschirmen angezeigt wird.",
 		"frontendLink": "WetterFrontend",
 		"frontendLinkDescription": "Erkunden Sie den Frontend-Code auf GitHub.",
 		"linkedin": "Mein LinkedIn",
@@ -42,12 +43,17 @@
 	},
   "settings": {
     "title": "Einstellungen",
-    "selectLanguage": "Sprache ändern"
+    "selectLanguage": "Sprache ändern",
+    "selectApi": "Datenquellen (APIs) auswählen",
+    "apiNote": "Hinweis: FMI kann nicht als einzige API ausgewählt werden, da die Datenabdeckung unvollständig ist.",
+    "darkMode": "Dark mode",
+    "brightness": "Helligkeit"
   },
   "search": {
     "favorites": "Favoriten",
     "recently": "Kürzlich Gesucht",
-    "results": "Suchergebnisse"
+    "results": "Suchergebnisse",
+    "noResults": "Keine Ergebnisse gefunden"
   },
 	"weatherTable": {
 		"afternoon": "Nachmittag",
@@ -75,5 +81,41 @@
 	"wind": "Wind",
 	"windDirection": "Windrichtung",
 	"windDirectionShort": "Wdir",
-	"windSpeed": "Windstärke"
+	"windSpeed": "Windstärke",
+  "error": {
+    "title": "Fehlermeldung",
+    "unexpected_error_occurred": "Ein unerwarteter Fehler ist aufgetreten.",
+    "services_unavailable": "Die folgenden Dienste sind derzeit deaktiviert: {{apis}}. Bitte versuchen Sie es später erneut oder wählen Sie einen anderen Dienst.",
+    "service_unavailable": "Der Dienst {{api}} ist derzeit deaktiviert. Bitte versuchen Sie es später erneut oder wählen Sie einen anderen Dienst.",
+    "one_or_more_services_unavailable": "Ein oder mehrere Wetterdienste sind derzeit deaktiviert. Bitte versuchen Sie es später erneut.",
+    "network_error": "Netzwerkfehler: {{message}}",
+    "server_error": "Serverfehler: Der Server hat einen unerwarteten Statuscode {{status}} zurückgegeben. Bitte versuchen Sie es später erneut.",
+    "timeout_error": "Die Anfrage hat zu lange gedauert, um zu antworten. Bitte überprüfen Sie Ihre Internetverbindung oder versuchen Sie es später erneut.",
+    "network_unavailable": "Keine Internetverbindung erkannt. Bitte überprüfen Sie Ihre Netzwerkeinstellungen und versuchen Sie es erneut.",
+    "fmiError": "FMI kann nicht allein verwendet werden. Bitte wähle mindestens eine weitere API aus.",
+    "singleApiError": "Du musst mindestens eine API auswählen."
+  },
+  "Monday": "Montag",
+  "Tuesday": "Dienstag",
+  "Wednesday": "Mittwoch",
+  "Thursday": "Donnerstag",
+  "Friday": "Freitag",
+  "Saturday": "Samstag",
+  "Sunday": "Sonntag",
+  "Today": "Heute",
+  "Tomorrow": "Morgen",
+  "shortDays": {
+    "Today": "Htg",
+    "Tomorrow": "Mgn",
+    "Monday": "Mo",
+    "Tuesday": "Di",
+    "Wednesday": "Mi",
+    "Thursday": "Do",
+    "Friday": "Fr",
+    "Saturday": "Sa",
+    "Sunday": "So"
+  },
+  "dayOfWeek": "Tag",
+  "dayWeather": "Tageszeit",
+  "night": "Nacht"
 }

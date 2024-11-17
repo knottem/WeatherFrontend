@@ -1,23 +1,24 @@
-import {ChangeDetectorRef, Component, QueryList, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {CurrentWeather, WeatherData} from '../../models/weather-data';
 import {WeatherService} from '../weather.service';
 import {SharedService} from '../shared.service';
-import {WeatherTableComponent} from '../weather-table/weather-table.component';
 import {DateTime} from 'luxon';
 import {CommonModule} from '@angular/common';
 import {LoadingIndicatorComponent} from '../loading-indicator/loading-indicator.component';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {Subscription} from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-weather-display',
   templateUrl: './weather-display.component.html',
+  styleUrls: ['./weather-display.component.css'],
   standalone: true,
-  imports: [CommonModule, LoadingIndicatorComponent, WeatherTableComponent, TranslateModule],
+  imports: [CommonModule, LoadingIndicatorComponent, TranslateModule],
 })
 export class WeatherDisplayComponent {
 
   private defaultCity: string = 'stockholm';
+  private currentCity: string = '';
 
   public amountOfDays: number = 10;
 
@@ -26,6 +27,7 @@ export class WeatherDisplayComponent {
   public weather: WeatherData = new WeatherData();
   public currentWeather: CurrentWeather = new CurrentWeather('', 0, 0, 0, 0, 0);
   public currentDays: string[] = [];
+  public currentDates: string[] = [];
   public timestamps: string[][] = [];
   public updatedTime: string = '';
   public translatedSources: string = '';
@@ -37,6 +39,20 @@ export class WeatherDisplayComponent {
   private sourcesSubscription!: Subscription;
   private weatherSubscription!: Subscription;
 
+
+  // Arrays to store weather data for the next 10 days
+  public allWeatherData: WeatherData[] = [];
+  public allSunsetSunriseData: string[][] = [];
+  public expandedDayIndex: number | null = null;
+  public highTempPerDay: number[] = [];
+  public lowTempPerDay: number[] = [];
+  public nightWeather: number[] = [];
+  public dayWeather: number[] = [];
+  public totalPrecipitationPerDay: number[] = [];
+
+
+  public isMobile$ = new BehaviorSubject<boolean>(this.checkIsMobile());
+
   constructor(
     private weatherService: WeatherService,
     private translate: TranslateService,
@@ -45,11 +61,31 @@ export class WeatherDisplayComponent {
   ) {}
 
   ngOnInit() {
+    const data = this.sharedService.loadWeatherData();
+    if (data !== null) {
+      this.currentCity = data.city.name;
+    } else {
+      this.currentCity = sessionStorage.getItem('currentCity') || this.defaultCity;
+    }
+    const currentApis = this.getSelectedApis();
+    const previousApis = this.getPreviousApis();
+    if (JSON.stringify(currentApis) !== JSON.stringify(previousApis)) {
+      this.isLoaded = false;
+      this.getWeather(this.currentCity);
+    } else {
+      this.loadInitialWeatherData();
+    }
+
+    // Store the current APIs in sessionStorage for future comparison
+    this.storePreviousApis(currentApis);
+
     this.searchSubscription = this.sharedService.searchQuery$
       .subscribe((city) => {
         if (city) {
           this.isLoaded = false;
           if(city !== this.weather.city.name) {
+            this.currentCity = city; // Update the current city
+            sessionStorage.setItem('currentCity', this.currentCity);
             this.getWeather(city);
             this.cdr.detectChanges();
           }
@@ -67,6 +103,8 @@ export class WeatherDisplayComponent {
       .subscribe((sources) => {
         this.updateTranslatedSources(sources);
       });
+
+    window.addEventListener('resize', () => this.isMobile$.next(this.checkIsMobile()));
   }
 
   ngOnDestroy() {
@@ -82,6 +120,26 @@ export class WeatherDisplayComponent {
     if (this.weatherSubscription) {
       this.weatherSubscription.unsubscribe();
     }
+  }
+
+  private getPreviousApis(): string[] {
+    const apis = sessionStorage.getItem('previousApis');
+    return apis !== undefined && apis !== null && apis !== '' && apis !== "undefined" ? JSON.parse(apis) : [];
+  }
+
+  private getSelectedApis(): string[] {
+    return this.sharedService.loadUserSettings().apis;
+
+  }
+
+  private storePreviousApis(apis: string[]) {
+    sessionStorage.setItem('previousApis', JSON.stringify(apis));
+  }
+
+  private areApisSame(): boolean {
+    const previousApis = this.getPreviousApis();
+    const currentApis = this.getSelectedApis();
+    return JSON.stringify(previousApis) === JSON.stringify(currentApis);
   }
 
   private loadInitialWeatherData() {
@@ -121,23 +179,24 @@ export class WeatherDisplayComponent {
   }
 
   private getWeather(str: string) {
+    this.isLoaded = false;
+    this.cdr.detectChanges();
     if (str === '') {
       return;
     }
-    this.isLoaded = false;
     const data = this.sharedService.loadWeatherData();
     if (data !== null && data.city.name.toLowerCase() === str.toLowerCase()) {
       const cachedTime = new Date(data.timestamp).getTime();
       const currentTime = new Date().getTime();
       const timeDifference = currentTime - cachedTime;
-      if (timeDifference < 60 * 60 * 1000) {
+      if (this.areApisSame() && timeDifference < 60 * 60 * 1000) {
         this.processWeatherData(data);
         return;
       }
-
     }
 
     this.weatherSubscription = this.weatherService.getWeather(str).subscribe((data) => {
+      this.storePreviousApis(this.getSelectedApis());
       this.processWeatherData(data);
     });
   }
@@ -150,6 +209,7 @@ export class WeatherDisplayComponent {
     );
     this.timestamps = this.getTimeStamps(availableTimestamps);
     this.currentDays = this.getDay();
+    this.currentDates = this.getDates();
     this.currentWeather = new CurrentWeather(
       availableTimestamps[0],
       this.weather.weatherData[availableTimestamps[0]].temperature,
@@ -158,6 +218,7 @@ export class WeatherDisplayComponent {
       this.weather.weatherData[availableTimestamps[0]].windDirection,
       this.weather.weatherData[availableTimestamps[0]].precipitation
     );
+    this.prepareWeatherData();
     this.sharedService.setUpdatedTime(this.weather.timestamp.substring(11, 16));
     this.sharedService.setWeatherSources(this.extractSources(this.weather.message));
 
@@ -166,6 +227,7 @@ export class WeatherDisplayComponent {
     }
     document.title = `${this.weather.city.name} - Weather`;
     this.isLoaded = true;
+    this.cdr.detectChanges();
   }
 
   // return a list of days starting with today, tomorrow and then the next 8 days as weekdays
@@ -187,6 +249,15 @@ export class WeatherDisplayComponent {
 
     return days;
   }
+
+  private getDates(): string[] {
+    const dates: string[] = [];
+    for (let i = 0; i < 10; i++) {
+      dates.push(DateTime.local().plus({ days: i }).toFormat('yyyy-MM-dd'));
+    }
+    return dates;
+  }
+
 
   // return a list of timestamps for the next 10 days
   private getTimeStamps(timestamps: string[]): string[][] {
@@ -211,15 +282,16 @@ export class WeatherDisplayComponent {
     return timestampsSets;
   }
 
-  // return a list of timestamps that are later than the current hour
+// Return a list of timestamps that are later than the current hour and on the same day
   public filterTimestamps(timestamps: string[]): string[] {
     const now = new Date();
-    const currentHour = now.getHours();
-
     return timestamps.filter((timestamp) => {
       const timestampDate = new Date(timestamp);
-      const timestampHour = timestampDate.getHours();
-      return timestampHour >= currentHour || timestampDate > now;
+      return (
+        timestampDate.toDateString() === now.toDateString() &&
+        timestampDate.getHours() >= now.getHours() ||
+        timestampDate > now
+      );
     });
   }
 
@@ -276,17 +348,19 @@ export class WeatherDisplayComponent {
   // should return an image path depending on weather code and timestamp
   public getWeatherConditionImage(code: number, day: boolean): string {
     const cacheKey = `${code}-${day ? 'day' : 'night'}`;
-    if (this.imageCache.has(cacheKey)) {
-      this.imageCache.get(cacheKey) as string;
+    if (!this.imageCache.has(cacheKey)) {
+      const image = this.weatherService.getWeatherConditionImage(code, day);
+      this.imageCache.set(cacheKey, image);
+      return image;
     }
-    const image = this.weatherService.getWeatherConditionImage(code, day);
-    this.imageCache.set(cacheKey, image);
-    return image;
+    return this.imageCache.get(cacheKey) as string;
   }
 
-   public isDayTime(timestamp: string): boolean {
-    const sunriseHour = parseInt(this.weather.city.sunriseList[0].substring(11, 13));
-    const sunsetHour = parseInt(this.weather.city.sunsetList[0].substring(11,13));
+
+  // should return a boolean depending on timestamp and sunrise/sunset
+  public isDayTime(timestamp: string, dayIndex: number): boolean {
+    const sunriseHour = parseInt(this.allSunsetSunriseData[dayIndex][0].substring(11, 13));
+    const sunsetHour = parseInt(this.allSunsetSunriseData[dayIndex][1].substring(11, 13));
     const hour = parseInt(timestamp.substring(11, 13));
     return hour >= sunriseHour && hour <= sunsetHour;
   }
@@ -303,4 +377,104 @@ export class WeatherDisplayComponent {
     }
     return [];
   }
+
+  public prepareWeatherData() {
+    this.allWeatherData = [];
+    this.allSunsetSunriseData = [];
+    for (let i = 0; i < this.amountOfDays; i++) {
+      this.allWeatherData.push(this.getWeatherDataForDay(this.timestamps[i]));
+      this.allSunsetSunriseData.push(this.getSunsetSunrise(i));
+    }
+
+    this.allWeatherData.forEach((day, i) => {
+      const timestamps = Object.keys(day.weatherData);
+      const temps = timestamps.map(ts => day.weatherData[ts].temperature);
+
+      // High and low temperatures for the day, rounded to the nearest integer
+      this.highTempPerDay[i] = Math.round(Math.max(...temps));
+      this.lowTempPerDay[i] = Math.round(Math.min(...temps));
+
+      // Total precipitation for the day, rounded to one decimal place
+      let totalPrecipitation = timestamps.reduce((total, ts) => total + day.weatherData[ts].precipitation, 0);
+      this.totalPrecipitationPerDay[i] = Math.round(totalPrecipitation * 10) / 10;
+
+      // Processes wind speeds to remove decimals for mobile if the windspeed is below 10 and keeps full windspeed for desktop
+      timestamps.forEach(ts => {
+        let windSpeed = day.weatherData[ts].windSpeed;
+        day.weatherData[ts].fullWindSpeed = windSpeed;
+        if (windSpeed >= 10) {
+          day.weatherData[ts].windSpeed = Math.round(windSpeed);
+        }
+      });
+
+      // Get the previous day's timestamps, if available
+      const previousDayTimestamps = i > 0 ? Object.keys(this.allWeatherData[i - 1].weatherData) : [];
+
+      // Night weather: previous day's night (18:00-23:59) + current day's early morning (00:00-05:59)
+      const previousNightTimes = previousDayTimestamps.filter(ts => {
+        const hour = parseInt(ts.substring(11, 13), 10);
+        return hour >= 18; // Previous day's night (18:00 - 23:59)
+      });
+      const earlyMorningTimes = timestamps.filter(ts => {
+        const hour = parseInt(ts.substring(11, 13), 10);
+        return hour < 6; // Current day's early morning (00:00 - 05:59)
+      });
+
+      const nightTimes = [...previousNightTimes, ...earlyMorningTimes];
+
+      // Assign the night weather condition based on the previous night
+      this.nightWeather[i] = this.getMostCommonWeatherCode(nightTimes, day) || -1;
+
+      // Day weather: current day's times between 06:00 and 17:59
+      const dayTimes = timestamps.filter(ts => {
+        const hour = parseInt(ts.substring(11, 13), 10);
+        return hour >= 6 && hour < 18; // Daytime hours (06:00 - 17:59)
+      });
+
+      // Assign the day weather condition based on the current day
+      this.dayWeather[i] = this.getMostCommonWeatherCode(dayTimes, day) || -1;
+
+
+    });
+
+    this.cdr.detectChanges();
+  }
+
+  toggleDayMobile(index: number): void {
+    if(window.innerWidth < 768) {
+      this.toggleDay(index);
+    }
+  }
+
+  toggleDay(index: number): void {
+    this.expandedDayIndex = this.expandedDayIndex === index ? null : index;
+  }
+
+  getHourlyTimestamps(dayIndex: number): string[] {
+    return Object.keys(this.allWeatherData[dayIndex].weatherData);  // Return all timestamps (hours) for the specific day
+  }
+
+  getMostCommonWeatherCode(timestamps: string[], day: WeatherData): number {
+    if (timestamps.length === 0) {
+      return -1; // Return a default value if the array is empty
+    }
+    const codeMap = new Map<number, number>();
+
+    timestamps.forEach(ts => {
+      const weatherDataEntry = day.weatherData[ts];
+      // Check if the weather data exists for this timestamp
+      if (weatherDataEntry && weatherDataEntry.weatherCode !== undefined) {
+        const code = weatherDataEntry.weatherCode;
+        codeMap.set(code, (codeMap.get(code) || 0) + 1);
+      }
+    });
+
+    // Return the most common weather code
+    return Array.from(codeMap).reduce((prev, curr) => curr[1] > prev[1] ? curr : prev)[0];
+  }
+
+  checkIsMobile(): boolean {
+    return window.innerWidth <= 768;
+  }
+
 }

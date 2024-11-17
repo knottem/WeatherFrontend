@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SettingsComponent } from './settings.component';
 import {TranslateModule} from "@ngx-translate/core";
+import {HttpClientModule} from "@angular/common/http";
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -9,7 +10,10 @@ describe('SettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TranslateModule.forRoot()]
+      imports: [
+        HttpClientModule,
+        TranslateModule.forRoot()
+      ]
     })
     .compileComponents();
 

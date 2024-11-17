@@ -1,0 +1,21 @@
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-2px); }
+  40%, 80% { transform: translateX(2px); }
+}
+
+.shake {
+  animation: shake 0.5s ease;
+}
+
+.bg-error-dark {
+  @apply bg-[#33373B] dark:border-gray-500 dark:shadow-lg; /* Adjust the bg color slightly lighter */
+}
+
+.error-border {
+  border: 2px solid #444; /* Lighter border to make it stand out */
+}
+
+.error-shadow {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Adjust the shadow for more contrast */
+}

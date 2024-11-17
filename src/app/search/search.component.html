@@ -1,19 +1,20 @@
-<div class="fixed inset-0 bg-white flex flex-col lg:flex lg:mx-auto lg:w-[80%] lg:shadow">
-  <div class="w-full mx-auto px-2 py-2 shadow-md bg-[#d9e9ea]">
+<div class="fixed inset-0 bg-white flex flex-col lg:flex lg:mx-auto lg:w-[80%] lg:shadow text-primary">
+  <div class="w-full mx-auto px-2 py-2 shadow-md bg-header">
     <div class="flex h-16 search-wrapper">
-    <ion-searchbar
-    [(ngModel)]="searchQuery"
-    showCancelButton="always"
-    placeholder="{{ 'header.searchForCity' | translate }}"
-    (ionInput)="onSearchInput($event)"
-    (ionCancel)="onCancel()"
-    (keydown)="onEnterPress($event)"
-    class="searchbar"
-  ></ion-searchbar>
+      <ion-searchbar
+        [(ngModel)]="searchQuery"
+        showCancelButton="always"
+        placeholder="{{ 'header.searchForCity' | translate }}"
+        (ionInput)="onSearchInput($event)"
+        (ionCancel)="onCancel()"
+        (keydown)="onEnterPress($event)"
+        [color]="isDarkMode ? 'dark' : 'light'"
+        class="searchbar"
+      ></ion-searchbar>
     </div>
   </div>
 
-  <div class="search-results" id="search-results">
+  <div class="search-results bg-primary" id="search-results">
     <div *ngIf="!searchQuery">
 
       <div *ngIf="favoriteCities.length !== 0">
@@ -33,19 +34,19 @@
       </div>
 
       <div *ngIf="lastSearched.length !== 0">
-      <h2 class="list-title">{{ 'search.recently' | translate }}</h2>
-      <div *ngFor="let city of lastSearchedCities()" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
-        <span>{{ city }}</span>
-        <ion-icon
-          [src]="isFavorite(city) ? 'assets/icons/star.svg' : 'assets/icons/star-outline.svg'"
-          (click)="toggleFavorite(city); $event.stopPropagation()"
-          (keydown)="onKeyPressFavorite($event, city)">
-        </ion-icon>
-      </div>
+        <h2 class="list-title">{{ 'search.recently' | translate }}</h2>
+        <div *ngFor="let city of lastSearchedCities()" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
+          <span>{{ city }}</span>
+          <ion-icon
+            [src]="isFavorite(city) ? 'assets/icons/star.svg' : 'assets/icons/star-outline.svg'"
+            (click)="toggleFavorite(city); $event.stopPropagation()"
+            (keydown)="onKeyPressFavorite($event, city)">
+          </ion-icon>
         </div>
+      </div>
     </div>
 
-    <div *ngIf="searchQuery && (filteredCities | async)?.length">
+    <div *ngIf="searchQuery">
       <h2 class="list-title">{{ 'search.results' | translate }}</h2>
       <div *ngFor="let city of filteredCities | async" class="list-item" (click)="onCitySelected(city)" (keydown)="onKeyPressCity($event, city)">
         <span>{{ city }}</span>
@@ -54,6 +55,9 @@
           (click)="toggleFavorite(city); $event.stopPropagation()"
           (keydown)="onKeyPressFavorite($event, city)">
         </ion-icon>
+      </div>
+      <div *ngIf="(filteredCities | async)?.length  === 0 " class="list-item no-search">
+        <span>{{ 'search.noResults' | translate }}</span>
       </div>
     </div>
   </div>

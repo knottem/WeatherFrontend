@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../weather.service';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { IonicModule, Platform } from "@ionic/angular";
+import { IonicModule } from "@ionic/angular";
 import { FormsModule } from "@angular/forms";
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
@@ -33,25 +33,22 @@ export class SearchComponent implements OnInit {
   public filteredCities: Observable<string[]> = of([]);
   public lastSearched: string[] = [];
   public favoriteCities: string[] = [];
-  private subscriptions: Subscription = new Subscription();
+  isDarkMode: boolean = false;
 
   constructor(
     public sharedService: SharedService,
     private weatherService: WeatherService,
     private router: Router,
-    private platform: Platform,
     public translate: TranslateService
   ) {
+    this.sharedService.darkMode$.subscribe((isDark) => {
+      this.isDarkMode = isDark;
+    });
   }
 
   ngOnInit() {
     this.getCityList();
     this.loadSavedData();
-    this.addKeyboardListeners();
-  }
-
-  ngOnDestroy() {
-    this.removeKeyboardListeners();
   }
 
   private loadSavedData() {
@@ -83,38 +80,6 @@ export class SearchComponent implements OnInit {
 
   isFavorite(city: string): boolean {
     return this.favoriteCities.includes(city);
-  }
-
-  addKeyboardListeners() {
-    this.subscriptions.add(
-      this.platform.keyboardDidShow.subscribe(ev => {
-        this.onKeyboardShow(ev);
-      })
-    );
-    this.subscriptions.add(
-      this.platform.keyboardDidHide.subscribe(() => {
-        this.onKeyboardHide();
-      })
-    );
-  }
-
-  removeKeyboardListeners() {
-    this.subscriptions.unsubscribe();
-  }
-
-  onKeyboardShow(ev: any) {
-    const {keyboardHeight} = ev;
-    const searchResults = document.getElementById('search-results');
-    if (searchResults) {
-      searchResults.style.maxHeight = `calc(80vh - ${keyboardHeight}px - 50px)` // 50px is for "suggestions" above the keyboard
-    }
-  }
-
-  onKeyboardHide() {
-    const searchResults = document.getElementById('search-results');
-    if (searchResults) {
-      searchResults.style.maxHeight = '80%';
-    }
   }
 
   onCancel() {

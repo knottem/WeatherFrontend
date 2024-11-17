@@ -10,7 +10,8 @@
 		"content4-part1": "Las imágenes meteorológicas utilizadas en la aplicación provienen de",
 		"content4-part2": ", contribuyendo al atractivo visual y la fácil interpretación de las condiciones climáticas.",
 		"content5": "La aplicación se encuentra actualmente en desarrollo. Si tiene alguna pregunta o comentario, no dude en ponerse en contacto conmigo a través de los enlaces a continuación.",
-		"frontendLink": "WeatherFrontend",
+    "developmentDisclaimer": "La aplicación está actualmente en desarrollo. Si tienes preguntas o comentarios, no dudes en contactarme a través de los enlaces a continuación. Ten en cuenta que este sitio web se está desarrollando con un enfoque centrado en dispositivos móviles, por lo que es posible que no se muestre perfectamente en pantallas de escritorio.",
+    "frontendLink": "WeatherFrontend",
 		"frontendLinkDescription": "Explore el código de interfaz en GitHub.",
 		"linkedin": "Mi LinkedIn",
 		"linkedinDescription": "Conectate conmigo",
@@ -42,12 +43,17 @@
 	},
   "settings": {
     "title": "Configuración",
-    "selectLanguage": "Seleccionar idioma"
+    "selectLanguage": "Seleccionar idioma",
+    "selectApi": "Seleccionar fuentes de datos (API)",
+    "apiNote": "Nota: FMI no puede seleccionarse como única API debido a la cobertura de datos incompleta.",
+    "darkMode": "Dark mode",
+    "brightness": "Brillo"
   },
   "search": {
     "favorites": "Favoritos",
     "recently": "Búsquedas Recientes",
-    "results": "Resultados de Búsqueda"
+    "results": "Resultados de Búsqueda",
+    "noResults": "No se encontraron resultados"
   },
 	"weatherTable": {
 		"afternoon": "Tarde",
@@ -75,5 +81,41 @@
 	"wind": "Viento",
 	"windDirection": "Dirección del viento",
 	"windDirectionShort": "Wdir",
-	"windSpeed": "Velocidad del viento"
+	"windSpeed": "Velocidad del viento",
+  "error": {
+    "title": "Mensaje de error",
+    "unexpected_error_occurred": "Ocurrió un error inesperado.",
+    "services_unavailable": "Los siguientes servicios están actualmente desactivados: {{apis}}. Por favor, inténtelo de nuevo más tarde o elija otro servicio.",
+    "service_unavailable": "El servicio {{api}} está actualmente desactivado. Por favor, inténtelo de nuevo más tarde o elija otro servicio.",
+    "one_or_more_services_unavailable": "Uno o más servicios meteorológicos están actualmente desactivados. Por favor, inténtelo de nuevo más tarde.",
+    "network_error": "Error de red: {{message}}",
+    "server_error": "Error del servidor: El servidor devolvió un código de estado inesperado {{status}}. Por favor, inténtelo de nuevo más tarde.",
+    "timeout_error": "La solicitud tardó demasiado en responder. Por favor, compruebe su conexión a Internet o inténtelo de nuevo más tarde.",
+    "network_unavailable": "No se detectó conexión a Internet. Por favor, revise su configuración de red e inténtelo de nuevo.",
+    "fmiError": "FMI no puede usarse solo. Por favor, selecciona al menos otra API.",
+    "singleApiError": "Debe seleccionar al menos una API."
+  },
+  "Monday": "Lunes",
+  "Tuesday": "Martes",
+  "Wednesday": "Miércoles",
+  "Thursday": "Jueves",
+  "Friday": "Viernes",
+  "Saturday": "Sábado",
+  "Sunday": "Domingo",
+  "Today": "Hoy",
+  "Tomorrow": "Mañana",
+  "shortDays": {
+    "Today": "Hoy",
+    "Tomorrow": "Mañ.",
+    "Monday": "Lun",
+    "Tuesday": "Mar",
+    "Wednesday": "Mié",
+    "Thursday": "Jue",
+    "Friday": "Vie",
+    "Saturday": "Sáb",
+    "Sunday": "Dom"
+  },
+  "dayOfWeek": "Día",
+  "dayWeather": "Día",
+  "night": "Noche"
 }

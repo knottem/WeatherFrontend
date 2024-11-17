@@ -10,6 +10,7 @@
 		"content4-part1": "Väderbilderna som används i applikationen kommer från",
 		"content4-part2": ", vilket bidrar till det visuella tilltalande och enkel tolkning av väderförhållanden.",
 		"content5": "Applikationen är för närvarande under utveckling. Om du har några frågor eller feedback, kontakta mig gärna via länkarna nedan.",
+    "developmentDisclaimer": "Applikationen är för närvarande under utveckling. Om du har några frågor eller synpunkter är du välkommen att kontakta mig via länkarna nedan. Observera att denna webbplats utvecklas med ett mobil-först-perspektiv och kanske inte alltid visas optimalt på större skärmar.",
 		"frontendLink": "VäderFrontend",
 		"frontendLinkDescription": "Utforska gränssnittskoden på GitHub.",
 		"linkedin": "Min LinkedIn",
@@ -42,12 +43,17 @@
 	},
   "settings": {
     "title": "Inställningar",
-    "selectLanguage": "Ändra språk"
+    "selectLanguage": "Välj språk",
+    "selectApi": "Välj datakällor (API:er)",
+    "apiNote": "Obs: FMI kan inte väljas som enda API på grund av ofullständig täckning av data.",
+    "darkMode": "Dark mode",
+    "brightness": "Ljusstyrka"
   },
   "search": {
     "favorites": "Favoriter",
     "recently": "Nyligen Sökt",
-    "results": "Sökresultat"
+    "results": "Sökresultat",
+    "noResults": "Inga resultat hittades"
   },
 	"weatherTable": {
 		"afternoon": "Eftermiddag",
@@ -75,5 +81,42 @@
 	"wind": "Vind",
 	"windDirection": "Vindriktning",
 	"windDirectionShort": "Wdir",
-	"windSpeed": "Vindhastighet"
+	"windSpeed": "Vindhastighet",
+  "error": {
+    "title": "Felmeddelande",
+    "unexpected_error_occurred": "Ett oväntat fel uppstod.",
+    "services_unavailable": "Följande tjänster är för närvarande avstängda: {{apis}}. Försök igen senare eller välj en annan tjänst.",
+    "service_unavailable": "{{api}}-tjänsten är för närvarande avstängd. Försök igen senare eller välj en annan tjänst.",
+    "one_or_more_services_unavailable": "En eller flera vädertjänster är för närvarande avstängda. Försök igen senare.",
+    "network_error": "Nätverksfel: {{message}}",
+    "server_error": "Serverfel: Servern returnerade oväntad statuskod {{status}}. Försök igen senare.",
+    "timeout_error": "Begäran tog för lång tid att svara. Kontrollera din internetanslutning eller försök igen senare.",
+    "network_unavailable": "Ingen internetanslutning upptäckt. Kontrollera dina nätverksinställningar och försök igen.",
+    "fmiError": "FMI kan inte användas ensam. Vänligen välj minst en annan API.",
+    "singleApiError": "Du måste ha minst en API vald."
+  },
+  "Monday": "Måndag",
+  "Tuesday": "Tisdag",
+  "Wednesday": "Onsdag",
+  "Thursday": "Torsdag",
+  "Friday": "Fredag",
+  "Saturday": "Lördag",
+  "Sunday": "Söndag",
+  "Today": "Idag",
+  "Tomorrow": "Imorgon",
+  "shortDays": {
+    "Today": "Idag",
+    "Tomorrow": "Imorgon",
+    "Monday": "Mån",
+    "Tuesday": "Tis",
+    "Wednesday": "Ons",
+    "Thursday": "Tor",
+    "Friday": "Fre",
+    "Saturday": "Lör",
+    "Sunday": "Sön"
+  },
+  "night": "Natt",
+  "dayWeather": "Dag",
+  "dayOfWeek": "Dygn",
+  "humidity": "Luftfuktighet"
 }
