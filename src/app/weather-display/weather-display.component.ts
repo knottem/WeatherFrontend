@@ -402,7 +402,6 @@ export class WeatherDisplayComponent {
       timestamps.forEach(ts => {
         let windSpeed = day.weatherData[ts].windSpeed;
         day.weatherData[ts].fullWindSpeed = windSpeed;
-        windSpeed = windSpeed + 7;
         if (windSpeed >= 10) {
           day.weatherData[ts].windSpeed = Math.round(windSpeed);
         }
