@@ -6,11 +6,11 @@ table {
 
 th, td {
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid;
+  @apply border-b border-gray-100 dark:border-gray-600
 }
 
 table th {
-  background-color: #f9fafb;
   font-weight: bold;
 }
 

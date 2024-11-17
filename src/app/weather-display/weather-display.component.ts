@@ -6,7 +6,7 @@ import {DateTime} from 'luxon';
 import {CommonModule} from '@angular/common';
 import {LoadingIndicatorComponent} from '../loading-indicator/loading-indicator.component';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {Subscription} from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-weather-display',
@@ -49,6 +49,9 @@ export class WeatherDisplayComponent {
   public nightWeather: number[] = [];
   public dayWeather: number[] = [];
   public totalPrecipitationPerDay: number[] = [];
+
+
+  public isMobile$ = new BehaviorSubject<boolean>(this.checkIsMobile());
 
   constructor(
     private weatherService: WeatherService,
@@ -100,6 +103,8 @@ export class WeatherDisplayComponent {
       .subscribe((sources) => {
         this.updateTranslatedSources(sources);
       });
+
+    window.addEventListener('resize', () => this.isMobile$.next(this.checkIsMobile()));
   }
 
   ngOnDestroy() {
@@ -119,13 +124,11 @@ export class WeatherDisplayComponent {
 
   private getPreviousApis(): string[] {
     const apis = sessionStorage.getItem('previousApis');
-    return apis ? JSON.parse(apis) : [];
-
+    return apis !== undefined && apis !== null && apis !== '' && apis !== "undefined" ? JSON.parse(apis) : [];
   }
 
   private getSelectedApis(): string[] {
-    const apis = localStorage.getItem('apis');
-    return apis ? JSON.parse(apis) : [];
+    return this.sharedService.loadUserSettings().apis;
 
   }
 
@@ -190,7 +193,6 @@ export class WeatherDisplayComponent {
         this.processWeatherData(data);
         return;
       }
-
     }
 
     this.weatherSubscription = this.weatherService.getWeather(str).subscribe((data) => {
@@ -280,15 +282,16 @@ export class WeatherDisplayComponent {
     return timestampsSets;
   }
 
-  // return a list of timestamps that are later than the current hour
+// Return a list of timestamps that are later than the current hour and on the same day
   public filterTimestamps(timestamps: string[]): string[] {
     const now = new Date();
-    const currentHour = now.getHours();
-
     return timestamps.filter((timestamp) => {
       const timestampDate = new Date(timestamp);
-      const timestampHour = timestampDate.getHours();
-      return timestampHour >= currentHour || timestampDate > now;
+      return (
+        timestampDate.toDateString() === now.toDateString() &&
+        timestampDate.getHours() >= now.getHours() ||
+        timestampDate > now
+      );
     });
   }
 
@@ -391,13 +394,19 @@ export class WeatherDisplayComponent {
       this.highTempPerDay[i] = Math.round(Math.max(...temps));
       this.lowTempPerDay[i] = Math.round(Math.min(...temps));
 
-      // Total precipitation for the day, rounded to the nearest integer (or 1 if between 0 and 1)
+      // Total precipitation for the day, rounded to one decimal place
       let totalPrecipitation = timestamps.reduce((total, ts) => total + day.weatherData[ts].precipitation, 0);
-      if (totalPrecipitation > 0 && totalPrecipitation <= 1)
-        this.totalPrecipitationPerDay[i] = 1;
-       else {
-        this.totalPrecipitationPerDay[i] = Math.round(totalPrecipitation);
-      }
+      this.totalPrecipitationPerDay[i] = Math.round(totalPrecipitation * 10) / 10;
+
+      // Processes wind speeds to remove decimals for mobile if the windspeed is below 10 and keeps full windspeed for desktop
+      timestamps.forEach(ts => {
+        let windSpeed = day.weatherData[ts].windSpeed;
+        day.weatherData[ts].fullWindSpeed = windSpeed;
+        windSpeed = windSpeed + 7;
+        if (windSpeed >= 10) {
+          day.weatherData[ts].windSpeed = Math.round(windSpeed);
+        }
+      });
 
       // Get the previous day's timestamps, if available
       const previousDayTimestamps = i > 0 ? Object.keys(this.allWeatherData[i - 1].weatherData) : [];
@@ -425,6 +434,8 @@ export class WeatherDisplayComponent {
 
       // Assign the day weather condition based on the current day
       this.dayWeather[i] = this.getMostCommonWeatherCode(dayTimes, day) || -1;
+
+
     });
 
     this.cdr.detectChanges();
@@ -461,6 +472,10 @@ export class WeatherDisplayComponent {
 
     // Return the most common weather code
     return Array.from(codeMap).reduce((prev, curr) => curr[1] > prev[1] ? curr : prev)[0];
+  }
+
+  checkIsMobile(): boolean {
+    return window.innerWidth <= 768;
   }
 
 }

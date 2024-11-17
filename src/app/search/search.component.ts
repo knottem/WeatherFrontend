@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../weather.service';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { IonicModule, Platform } from "@ionic/angular";
+import { IonicModule } from "@ionic/angular";
 import { FormsModule } from "@angular/forms";
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
@@ -33,15 +33,17 @@ export class SearchComponent implements OnInit {
   public filteredCities: Observable<string[]> = of([]);
   public lastSearched: string[] = [];
   public favoriteCities: string[] = [];
-  private subscriptions: Subscription = new Subscription();
+  isDarkMode: boolean = false;
 
   constructor(
     public sharedService: SharedService,
     private weatherService: WeatherService,
     private router: Router,
-    private platform: Platform,
     public translate: TranslateService
   ) {
+    this.sharedService.darkMode$.subscribe((isDark) => {
+      this.isDarkMode = isDark;
+    });
   }
 
   ngOnInit() {

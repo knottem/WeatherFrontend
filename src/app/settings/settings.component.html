@@ -1,54 +1,95 @@
 <!-- settings.component.html -->
-<div class="flex flex-col mx-auto my-3 px-6 py-6 bg-white shadow-md rounded-lg">
-  <h2 class="text-4xl font-bold text-gray-800 mb-8 text-center">{{ 'settings.title' | translate }}</h2>
+<div class="flex flex-col mx-auto mt-3 px-4 py-4 bg-secondary shadow-lg rounded-lg">
+  <!-- Title -->
+  <h2 class="text-2xl font-semibold text-primary mb-6">{{ 'settings.title' | translate }}</h2>
 
-  <!-- Language and API Selection Container -->
-  <div class="flex flex-col justify-between text-gray-700 text-lg gap-8 items-center">
-
-    <!-- Language Selection -->
-    <div class="w-full lg:w-1/2">
-      <p class="text-center text-lg mb-4">{{ 'settings.selectLanguage' | translate }}</p>
-
-      <!-- Dropdown for language selection -->
-      <div class="relative">
-        <select
-          (change)="switchLanguage($event)"
-          class="block appearance-none w-full bg-gray-100 border border-gray-300 text-gray-800 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transition duration-300 ease-in-out shadow-md hover:shadow-lg">
-          <option *ngFor="let lang of languages" [value]="lang.code" [selected]="currentLanguage === lang.code">
-            {{ lang.name }}
-          </option>
-        </select>
-        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-            <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" />
-          </svg>
+  <!-- DarkMode Section -->
+  <div class="mb-6">
+    <div class="bg-card rounded-lg p-4 shadow-sm flex justify-between items-center">
+      <span class="text-primary">{{ 'settings.darkMode' | translate }}</span>
+      <label class="flex items-center cursor-pointer">
+        <input type="checkbox" (change)="toggleDarkMode()" [checked]="isDarkMode" class="sr-only">
+        <div class="relative">
+          <div class="block bg-gray-300 dark:bg-gray-600 w-10 h-6 rounded-full"></div>
+          <div
+            class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition transform"
+            [class.translate-x-full]="isDarkMode"
+          ></div>
         </div>
-      </div>
-
+      </label>
     </div>
+  </div>
 
-    <!-- API Selection -->
-    <div class="w-full lg:w-1/2">
-      <p class="text-center text-lg mb-4">{{ 'settings.selectApi' | translate }}</p>
-      <p class="text-center text-xs text-gray-600 mb-4">{{ 'settings.apiNote' | translate }}</p>
-
-      <div class="grid grid-cols-2 gap-4">
-        <button
-          *ngFor="let api of apis"
-          (click)="onApiChange(api.value, $event)"
-          [ngClass]="{
-            'bg-green-500 text-white': selectedApis.includes(api.value),
-            'bg-gray-100 text-gray-800 hover:bg-gray-200': !selectedApis.includes(api.value)
-          }"
-          class="px-4 py-2 rounded-lg transition duration-300 ease-in-out shadow-md hover:shadow-lg"
-        >
-          {{ api.name }}
-        </button>
+  <!-- Brightness Section -->
+  <div class="mb-6">
+    <div class="bg-card rounded-lg p-4 shadow-sm flex justify-between items-center">
+      <span class="text-primary">{{ 'settings.brightness' | translate }}</span>
+      <div class="flex items-center">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          [value]="brightnessLevel"
+          (input)="onBrightnessChange($event)"
+          class="slider w-24 h-1 rounded-full bg-gray-300 dark:bg-gray-600 appearance-none"
+          style="outline: none; cursor: pointer;"
+        />
       </div>
     </div>
   </div>
 
-  <!-- Version Information -->
-  <p class="text-gray-500 text-xs text-right pt-8 italic">Version: {{ version }}</p>
+  <!-- Language Selection Section -->
+  <div class="mb-6">
+    <div class="bg-card rounded-lg px-4 py-2 shadow-sm flex justify-between items-center">
+     <span class="text-primary w-2/3">{{ 'settings.selectLanguage' | translate }}</span>
+      <select
+        (change)="switchLanguage($event)"
+        class="block bg-gray-100 border border-gray-300 text-gray-800 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200 px-3 py-2 rounded-lg focus:outline-none"
+      >
+        <option *ngFor="let lang of languages" [value]="lang.code" [selected]="currentLanguage === lang.code">
+          {{ lang.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Data Sources (APIs) Selection Section -->
+  <div class="mb-5">
+    <div class="bg-card rounded-lg p-4 shadow-sm">
+      <p class="text-lg font-medium text-primary mb-4">{{ 'settings.selectApi' | translate }}</p>
+      <p class="text-xs text-secondary mb-4">{{ 'settings.apiNote' | translate }}</p>
+
+      <!-- API Options with Active/Inactive Colors -->
+      <div class="space-y-3">
+        <label *ngFor="let api of apis" class="flex justify-between items-center cursor-pointer">
+          <span class="text-primary">{{ api.name }}</span>
+          <input
+            type="checkbox"
+            [checked]="selectedApis.includes(api.value)"
+            (change)="onApiChange(api.value, $event)"
+            class="sr-only"
+          />
+          <div class="relative">
+            <!-- Toggle Background: Green for active, Red for inactive -->
+            <div
+              class="block w-10 h-6 rounded-full transition-colors duration-300"
+              [ngClass]="{
+              'bg-green-500 dark:bg-green-600': selectedApis.includes(api.value),
+              'bg-red-500 dark:bg-red-600': !selectedApis.includes(api.value)
+            }"
+            ></div>
+            <!-- Toggle Dot -->
+            <div
+              class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition transform"
+              [class.translate-x-full]="selectedApis.includes(api.value)"
+            ></div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Note -->
+  <p class="text-gray-500 text-xs text-center italic">Version: {{ version }}</p>
 </div>
 

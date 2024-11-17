@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { catchError, delay } from 'rxjs/operators';
 import {ErrorService} from "./error.service";
 import {TranslateService} from "@ngx-translate/core";
+import {SharedService} from "./shared.service";
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,7 @@ export class WeatherService {
     21: './assets/images/weathericons/30.svg', // thunder - not really accurate picture
     22: './assets/images/weathericons/47.svg',
     23: './assets/images/weathericons/12.svg',
+    24: './assets/images/weathericons/48.svg',
     25: './assets/images/weathericons/44d.svg',
     26: './assets/images/weathericons/49.svg',
     27: './assets/images/weathericons/50.svg',
@@ -103,11 +105,12 @@ export class WeatherService {
   constructor(
     private http: HttpClient,
     private errorService: ErrorService,
-    private translate: TranslateService  // Inject TranslateService
+    private translate: TranslateService,  // Inject TranslateService
+    private sharedService: SharedService,
   ) {}
 
   getWeather(city: string): Observable<any> {
-    const apis = this.getSelectedApis();
+    const apis = this.sharedService.loadUserSettings().apis;
 
     let url = `${environment.apiUrl}/weather/${city}`;
     if (apis && apis.length > 0) {
@@ -123,6 +126,16 @@ export class WeatherService {
       catchError((error: HttpErrorResponse | TimeoutError ) => this.handleError(error))
     );
   }
+
+
+  getApiStatus(): Observable<any> {
+    let url = `${environment.apiUrl}/status/api`;
+    return this.http.get<any>(url).pipe(
+      timeout(this.timeoutMs),
+      catchError((error: HttpErrorResponse | TimeoutError ) => this.handleError(error))
+    );
+  }
+
 
 
   private handleError(error: HttpErrorResponse | TimeoutError): Observable<never> {
@@ -147,6 +160,10 @@ export class WeatherService {
         errorMessage = this.translate.instant('error.one_or_more_services_unavailable');
       }
 
+      if(error.status === 500){
+        errorMessage = this.translate.instant('error.server_error', { status: error.status });
+      }
+
       this.errorService.setError(errorMessage);
     } else if (error.error instanceof ErrorEvent) {
       errorMessage = this.translate.instant('error.network_error', { message: error.error.message });
@@ -157,12 +174,6 @@ export class WeatherService {
     }
 
     return throwError(() => new Error(errorMessage));
-  }
-
-
-  private getSelectedApis(): string[] {
-    const apis = localStorage.getItem('apis');
-    return apis ? JSON.parse(apis) : [];
   }
 
   getCityList(): Observable<string[]> {
