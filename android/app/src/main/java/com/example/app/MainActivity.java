@@ -17,6 +17,8 @@ public class MainActivity extends BridgeActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    Log.d("MainActivity", "Registering SystemThemePlugin");
+    registerPlugin(SystemThemePlugin.class);
     super.onCreate(savedInstanceState);
 
     // Apply the initial theme based on current preference

@@ -8,6 +8,7 @@ import {SharedService} from "../shared.service";
 import {ErrorService} from "../error.service";
 import {MatFormField, MatOption, MatSelect} from "@angular/material/select";
 import {WeatherService} from "../weather.service";
+import {Capacitor} from "@capacitor/core";
 
 @Component({
   selector: 'app-settings',
@@ -115,6 +116,11 @@ export class SettingsComponent {
     const level = (event.target as HTMLInputElement).valueAsNumber;
     this.brightnessLevel = level;
     this.sharedService.setBrightnessSetting(level);
+  }
+
+  resetToDefault(): void {
+    this.sharedService.clearUserSettings();
+    window.location.reload();
   }
 
 }

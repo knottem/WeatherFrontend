@@ -3,9 +3,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Preferences } from '@capacitor/preferences';
 import { SplashScreen } from '@capacitor/splash-screen';
-import {Capacitor} from "@capacitor/core";
+import {Capacitor, registerPlugin} from "@capacitor/core";
 import {ScreenBrightness} from "@capacitor-community/screen-brightness";
 import {Platform} from "@ionic/angular";
+
+export interface SystemThemePlugin {
+  getSystemDarkMode(): Promise<{ isDarkMode: boolean }>;
+}
+
+const SystemTheme = registerPlugin<SystemThemePlugin>('SystemTheme');
+
+const { test: boolean } = await SystemTheme.getSystemDarkMode();
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +34,6 @@ export class SharedService {
   private darkModeSubject = new BehaviorSubject<boolean>(this.loadDarkModeFromStorage());
   public darkMode$ = this.darkModeSubject.asObservable();
 
-
   // Local storage variables
   private CURRENT_VERSION = '1.0.1';
   private STORAGE_KEY = 'weatherData';
@@ -38,14 +45,36 @@ export class SharedService {
   async initializeApp(): Promise<void> {
     return new Promise(async (resolve) => {
       const settings = this.loadUserSettings();
-      const isDarkMode = settings.darkMode === "on";
+      let isDarkMode: boolean;
+
+      console.log("initiliazing app")
+
+
+      if (settings.darkMode === 'system') {
+        if (Capacitor.getPlatform() === 'android') {
+          isDarkMode = await this.getAndroidDarkMode();
+          console.log("Android: " + isDarkMode)
+        } else {
+          isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        }
+      } else {
+        isDarkMode = settings.darkMode === 'on';
+      }
+
       this.darkModeSubject.next(isDarkMode);
+      this.saveUserSettings(settings);
 
       if (isDarkMode) {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
       }
+
+      Preferences.set({
+        key: 'darkMode',
+        value: JSON.stringify(this.darkModeSubject.value),
+      });
+
       await SplashScreen.hide();
       this.setAndroidStatusBar(isDarkMode);
       resolve();
@@ -100,6 +129,10 @@ export class SharedService {
     localStorage.setItem(this.SETTINGS_STORAGE_KEY, JSON.stringify(settingsWithVersion));
   }
 
+  clearUserSettings(): void {
+    localStorage.removeItem(this.SETTINGS_STORAGE_KEY);
+  }
+
   async setBrightnessSetting(level: number): Promise<void> {
     if (this.platform.is('android') || this.platform.is('ios')) {
       const brightness = level / 100
@@ -125,7 +158,7 @@ export class SharedService {
     localStorage.removeItem(this.SETTINGS_STORAGE_KEY);
     // default settings
     return {
-      darkMode: "off",
+      darkMode: "system",
       language: "en",
       apis: ["yr", "fmi", "smhi"],
       brightness: 100
@@ -176,8 +209,17 @@ export class SharedService {
     }
   }
 
-  clearOldData(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
+  async getAndroidDarkMode(): Promise<boolean> {
+    if (!SystemTheme) {
+      console.error('SystemTheme plugin is not available.');
+      return false;
+    }
+    try {
+      const { isDarkMode } = await SystemTheme.getSystemDarkMode();
+      return isDarkMode;
+    } catch (error) {
+      console.error('Failed to get system dark mode:', error);
+      return false; // Default to light mode if detection fails
+    }
   }
-
 }

@@ -47,7 +47,8 @@
     "selectApi": "Seleccionar fuentes de datos (API)",
     "apiNote": "Nota: FMI no puede seleccionarse como única API debido a la cobertura de datos incompleta.",
     "darkMode": "Dark mode",
-    "brightness": "Brillo"
+    "brightness": "Brillo",
+    "resetDefaults": "Restablecer a los valores predeterminados"
   },
   "search": {
     "favorites": "Favoritos",

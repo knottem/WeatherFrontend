@@ -76,7 +76,7 @@ export class AppComponent {
     });
   }
 
-  ngOnInit(){
+  async ngOnInit(): Promise<void>{
     this.platform.ready().then(() => {
       // Setting brightness after platform is ready
       const settings = this.sharedService.loadUserSettings();
@@ -84,8 +84,6 @@ export class AppComponent {
       this.sharedService.setBrightnessSetting(brightness);
     });
   }
-
-
 
   doRefresh(event: RefresherCustomEvent) {
     location.reload();
