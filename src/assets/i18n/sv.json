@@ -53,7 +53,8 @@
     "favorites": "Favoriter",
     "recently": "Nyligen Sökt",
     "results": "Sökresultat",
-    "noResults": "Inga resultat hittades"
+    "noResults": "Inga resultat hittades",
+    "empty": "Sök efter en stad i Sverige för att komma igång"
   },
 	"weatherTable": {
 		"afternoon": "Eftermiddag",

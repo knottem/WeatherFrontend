@@ -53,7 +53,8 @@
     "favorites": "Favoritos",
     "recently": "Búsquedas Recientes",
     "results": "Resultados de Búsqueda",
-    "noResults": "No se encontraron resultados"
+    "noResults": "No se encontraron resultados",
+    "empty": "Busca una ciudad en Suecia para comenzar"
   },
 	"weatherTable": {
 		"afternoon": "Tarde",

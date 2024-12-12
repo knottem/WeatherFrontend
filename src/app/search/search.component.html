@@ -16,6 +16,9 @@
 
   <div class="search-results bg-primary" id="search-results">
     <div *ngIf="!searchQuery">
+      <div *ngIf="favoriteCities.length === 0 && lastSearched.length === 0" class="empty-state">
+        <p class="empty-message">{{ 'search.empty' | translate }}</p>
+      </div>
 
       <div *ngIf="favoriteCities.length !== 0">
         <h2 class="list-title">{{ 'search.favorites' | translate }}</h2>
