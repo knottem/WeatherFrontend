@@ -53,7 +53,8 @@
     "favorites": "Favoriten",
     "recently": "Kürzlich Gesucht",
     "results": "Suchergebnisse",
-    "noResults": "Keine Ergebnisse gefunden"
+    "noResults": "Keine Ergebnisse gefunden",
+    "empty": "Suchen Sie nach einer Stadt in Schweden, um zu beginnen"
   },
 	"weatherTable": {
 		"afternoon": "Nachmittag",
