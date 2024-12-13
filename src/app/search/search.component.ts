@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../weather.service';
-import { Observable, of } from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
@@ -25,9 +25,6 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk
 })
 export class SearchComponent implements OnInit {
 
-  private readonly LAST_SEARCHED_KEY = 'lastSearched';
-  private readonly FAVORITE_CITIES_KEY = 'favoriteCities';
-
   public searchQuery: string = '';
   public cityList: string[] = [];
   public filteredCities: Observable<string[]> = of([]);
@@ -35,11 +32,13 @@ export class SearchComponent implements OnInit {
   public favoriteCities: string[] = [];
   isDarkMode: boolean = false;
 
+  private cityListSubscription!: Subscription;
+
   constructor(
     public sharedService: SharedService,
-    private weatherService: WeatherService,
     private router: Router,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private weatherService: WeatherService
   ) {
     this.sharedService.darkMode$.subscribe((isDark) => {
       this.isDarkMode = isDark;
@@ -47,21 +46,29 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCityList();
     this.loadSavedData();
+    this.loadCityList();
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from the subscription to prevent memory leaks
+    if (this.cityListSubscription) {
+      this.cityListSubscription.unsubscribe();
+    }
+  }
+
+  private loadCityList() {
+    this.cityListSubscription = this.weatherService.getCityList().subscribe((data: string[]) => {
+      this.cityList = data;
+    });
   }
 
   private loadSavedData() {
-    const favorites = localStorage.getItem(this.FAVORITE_CITIES_KEY);
-    this.favoriteCities = favorites ? JSON.parse(favorites) : [];
-
-    const searched = localStorage.getItem(this.LAST_SEARCHED_KEY);
-    this.lastSearched = searched ? JSON.parse(searched) : [];
-
+    this.favoriteCities = this.sharedService.getFavoriteCities();
+    this.lastSearched = this.sharedService.getLastSearched();
+    // Remove any favorites from last searched, since they are already in the favorites list
     this.lastSearched = this.lastSearched.filter(city => !this.favoriteCities.includes(city));
   }
-
-
 
   // list of 3 last searched cities that are not in favorites list, so we need to filter out the favorites before returning
   public lastSearchedCities(): string[] {
@@ -75,7 +82,7 @@ export class SearchComponent implements OnInit {
     } else {
       this.favoriteCities.push(city);
     }
-    localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
+    this.sharedService.setFavoriteCities(this.favoriteCities);
   }
 
   isFavorite(city: string): boolean {
@@ -144,27 +151,7 @@ export class SearchComponent implements OnInit {
     while (this.lastSearched.length > 10) {
       this.lastSearched.shift();
     }
-    localStorage.setItem('lastSearched', JSON.stringify(this.lastSearched));
-  }
-
-  private getCityList() {
-    const cityList = localStorage.getItem('cityList');
-    let fetchNew = true;
-    if (cityList) {
-      const {time, cityList: cities} = JSON.parse(cityList);
-      if (new Date().getTime() - time < 1800000) {
-        this.cityList = cities;
-        fetchNew = false;
-      }
-    }
-
-    if (fetchNew) {
-      this.weatherService.getCityList().subscribe((data: string[]) => {
-        this.cityList = data;
-        const time = new Date().getTime();
-        localStorage.setItem('cityList', JSON.stringify({time, cityList: this.cityList}));
-      });
-    }
+    this.sharedService.setLastSearched(this.lastSearched);
   }
 
   onKeyPressCity(event: KeyboardEvent, city: string) {
@@ -181,7 +168,7 @@ export class SearchComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.favoriteCities, event.previousIndex, event.currentIndex);
-    localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
+    this.sharedService.setFavoriteCities(this.favoriteCities);
   }
 
 }

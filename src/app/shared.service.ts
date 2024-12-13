@@ -6,6 +6,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import {Capacitor} from "@capacitor/core";
 import {ScreenBrightness} from "@capacitor-community/screen-brightness";
 import {Platform} from "@ionic/angular";
+import {WeatherService} from "./weather.service";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,9 @@ export class SharedService {
   private STORAGE_KEY = 'weatherData';
   private SETTINGS_STORAGE_KEY = "userSettings";
   private CURRENT_SETTINGS_VERSION = "1.0.1"
+  private LAST_SEARCHED_KEY = 'lastSearched';
+  private FAVORITE_CITIES_KEY = 'favoriteCities';
+  private CITY_LIST_KEY = 'cityList';
 
   constructor(private platform: Platform) { }
 
@@ -178,6 +182,41 @@ export class SharedService {
 
   clearOldData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
+  }
+
+  getLastSearched(): string[] {
+    const searched = localStorage.getItem(this.LAST_SEARCHED_KEY);
+    return searched ? JSON.parse(searched) : [];
+  }
+
+  setLastSearched(cities: string[]): void {
+    localStorage.setItem(this.LAST_SEARCHED_KEY, JSON.stringify(cities));
+  }
+
+  getFavoriteCities(): string[] {
+    const favorites = localStorage.getItem(this.FAVORITE_CITIES_KEY);
+    return favorites ? JSON.parse(favorites) : [];
+  }
+
+  setFavoriteCities(cities: string[]): void {
+    localStorage.setItem(this.FAVORITE_CITIES_KEY, JSON.stringify(cities));
+  }
+
+  setCityList(cities: string[]): void {
+    const time = new Date().getTime();
+    localStorage.setItem(this.CITY_LIST_KEY, JSON.stringify({ time, cityList: cities }));
+  }
+
+  getCityList(): string[] | null {
+    const cityList = localStorage.getItem(this.CITY_LIST_KEY);
+    const currentTime = new Date().getTime();
+    if (cityList) {
+      const { time, cityList: cities } = JSON.parse(cityList);
+      if (currentTime - time < 1800000) {
+        return cities; // Return cached data
+      }
+    }
+    return null;
   }
 
 }
