@@ -69,9 +69,8 @@ export class SearchComponent implements OnInit {
 
   private loadSavedData() {
     this.favoriteCities = this.sharedService.getFavoriteCities();
-    this.lastSearched = this.sharedService.getLastSearched();
-    // Remove any favorites from last searched, since they are already in the favorites list
-    this.lastSearched = this.lastSearched.filter(city => !this.favoriteCities.includes(city));
+    this.lastSearched = this.sharedService.getLastSearched()
+      .filter(city => !this.favoriteCities.some(fav => fav.name === city.name));
   }
 
   // list of 3 last searched cities that are not in favorites list, so we need to filter out the favorites before returning
@@ -184,5 +183,4 @@ export class SearchComponent implements OnInit {
     this.sharedService.setFavoriteCities(this.favoriteCities);
   }
 
-  protected readonly name = name;
 }
