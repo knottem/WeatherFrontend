@@ -127,16 +127,15 @@ export class SearchComponent implements OnInit {
     this.resetSearchQuery();
   }
 
-  public onEnterPress(event: KeyboardEvent) {
+  public onEnterPress(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
-      const currentValue = this.searchQuery.toLowerCase();
-      const matchingCities = this.cityList.filter(city =>
-        city.name.toLowerCase().includes(currentValue)
-      );
-      if (matchingCities.length === 1 || this.cityList.map(c => c.name.toLowerCase()).includes(currentValue)) {
-        this.updateSearchQuery(matchingCities.length === 1 ? matchingCities[0] : this.cityList.find(city => city.name.toLowerCase() === currentValue)!);
+      const currentValue = this.searchQuery.toLowerCase().trim();
+      const matchingCities = this._filter(currentValue);
+
+      if (matchingCities.length === 1) {
+        this.updateSearchQuery(matchingCities[0]);
+        this.resetSearchQuery();
       }
-      this.resetSearchQuery();
     }
   }
 
