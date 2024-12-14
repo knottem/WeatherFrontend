@@ -74,3 +74,19 @@ ion-icon {
   font-size: 1rem;
   margin-top: 0.25rem;
 }
+
+.city-en {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.limited-info {
+  font-size: 0.75em;
+  color: #888;
+}
+
+.fixed-width-number {
+  display: inline-block; /* Ensures it takes up the specified width */
+  width: 5ch; /* 4 character width */
+  text-align: right; /* Align numbers to the right */
+}

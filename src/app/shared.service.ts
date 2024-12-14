@@ -6,7 +6,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import {Capacitor} from "@capacitor/core";
 import {ScreenBrightness} from "@capacitor-community/screen-brightness";
 import {Platform} from "@ionic/angular";
-import {WeatherService} from "./weather.service";
+import {City} from "../models/city";
 
 @Injectable({
   providedIn: 'root'
@@ -184,39 +184,65 @@ export class SharedService {
     localStorage.removeItem(this.STORAGE_KEY);
   }
 
-  getLastSearched(): string[] {
-    const searched = localStorage.getItem(this.LAST_SEARCHED_KEY);
-    return searched ? JSON.parse(searched) : [];
-  }
-
-  setLastSearched(cities: string[]): void {
-    localStorage.setItem(this.LAST_SEARCHED_KEY, JSON.stringify(cities));
-  }
-
-  getFavoriteCities(): string[] {
-    const favorites = localStorage.getItem(this.FAVORITE_CITIES_KEY);
-    return favorites ? JSON.parse(favorites) : [];
-  }
-
-  setFavoriteCities(cities: string[]): void {
-    localStorage.setItem(this.FAVORITE_CITIES_KEY, JSON.stringify(cities));
-  }
-
-  setCityList(cities: string[]): void {
-    const time = new Date().getTime();
-    localStorage.setItem(this.CITY_LIST_KEY, JSON.stringify({ time, cityList: cities }));
-  }
-
-  getCityList(): string[] | null {
-    const cityList = localStorage.getItem(this.CITY_LIST_KEY);
-    const currentTime = new Date().getTime();
-    if (cityList) {
-      const { time, cityList: cities } = JSON.parse(cityList);
-      if (currentTime - time < 1800000) {
-        return cities; // Return cached data
-      }
+  getLastSearched(): City[] {
+    const data = JSON.parse(localStorage.getItem(this.LAST_SEARCHED_KEY) || "{}");
+    if (data && data.version === this.CURRENT_VERSION) {
+      return data.items || [];
     }
-    return null;
+    localStorage.removeItem(this.LAST_SEARCHED_KEY);
+    return [];
+  }
+
+  setLastSearched(cities: City[]): void {
+    const data = {
+      version: this.CURRENT_VERSION,
+      items: cities
+    };
+    localStorage.setItem(this.LAST_SEARCHED_KEY, JSON.stringify(data));
+  }
+
+  getFavoriteCities(): City[] {
+    const data = JSON.parse(localStorage.getItem(this.FAVORITE_CITIES_KEY) || "{}");
+    if (data && data.version === this.CURRENT_VERSION) {
+      return data.items || [];
+    }
+    localStorage.removeItem(this.FAVORITE_CITIES_KEY);
+
+    return [];
+  }
+
+  setFavoriteCities(cities: City[]): void {
+    const data = {
+      version: this.CURRENT_VERSION,
+      items: cities
+    };
+    localStorage.setItem(this.FAVORITE_CITIES_KEY, JSON.stringify(data));
+  }
+
+  setCityList(cities: City[]): void {
+    const data = {
+      time: new Date().getTime(),
+      items: cities,
+      version: this.CURRENT_VERSION,
+    };
+    localStorage.setItem(this.CITY_LIST_KEY, JSON.stringify(data));
+  }
+
+  getCityList(): City[] | null {
+    const data = localStorage.getItem(this.CITY_LIST_KEY);
+    const currentTime = new Date().getTime();
+    if (data) {
+      const parsedData = JSON.parse(data);
+      if (parsedData.version === this.CURRENT_VERSION && parsedData.items) {
+        const cities = parsedData.items;
+        const time = parsedData.time;
+        if (time && currentTime - time < 1800000) { // 30 minutes
+          return cities; // Return cached data
+        }
+      }
+      localStorage.removeItem(this.CITY_LIST_KEY);
+    }
+    return null; // Return null to indicate cache miss
   }
 
 }

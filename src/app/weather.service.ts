@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, of, tap, throwError, timeout, TimeoutError} from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { catchError, delay } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import {ErrorService} from "./error.service";
 import {TranslateService} from "@ngx-translate/core";
 import {SharedService} from "./shared.service";
@@ -177,14 +177,14 @@ export class WeatherService {
     return throwError(() => new Error(errorMessage));
   }
 
-  getCityList(): Observable<string[]> {
+  getCityList(): Observable<City[]> {
     const cityList = this.sharedService.getCityList();
     if (cityList) {
       return of(cityList);
     }
     // Fetch from API if no cache or cache is expired
-    return this.http.get<string[]>(`${environment.apiUrl}/city/names`).pipe(
-      tap((data: string[]) => {
+    return this.http.get<City[]>(`${environment.apiUrl}/city/names`).pipe(
+      tap((data: City[]) => {
         this.sharedService.setCityList(data);
       }),
       catchError(error => {
@@ -209,7 +209,7 @@ export class WeatherService {
   }
 
 
-  loadCityListFromAssets(): Observable<string[]> {
+  loadCityListFromAssets(): Observable<City[]> {
     return this.http.get<any>('assets/cityNames.json').pipe(
       catchError(assetsError => {
         console.error('Error loading city list from assets:', assetsError);

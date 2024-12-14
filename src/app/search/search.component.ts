@@ -8,6 +8,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonicModule } from "@ionic/angular";
 import { FormsModule } from "@angular/forms";
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
+import {City} from "../../models/city";
 
 @Component({
   selector: 'app-search',
@@ -26,11 +27,13 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk
 export class SearchComponent implements OnInit {
 
   public searchQuery: string = '';
-  public cityList: string[] = [];
-  public filteredCities: Observable<string[]> = of([]);
-  public lastSearched: string[] = [];
-  public favoriteCities: string[] = [];
-  isDarkMode: boolean = false;
+  public cityList: City[] = [];
+  public filteredCities: Observable<City[]> = of([]);
+  public favoriteCities: City[] = [];
+  public lastSearched: City[] = [];
+  public isDarkMode: boolean = false;
+  public isLimited: boolean = false;
+  public totalResults: number = 0;
 
   private cityListSubscription!: Subscription;
 
@@ -48,6 +51,7 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.loadSavedData();
     this.loadCityList();
+
   }
 
   ngOnDestroy() {
@@ -58,7 +62,7 @@ export class SearchComponent implements OnInit {
   }
 
   private loadCityList() {
-    this.cityListSubscription = this.weatherService.getCityList().subscribe((data: string[]) => {
+    this.cityListSubscription = this.weatherService.getCityList().subscribe((data: City[]) => {
       this.cityList = data;
     });
   }
@@ -71,11 +75,11 @@ export class SearchComponent implements OnInit {
   }
 
   // list of 3 last searched cities that are not in favorites list, so we need to filter out the favorites before returning
-  public lastSearchedCities(): string[] {
+  public lastSearchedCities(): City[] {
     return this.lastSearched.filter(city => !this.favoriteCities.includes(city)).slice(-3).reverse();
   }
 
-  toggleFavorite(city: string) {
+  toggleFavorite(city: City) {
     const index = this.favoriteCities.indexOf(city);
     if (index > -1) {
       this.favoriteCities.splice(index, 1);
@@ -85,7 +89,7 @@ export class SearchComponent implements OnInit {
     this.sharedService.setFavoriteCities(this.favoriteCities);
   }
 
-  isFavorite(city: string): boolean {
+  isFavorite(city: City): boolean {
     return this.favoriteCities.includes(city);
   }
 
@@ -93,23 +97,31 @@ export class SearchComponent implements OnInit {
     this.router.navigate(['/']); // Navigate back to the previous page
   }
 
-  private _filter(value: string): string[] {
-    if (value.length < 1) {
-      return [...this.lastSearched].reverse();
+  private _filter(query: string): City[] {
+    if (!query) {
+      return [...this.lastSearched].reverse(); // Show recently searched if the query is empty
     }
-    return this.cityList.filter(city => city.toLowerCase().includes(value.toLowerCase()));
+    query = query.toLowerCase();
+
+    const matchingCities = this.cityList.filter(city =>
+      city.name.toLowerCase().includes(query) ||
+      (city.en && city.en.toLowerCase().includes(query))
+    );
+    this.totalResults = matchingCities.length;
+    this.isLimited = matchingCities.length > 50;
+    return matchingCities.slice(0, 50); // Limit to the first 50 results
   }
 
   public onSearchInput(event: any) {
     const query = event.target.value.toLowerCase();
     if (query.length > 0) {
-      this.filteredCities = of(this._filter(query));
+      this.filteredCities = of(this._filter(query)); // Apply multi-language search
     } else {
-      this.filteredCities = of([]);
+      this.filteredCities = of([]); // Clear search results if query is empty
     }
   }
 
-  public onCitySelected(city: string) {
+  public onCitySelected(city: City) {
     if (city) {
       this.updateSearchQuery(city);
     }
@@ -120,19 +132,20 @@ export class SearchComponent implements OnInit {
     if (event.key === 'Enter') {
       const currentValue = this.searchQuery.toLowerCase();
       const matchingCities = this.cityList.filter(city =>
-        city.toLowerCase().includes(currentValue)
+        city.name.toLowerCase().includes(currentValue)
       );
-      if (matchingCities.length === 1 || this.cityList.map(c => c.toLowerCase()).includes(currentValue)) {
-        this.updateSearchQuery(matchingCities.length === 1 ? matchingCities[0] : currentValue);
+      if (matchingCities.length === 1 || this.cityList.map(c => c.name.toLowerCase()).includes(currentValue)) {
+        this.updateSearchQuery(matchingCities.length === 1 ? matchingCities[0] : this.cityList.find(city => city.name.toLowerCase() === currentValue)!);
       }
       this.resetSearchQuery();
     }
   }
 
-  public updateSearchQuery(city: string) {
-    if (this.cityList.includes(city)) {
-      this.addCityToLastSearched(city);
-      this.sharedService.setSearchQuery(city);
+  public updateSearchQuery(city: City) {
+    const matchingCity = this.cityList.find(c => c.name === city.name);
+    if (matchingCity) {
+      this.addCityToLastSearched(matchingCity);
+      this.sharedService.setSearchQuery(matchingCity.name);
       this.router.navigate(['/']);
     }
   }
@@ -142,8 +155,8 @@ export class SearchComponent implements OnInit {
     this.filteredCities = of([]);
   }
 
-  private addCityToLastSearched(city: string) {
-    const index = this.lastSearched.indexOf(city);
+  private addCityToLastSearched(city: City) {
+    const index = this.lastSearched.findIndex(search => search.name === city.name);
     if (index > -1) {
       this.lastSearched.splice(index, 1);
     }
@@ -154,13 +167,13 @@ export class SearchComponent implements OnInit {
     this.sharedService.setLastSearched(this.lastSearched);
   }
 
-  onKeyPressCity(event: KeyboardEvent, city: string) {
+  onKeyPressCity(event: KeyboardEvent, city: City) {
     if (event.key === 'Enter' || event.key === ' ') {
       this.onCitySelected(city);
     }
   }
 
-  onKeyPressFavorite(event: KeyboardEvent, city: string) {
+  onKeyPressFavorite(event: KeyboardEvent, city: City) {
     if (event.key === 'Enter' || event.key === ' ') {
       this.toggleFavorite(city);
     }
@@ -171,4 +184,5 @@ export class SearchComponent implements OnInit {
     this.sharedService.setFavoriteCities(this.favoriteCities);
   }
 
+  protected readonly name = name;
 }
