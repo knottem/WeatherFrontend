@@ -56,3 +56,37 @@ ion-icon {
 .drop-list.cdk-drop-list-dragging .list-item:not(.cdk-drag-placeholder) {
   transition: transform 350ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #888;
+}
+.empty-icon {
+  font-size: 3rem;
+  color: #ccc;
+}
+.empty-message {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+.hint-message {
+  font-size: 1rem;
+  margin-top: 0.25rem;
+}
+
+.city-en {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.limited-info {
+  font-size: 0.75em;
+  color: #888;
+}
+
+.fixed-width-number {
+  display: inline-block; /* Ensures it takes up the specified width */
+  width: 5ch; /* 4 character width */
+  text-align: right; /* Align numbers to the right */
+}

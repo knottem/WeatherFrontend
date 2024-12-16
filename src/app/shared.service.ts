@@ -6,6 +6,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import {Capacitor} from "@capacitor/core";
 import {ScreenBrightness} from "@capacitor-community/screen-brightness";
 import {Platform} from "@ionic/angular";
+import {City} from "../models/city";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,6 @@ export class SharedService {
 
   // Search query variables
   private searchQuerySubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public searchQuery$: Observable<string> = this.searchQuerySubject.asObservable();
 
   weatherSourcesSource = new BehaviorSubject<string[]>([]);
   public weatherSources$ = this.weatherSourcesSource.asObservable();
@@ -32,6 +32,9 @@ export class SharedService {
   private STORAGE_KEY = 'weatherData';
   private SETTINGS_STORAGE_KEY = "userSettings";
   private CURRENT_SETTINGS_VERSION = "1.0.1"
+  private LAST_SEARCHED_KEY = 'lastSearched';
+  private FAVORITE_CITIES_KEY = 'favoriteCities';
+  private CITY_LIST_KEY = 'cityList';
 
   constructor(private platform: Platform) { }
 
@@ -178,6 +181,67 @@ export class SharedService {
 
   clearOldData(): void {
     localStorage.removeItem(this.STORAGE_KEY);
+  }
+
+  getLastSearched(): City[] {
+    const data = JSON.parse(localStorage.getItem(this.LAST_SEARCHED_KEY) || "{}");
+    if (data && data.version === this.CURRENT_VERSION) {
+      return data.items || [];
+    }
+    localStorage.removeItem(this.LAST_SEARCHED_KEY);
+    return [];
+  }
+
+  setLastSearched(cities: City[]): void {
+    const data = {
+      version: this.CURRENT_VERSION,
+      items: cities
+    };
+    localStorage.setItem(this.LAST_SEARCHED_KEY, JSON.stringify(data));
+  }
+
+  getFavoriteCities(): City[] {
+    const data = JSON.parse(localStorage.getItem(this.FAVORITE_CITIES_KEY) || "{}");
+    if (data && data.version === this.CURRENT_VERSION) {
+      return data.items || [];
+    }
+    localStorage.removeItem(this.FAVORITE_CITIES_KEY);
+
+    return [];
+  }
+
+  setFavoriteCities(cities: City[]): void {
+    const data = {
+      version: this.CURRENT_VERSION,
+      items: cities
+    };
+    localStorage.setItem(this.FAVORITE_CITIES_KEY, JSON.stringify(data));
+  }
+
+  setCityList(cities: City[]): void {
+    const data = {
+      time: new Date().getTime(),
+      items: cities,
+      version: this.CURRENT_VERSION,
+    };
+    localStorage.setItem(this.CITY_LIST_KEY, JSON.stringify(data));
+  }
+
+  getCityList(): City[] | null {
+    const data = localStorage.getItem(this.CITY_LIST_KEY);
+    const currentTime = new Date().getTime();
+    if (data) {
+      const parsedData = JSON.parse(data);
+      if (parsedData.version === this.CURRENT_VERSION && parsedData.items) {
+        const cities = parsedData.items;
+        const time = parsedData.time;
+        if (time && currentTime - time < 1800000) { // 30 minutes
+          return cities; // Return cached data
+        }
+      }
+      localStorage.removeItem(this.CITY_LIST_KEY);
+    }
+    return null; // Return null to indicate cache miss
   }
 
 }
