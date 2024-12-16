@@ -53,7 +53,9 @@
     "recently": "Recently Searched",
     "results": "Search Results",
     "noResults": "No results found",
-    "empty": "Search for a city in Sweden to get started"
+    "empty": "Search for a city in Sweden to get started",
+    "resultsMessage": " results found.",
+    "limitedResultsMessage": " Showing first 50."
   },
 	"weatherTable": {
 		"afternoon": "Afternoon",

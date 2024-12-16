@@ -54,7 +54,9 @@
     "recently": "Kürzlich Gesucht",
     "results": "Suchergebnisse",
     "noResults": "Keine Ergebnisse gefunden",
-    "empty": "Suchen Sie nach einer Stadt in Schweden, um zu beginnen"
+    "empty": "Suchen Sie nach einer Stadt in Schweden, um zu beginnen",
+    "resultsMessage": " Ergebnisse gefunden.",
+    "limitedResultsMessage": " Zeige 50."
   },
 	"weatherTable": {
 		"afternoon": "Nachmittag",

@@ -54,7 +54,9 @@
     "recently": "Nyligen Sökt",
     "results": "Sökresultat",
     "noResults": "Inga resultat hittades",
-    "empty": "Sök efter en stad i Sverige för att komma igång"
+    "empty": "Sök efter en stad i Sverige för att komma igång",
+    "resultsMessage": " resultat hittades.",
+    "limitedResultsMessage": " Visar de första 50."
   },
 	"weatherTable": {
 		"afternoon": "Eftermiddag",

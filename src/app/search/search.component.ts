@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../weather.service';
-import { Observable, of } from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SharedService } from '../shared.service';
@@ -8,6 +8,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IonicModule } from "@ionic/angular";
 import { FormsModule } from "@angular/forms";
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
+import {City} from "../../models/city";
 
 @Component({
   selector: 'app-search',
@@ -25,21 +26,22 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk
 })
 export class SearchComponent implements OnInit {
 
-  private readonly LAST_SEARCHED_KEY = 'lastSearched';
-  private readonly FAVORITE_CITIES_KEY = 'favoriteCities';
-
   public searchQuery: string = '';
-  public cityList: string[] = [];
-  public filteredCities: Observable<string[]> = of([]);
-  public lastSearched: string[] = [];
-  public favoriteCities: string[] = [];
-  isDarkMode: boolean = false;
+  public cityList: City[] = [];
+  public filteredCities: Observable<City[]> = of([]);
+  public favoriteCities: City[] = [];
+  public lastSearched: City[] = [];
+  public isDarkMode: boolean = false;
+  public isLimited: boolean = false;
+  public totalResults: number = 0;
+
+  private cityListSubscription!: Subscription;
 
   constructor(
     public sharedService: SharedService,
-    private weatherService: WeatherService,
     private router: Router,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private weatherService: WeatherService
   ) {
     this.sharedService.darkMode$.subscribe((isDark) => {
       this.isDarkMode = isDark;
@@ -47,38 +49,46 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCityList();
     this.loadSavedData();
+    this.loadCityList();
+
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from the subscription to prevent memory leaks
+    if (this.cityListSubscription) {
+      this.cityListSubscription.unsubscribe();
+    }
+  }
+
+  private loadCityList() {
+    this.cityListSubscription = this.weatherService.getCityList().subscribe((data: City[]) => {
+      this.cityList = data;
+    });
   }
 
   private loadSavedData() {
-    const favorites = localStorage.getItem(this.FAVORITE_CITIES_KEY);
-    this.favoriteCities = favorites ? JSON.parse(favorites) : [];
-
-    const searched = localStorage.getItem(this.LAST_SEARCHED_KEY);
-    this.lastSearched = searched ? JSON.parse(searched) : [];
-
-    this.lastSearched = this.lastSearched.filter(city => !this.favoriteCities.includes(city));
+    this.favoriteCities = this.sharedService.getFavoriteCities();
+    this.lastSearched = this.sharedService.getLastSearched()
+      .filter(city => !this.favoriteCities.some(fav => fav.name === city.name));
   }
 
-
-
   // list of 3 last searched cities that are not in favorites list, so we need to filter out the favorites before returning
-  public lastSearchedCities(): string[] {
+  public lastSearchedCities(): City[] {
     return this.lastSearched.filter(city => !this.favoriteCities.includes(city)).slice(-3).reverse();
   }
 
-  toggleFavorite(city: string) {
+  toggleFavorite(city: City) {
     const index = this.favoriteCities.indexOf(city);
     if (index > -1) {
       this.favoriteCities.splice(index, 1);
     } else {
       this.favoriteCities.push(city);
     }
-    localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
+    this.sharedService.setFavoriteCities(this.favoriteCities);
   }
 
-  isFavorite(city: string): boolean {
+  isFavorite(city: City): boolean {
     return this.favoriteCities.includes(city);
   }
 
@@ -86,46 +96,54 @@ export class SearchComponent implements OnInit {
     this.router.navigate(['/']); // Navigate back to the previous page
   }
 
-  private _filter(value: string): string[] {
-    if (value.length < 1) {
-      return [...this.lastSearched].reverse();
+  private _filter(query: string): City[] {
+    if (!query) {
+      return [...this.lastSearched].reverse(); // Show recently searched if the query is empty
     }
-    return this.cityList.filter(city => city.toLowerCase().includes(value.toLowerCase()));
+    query = query.toLowerCase();
+
+    const matchingCities = this.cityList.filter(city =>
+      city.name.toLowerCase().includes(query) ||
+      (city.en && city.en.toLowerCase().includes(query))
+    );
+    this.totalResults = matchingCities.length;
+    this.isLimited = matchingCities.length > 50;
+    return matchingCities.slice(0, 50); // Limit to the first 50 results
   }
 
   public onSearchInput(event: any) {
     const query = event.target.value.toLowerCase();
     if (query.length > 0) {
-      this.filteredCities = of(this._filter(query));
+      this.filteredCities = of(this._filter(query)); // Apply multi-language search
     } else {
-      this.filteredCities = of([]);
+      this.filteredCities = of([]); // Clear search results if query is empty
     }
   }
 
-  public onCitySelected(city: string) {
+  public onCitySelected(city: City) {
     if (city) {
       this.updateSearchQuery(city);
     }
     this.resetSearchQuery();
   }
 
-  public onEnterPress(event: KeyboardEvent) {
+  public onEnterPress(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
-      const currentValue = this.searchQuery.toLowerCase();
-      const matchingCities = this.cityList.filter(city =>
-        city.toLowerCase().includes(currentValue)
-      );
-      if (matchingCities.length === 1 || this.cityList.map(c => c.toLowerCase()).includes(currentValue)) {
-        this.updateSearchQuery(matchingCities.length === 1 ? matchingCities[0] : currentValue);
+      const currentValue = this.searchQuery.toLowerCase().trim();
+      const matchingCities = this._filter(currentValue);
+
+      if (matchingCities.length === 1) {
+        this.updateSearchQuery(matchingCities[0]);
+        this.resetSearchQuery();
       }
-      this.resetSearchQuery();
     }
   }
 
-  public updateSearchQuery(city: string) {
-    if (this.cityList.includes(city)) {
-      this.addCityToLastSearched(city);
-      this.sharedService.setSearchQuery(city);
+  public updateSearchQuery(city: City) {
+    const matchingCity = this.cityList.find(c => c.name === city.name);
+    if (matchingCity) {
+      this.addCityToLastSearched(matchingCity);
+      this.sharedService.setSearchQuery(matchingCity.name);
       this.router.navigate(['/']);
     }
   }
@@ -135,8 +153,8 @@ export class SearchComponent implements OnInit {
     this.filteredCities = of([]);
   }
 
-  private addCityToLastSearched(city: string) {
-    const index = this.lastSearched.indexOf(city);
+  private addCityToLastSearched(city: City) {
+    const index = this.lastSearched.findIndex(search => search.name === city.name);
     if (index > -1) {
       this.lastSearched.splice(index, 1);
     }
@@ -144,36 +162,16 @@ export class SearchComponent implements OnInit {
     while (this.lastSearched.length > 10) {
       this.lastSearched.shift();
     }
-    localStorage.setItem('lastSearched', JSON.stringify(this.lastSearched));
+    this.sharedService.setLastSearched(this.lastSearched);
   }
 
-  private getCityList() {
-    const cityList = localStorage.getItem('cityList');
-    let fetchNew = true;
-    if (cityList) {
-      const {time, cityList: cities} = JSON.parse(cityList);
-      if (new Date().getTime() - time < 1800000) {
-        this.cityList = cities;
-        fetchNew = false;
-      }
-    }
-
-    if (fetchNew) {
-      this.weatherService.getCityList().subscribe((data: string[]) => {
-        this.cityList = data;
-        const time = new Date().getTime();
-        localStorage.setItem('cityList', JSON.stringify({time, cityList: this.cityList}));
-      });
-    }
-  }
-
-  onKeyPressCity(event: KeyboardEvent, city: string) {
+  onKeyPressCity(event: KeyboardEvent, city: City) {
     if (event.key === 'Enter' || event.key === ' ') {
       this.onCitySelected(city);
     }
   }
 
-  onKeyPressFavorite(event: KeyboardEvent, city: string) {
+  onKeyPressFavorite(event: KeyboardEvent, city: City) {
     if (event.key === 'Enter' || event.key === ' ') {
       this.toggleFavorite(city);
     }
@@ -181,7 +179,7 @@ export class SearchComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.favoriteCities, event.previousIndex, event.currentIndex);
-    localStorage.setItem('favoriteCities', JSON.stringify(this.favoriteCities));
+    this.sharedService.setFavoriteCities(this.favoriteCities);
   }
 
 }
