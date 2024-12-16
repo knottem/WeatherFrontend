@@ -99,51 +99,34 @@ export class WeatherDisplayComponent {
   }
 
   private handleWeatherLoading(): void {
-    const currentApis = this.getSelectedApis();
-    const previousApis = this.getPreviousApis();
-    const latestSearch = this.sharedService.getSearchQuery();
+    const currentApis = this.sharedService.getSelectedApis();
+    const previousApis = this.sharedService.getPreviousApis();
+    const latestSearch = this.sharedService.getSearchQuery()?.toLowerCase();
+    const normalizedCurrentCity = this.currentCity.toLowerCase(); // Ensure consistency
 
-    // If APIs have changed or there is a new city from the search
-    if (JSON.stringify(currentApis) !== JSON.stringify(previousApis) || (latestSearch && latestSearch !== this.currentCity)) {
+    // Check if APIs have changed or if the search city is new
+    if (
+      JSON.stringify(currentApis) !== JSON.stringify(previousApis) ||
+      (latestSearch && latestSearch !== normalizedCurrentCity)
+    ) {
       this.isLoaded = false;
-      const cityToFetch = latestSearch && latestSearch !== this.currentCity ? latestSearch : this.currentCity;
+      const cityToFetch = latestSearch && latestSearch !== normalizedCurrentCity ? latestSearch : normalizedCurrentCity;
       this.currentCity = cityToFetch;
       this.getWeather(cityToFetch);
     } else {
-      // Fallback to initial weather data if the APIs or city haven't changed
       this.loadInitialWeatherData();
     }
 
-    // Store the current APIs in sessionStorage for future comparison
-    this.storePreviousApis(currentApis);
-  }
-
-  private getPreviousApis(): string[] {
-    const apis = sessionStorage.getItem('previousApis');
-    return apis !== undefined && apis !== null && apis !== '' && apis !== "undefined" ? JSON.parse(apis) : [];
-  }
-
-  private getSelectedApis(): string[] {
-    return this.sharedService.loadUserSettings().apis;
-
-  }
-
-  private storePreviousApis(apis: string[]) {
-    sessionStorage.setItem('previousApis', JSON.stringify(apis));
-  }
-
-  private areApisSame(): boolean {
-    const previousApis = this.getPreviousApis();
-    const currentApis = this.getSelectedApis();
-    return JSON.stringify(previousApis) === JSON.stringify(currentApis);
+    // Store updated APIs for future comparison
+    this.sharedService.storePreviousApis(currentApis);
   }
 
   private loadInitialWeatherData() {
     const data = this.sharedService.loadWeatherData();
     let weather = null;
-    let city = this.defaultCity;
+    let city = this.defaultCity.toLowerCase();
     if (data !== null) {
-      city = data.city.name;
+      city = data.city.name.toLowerCase();
       const cachedTime = new Date(data.timestamp).getTime();
       if (new Date().getTime() - cachedTime < 60 * 60 * 1000) {
         weather = data;
@@ -201,9 +184,16 @@ export class WeatherDisplayComponent {
 
     // Fetch new weather data from the api
     this.weatherSubscription = this.weatherService.getWeather(str).subscribe((data) => {
-      this.storePreviousApis(this.getSelectedApis());
+      this.sharedService.storePreviousApis(this.sharedService.getSelectedApis());
       this.processWeatherData(data);
     });
+  }
+
+
+  private areApisSame(): boolean {
+    const previousApis = this.sharedService.getPreviousApis();
+    const currentApis = this.sharedService.getSelectedApis();
+    return JSON.stringify(previousApis) === JSON.stringify(currentApis);
   }
 
   private processWeatherData(data: any): void {
