@@ -244,4 +244,19 @@ export class SharedService {
     return null; // Return null to indicate cache miss
   }
 
+  getPreviousApis(): string[] {
+    const apis = sessionStorage.getItem('previousApis');
+    return apis ? JSON.parse(apis) : ["yr", "smhi", "fmi"];
+  }
+
+  getSelectedApis(): string[] {
+    const userSettings = this.loadUserSettings();
+    // Ensure APIs exist and default if necessary
+    return Array.isArray(userSettings?.apis) ? userSettings.apis : ["yr", "fmi", "smhi"];
+  }
+
+  storePreviousApis(apis: string[]) {
+    sessionStorage.setItem('previousApis', JSON.stringify(apis));
+  }
+
 }
