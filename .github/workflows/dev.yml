@@ -32,7 +32,7 @@ jobs:
       - name: Generate environment.ts
         run: |
           mkdir -p src/environments
-          echo "export const environment = { apiUrl: '${{ secrets.API_URL }}', apiVersion: '0.0.0' };" > src/environments/environment.ts
+          echo "export const environment = { apiUrl: '${{ secrets.API_DEV_URL }}', apiVersion: '0.0.0' };" > src/environments/environment.ts
 
       - name: Run tests
         run: npm run test
@@ -54,7 +54,7 @@ jobs:
       - name: Generate environment.ts
         run: |
           mkdir -p src/environments
-          echo "export const environment = { apiUrl: '${{ secrets.API_URL }}', apiVersion: '0.0.0' };" > src/environments/environment.ts
+          echo "export const environment = { apiUrl: '${{ secrets.API_DEV_URL }}', apiVersion: '0.0.0' };" > src/environments/environment.ts
 
       - name: get-npm-version
         id: package-version
