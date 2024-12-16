@@ -19,7 +19,6 @@ export class SharedService {
 
   // Search query variables
   private searchQuerySubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public searchQuery$: Observable<string> = this.searchQuerySubject.asObservable();
 
   weatherSourcesSource = new BehaviorSubject<string[]>([]);
   public weatherSources$ = this.weatherSourcesSource.asObservable();
