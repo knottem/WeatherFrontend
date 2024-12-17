@@ -388,4 +388,10 @@ export class WeatherDisplayComponent {
     return window.innerWidth <= 768;
   }
 
+  // Return the wind icon style based on the wind direction
+  getWindIconStyle(windDirection: number): { transform: string } {
+    const correctedRotation = (windDirection + 180) % 360;
+    return { transform: `rotate(${correctedRotation}deg)` };
+  }
+
 }
