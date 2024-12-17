@@ -36,6 +36,13 @@ export class SharedService {
   private FAVORITE_CITIES_KEY = 'favoriteCities';
   private CITY_LIST_KEY = 'cityList';
 
+  private DEFAULT_SETTINGS = {
+    darkMode: "off",
+    language: "en",
+    apis: this.getDefaultSortedApis(),
+    brightness: 100
+  };
+
   constructor(private platform: Platform) { }
 
   async initializeApp(): Promise<void> {
@@ -118,7 +125,6 @@ export class SharedService {
   }
 
   loadUserSettings(): any {
-    // Remove old formats or outdated versions if needed
     const data = JSON.parse(localStorage.getItem(this.SETTINGS_STORAGE_KEY) || "{}");
     if (data && data.version === this.CURRENT_SETTINGS_VERSION) {
       return data;
@@ -126,13 +132,11 @@ export class SharedService {
 
     // Clean up old or incompatible data if we didn't load any correct data.
     localStorage.removeItem(this.SETTINGS_STORAGE_KEY);
-    // default settings
-    return {
-      darkMode: "off",
-      language: "en",
-      apis: ["yr", "fmi", "smhi"],
-      brightness: 100
-    };
+
+    // Return default settings if no settings were found and save them to localStorage
+    const settings = this.DEFAULT_SETTINGS;
+    this.saveUserSettings(settings);
+    return settings;
   }
 
   loadDarkModeFromStorage(): boolean {
@@ -246,17 +250,25 @@ export class SharedService {
 
   getPreviousApis(): string[] {
     const apis = sessionStorage.getItem('previousApis');
-    return apis ? JSON.parse(apis) : ["yr", "smhi", "fmi"];
+    return apis ? this.sortApis(JSON.parse(apis)) : this.getDefaultSortedApis();
   }
 
   getSelectedApis(): string[] {
     const userSettings = this.loadUserSettings();
     // Ensure APIs exist and default if necessary
-    return Array.isArray(userSettings?.apis) ? userSettings.apis : ["yr", "fmi", "smhi"];
+    return this.sortApis(Array.isArray(userSettings?.apis) ? userSettings.apis : this.getDefaultSortedApis());
   }
 
   storePreviousApis(apis: string[]) {
     sessionStorage.setItem('previousApis', JSON.stringify(apis));
+  }
+
+  sortApis(apis: string[]): string[] {
+    return apis.sort((a, b) => a.localeCompare(b));
+  }
+
+  getDefaultSortedApis(): string[] {
+    return this.sortApis(["yr", "fmi", "smhi"]);
   }
 
 }
