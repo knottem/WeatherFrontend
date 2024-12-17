@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="flex items-center">
-          <img [src]="'assets/icons/wind-direction.svg'" [ngStyle]="{'transform': 'rotate(' + currentWeather.windDirection + 'deg)'}" alt="Wind Direction Icon" class="h-8 w-8 mr-2 mt-2 sm:mt-1 sm:h-10 sm:w-10 dark-filter-white">
+          <img [src]="'assets/icons/wind-direction.svg'" [ngStyle]="getWindIconStyle(currentWeather.windDirection)" alt="Wind Direction Icon" class="h-8 w-8 mr-2 mt-2 sm:mt-1 sm:h-10 sm:w-10 dark-filter-white">
           <div>
             <div class="text-sm sm:text-base text-weatherCard">{{ 'wind' | translate }}</div>
             <div class="text-lg sm:text-xl text-weatherCard">{{ currentWeather.windSpeed }} m/s</div>
@@ -212,7 +212,7 @@
                   <td class="border px-0 lg:px-4 py-2">
                     <div class="flex justify-center items-center text-base lg:text-lg">
                       <img [src]="'assets/icons/wind-direction.svg'"
-                           [ngStyle]="{'transform': 'rotate(' + allWeatherData[i].weatherData[timestamp].windDirection + 'deg)'}"
+                           [ngStyle]="getWindIconStyle(allWeatherData[i].weatherData[timestamp].windDirection)"
                            alt="{{ allWeatherData[i].weatherData[timestamp].windDirection }}°" class="h-6 w-6 dark-filter-white">
                       <span class="min-w-[2.5ch] text-center" *ngIf="isMobile$ | async">
                           {{ allWeatherData[i].weatherData[timestamp].windSpeed }}
