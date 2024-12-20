@@ -56,7 +56,7 @@
           <span class="fixed-width-number">
             {{ totalResults }}
           </span>
-          {{ 'search.resultsMessage' | translate }}
+            {{ 'search.resultsMessage' | translate }}
           <span *ngIf="isLimited">
             {{ 'search.limitedResultsMessage' | translate }}
           </span>
@@ -85,13 +85,10 @@
         </ion-icon>
       </div>
 
-      <div *ngIf="isLimited" class="list-item info">
-        <span>{{ 'search.limitedResults' | translate }}</span>
-      </div>
-
-      <div *ngIf="(filteredCities | async)?.length  === 0 " class="list-item no-search">
+      <div *ngIf="totalResults  === 0 " class="list-item no-search">
         <span>{{ 'search.noResults' | translate }}</span>
       </div>
+
     </div>
   </div>
 </div>
