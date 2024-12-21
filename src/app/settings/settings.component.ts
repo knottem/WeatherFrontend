@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import { CommonModule } from "@angular/common";
-import {IonicModule, Platform} from "@ionic/angular";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {IonicModule} from "@ionic/angular";
 import {FormsModule} from "@angular/forms";
 import {environment} from "../../environments/environment";
 import {SharedService} from "../shared.service";
 import {ErrorService} from "../error.service";
-import {MatFormField, MatOption, MatSelect} from "@angular/material/select";
-import {WeatherService} from "../weather.service";
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, TranslateModule, IonicModule, FormsModule, MatSelect, MatOption, MatFormField],
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.css',
+  imports: [CommonModule, TranslateModule, IonicModule, FormsModule, NgOptimizedImage],
+  templateUrl: './settings.component.html'
 })
 export class SettingsComponent {
 
@@ -38,11 +35,11 @@ export class SettingsComponent {
   public version: string = environment.apiVersion;
   public selectedApis: string[];
   brightnessLevel: number; // Default brightness level
+  public dropdownOpen = false;
 
   constructor(public translate: TranslateService,
               private sharedService: SharedService,
-              private errorService: ErrorService,
-              private weatherService: WeatherService
+              private errorService: ErrorService
               ) {
     this.sharedService.darkMode$.subscribe(isDark => {
       this.isDarkMode = isDark;
@@ -78,14 +75,22 @@ export class SettingsComponent {
     this.sharedService.toggleDarkMode();
   }
 
-  switchLanguage(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const language = selectElement.value;
-    this.translate.use(language);
-    this.currentLanguage = language;
+  get currentLanguageName(): string {
+    const selectedLanguage = this.languages.find(lang => lang.code === this.currentLanguage);
+    return selectedLanguage ? selectedLanguage.name : '';
+  }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  selectLanguage(code: string) {
+    this.currentLanguage = code;
+    this.translate.use(code);
     const settings = this.sharedService.loadUserSettings();
-    settings.language = language;
+    settings.language = code;
     this.sharedService.saveUserSettings(settings);
+    this.dropdownOpen = false;
   }
 
   onApiChange(api: string, event: Event) {
