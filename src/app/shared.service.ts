@@ -3,10 +3,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Preferences } from '@capacitor/preferences';
 import { SplashScreen } from '@capacitor/splash-screen';
-import {Capacitor} from "@capacitor/core";
-import {ScreenBrightness} from "@capacitor-community/screen-brightness";
-import {Platform} from "@ionic/angular";
-import {City} from "../models/city";
+import { Capacitor } from "@capacitor/core";
+import { ScreenBrightness } from "@capacitor-community/screen-brightness";
+import { City } from "../models/city";
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +42,7 @@ export class SharedService {
     brightness: 100
   };
 
-  constructor(private platform: Platform) { }
+  constructor() { }
 
   async initializeApp(): Promise<void> {
     return new Promise(async (resolve) => {
@@ -111,7 +110,7 @@ export class SharedService {
   }
 
   async setBrightnessSetting(level: number): Promise<void> {
-    if (this.platform.is('android') || this.platform.is('ios')) {
+    if (Capacitor.isNativePlatform()) {
       const brightness = level / 100
       await ScreenBrightness.setBrightness({ brightness });
     } else {
