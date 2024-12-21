@@ -100,15 +100,41 @@ export class SearchComponent implements OnInit {
     if (!query) {
       return [...this.lastSearched].reverse(); // Show recently searched if the query is empty
     }
-    query = query.toLowerCase();
 
-    const matchingCities = this.cityList.filter(city =>
-      city.name.toLowerCase().includes(query) ||
-      (city.en && city.en.toLowerCase().includes(query))
-    );
+    const lowerQuery = query.toLowerCase();
+
+    // Use map and filter in a streamlined way
+    const matchingCities = this.cityList
+      .map(city => this.addTransliteratedNameIfNeeded(city, lowerQuery)) // Add transliteration dynamically
+      .filter(city => this.doesCityMatch(city, lowerQuery)); // Filter matching cities
+
     this.totalResults = matchingCities.length;
     this.isLimited = matchingCities.length > 50;
     return matchingCities.slice(0, 50); // Limit to the first 50 results
+  }
+
+  private addTransliteratedNameIfNeeded(city: City, query: string): City {
+    if (!city.en) {
+      const transliterated = this.transliterateToEnglish(city.name);
+      if (transliterated.toLowerCase().includes(query)) {
+        return { ...city, en: transliterated }; // Add 'en' dynamically if it matches the query
+      }
+    }
+    return city;
+  }
+
+  private doesCityMatch(city: City, query: string): boolean {
+    const lowerQuery = query.toLowerCase();
+
+    // Check if the query matches the original name
+    const nameMatches = city.name.toLowerCase().includes(lowerQuery);
+
+    // Check if the query matches the transliterated name and requires transliteration
+    const enMatches = city.en
+      ? city.en.toLowerCase().includes(lowerQuery)
+      : this.transliterateToEnglish(city.name).toLowerCase().includes(lowerQuery);
+
+    return nameMatches || enMatches;
   }
 
   public onSearchInput(event: any) {
@@ -180,6 +206,19 @@ export class SearchComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.favoriteCities, event.previousIndex, event.currentIndex);
     this.sharedService.setFavoriteCities(this.favoriteCities);
+  }
+
+  transliterateToEnglish(name: string): string {
+    if (!name) return '';
+
+    // Map Swedish characters to English equivalents
+    const transliterationMap: { [key: string]: string } = {
+      å: 'a', ä: 'a', ö: 'o',
+      Å: 'A', Ä: 'A', Ö: 'O'
+    };
+
+    // Replace characters using the map
+    return name.replace(/[åäöÅÄÖ]/g, char => transliterationMap[char] || char);
   }
 
 }

@@ -5,7 +5,7 @@
 
   <!-- DarkMode Section -->
   <div class="mb-6">
-    <div class="bg-card rounded-lg p-4 shadow-sm flex justify-between items-center">
+    <div class="h-14 bg-card rounded-lg p-4 shadow-sm flex justify-between items-center">
       <span class="text-primary">{{ 'settings.darkMode' | translate }}</span>
       <label class="flex items-center cursor-pointer">
         <input type="checkbox" (change)="toggleDarkMode()" [checked]="isDarkMode" class="sr-only">
@@ -22,7 +22,7 @@
 
   <!-- Brightness Section -->
   <div class="mb-6">
-    <div class="bg-card rounded-lg p-4 shadow-sm flex justify-between items-center">
+    <div class="h-14 bg-card rounded-lg p-4 shadow-sm flex justify-between items-center">
       <span class="text-primary">{{ 'settings.brightness' | translate }}</span>
       <div class="flex items-center">
         <input
@@ -40,16 +40,29 @@
 
   <!-- Language Selection Section -->
   <div class="mb-6">
-    <div class="bg-card rounded-lg px-4 py-2 shadow-sm flex justify-between items-center">
-     <span class="text-primary w-2/3">{{ 'settings.selectLanguage' | translate }}</span>
-      <select
-        (change)="switchLanguage($event)"
-        class="block bg-gray-100 border border-gray-300 text-gray-800 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200 px-3 py-2 rounded-lg focus:outline-none"
-      >
-        <option *ngFor="let lang of languages" [value]="lang.code" [selected]="currentLanguage === lang.code">
-          {{ lang.name }}
-        </option>
-      </select>
+    <div class="h-14 bg-card rounded-lg px-4 py-2 shadow-sm flex justify-between items-center relative">
+      <span class="text-primary w-2/3">{{ 'settings.selectLanguage' | translate }}</span>
+      <div class="relative">
+        <button
+          class="w-36 h-10 bg-gray-100 dark:bg-gray-600 dark:text-gray-200 border border-gray-300 dark:border-gray-500 px-3 py-2 rounded-lg text-gray-800 focus:outline-none flex justify-between items-center"
+          (click)="toggleDropdown()"
+        >
+          <span class="truncate">{{ currentLanguageName }}</span>
+          <img ngSrc="assets/icons/arrow-down.svg" alt="Dropdown Arrow" height="16" width="16"/>
+        </button>
+        <ul
+          *ngIf="dropdownOpen"
+          class="absolute z-10 mt-2 w-full bg-gray-100 dark:bg-gray-600 dark:text-gray-200 border border-gray-300 dark:border-gray-500 rounded-lg shadow-lg"
+        >
+          <li
+            *ngFor="let lang of languages"
+            (click)="selectLanguage(lang.code)"
+            class="px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer"
+          >
+            {{ lang.name }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
