@@ -1,7 +1,5 @@
-<!-- app-header-comp.component.html -->
-<!-- Top Section: Logo and Time for smaller screens -->
-<div class="w-full px-2 py-2 shadow-md bg-header border-1 lg:flex text-primary">
-  <!-- Logo and Title Container -->
+<div *ngIf="showHeader" class="w-full px-2 py-2 shadow-md bg-header border-1 lg:flex text-primary">
+
   <div class="flex justify-around items-center w-full space-x-12">
     <img src="assets/android-chrome-512x512-removebg.png" alt="Weather App Logo" class="h-16 w-16">
     <span class="text-lg font-medium">{{ 'header.weatherApp' | translate }}</span>
@@ -17,6 +15,7 @@
   </div>
 
   <div class="xl:hidden absolute right-0 top-0 bottom-0 h-20 w-2/6 cursor-pointer" (click)="openSearch()"></div>
+
 </div>
 
 

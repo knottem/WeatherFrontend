@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
 
   public currentTime: string = this.updateCurrentTime();
   public isSmallScreen = false;
+  public showHeader = true;
 
   private intervalId!: ReturnType<typeof setInterval>;
 
@@ -30,6 +31,12 @@ export class HeaderComponent implements OnInit {
         this.currentTime = newTime;
       }
     }, 1000);
+
+    this.router.events.subscribe((event) => {
+      if(event instanceof NavigationEnd) {
+        this.showHeader = this.router.url !== '/search';
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -49,7 +56,6 @@ export class HeaderComponent implements OnInit {
     this.isSmallScreen = window.innerWidth < 640; // Tailwind's `sm` breakpoint
   }
 
-  // Updates the current time in HH:MM format
   public updateCurrentTime() {
     const now = new Date();
     return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;

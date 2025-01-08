@@ -2,7 +2,6 @@ import {ChangeDetectorRef, Component} from '@angular/core';
 import {CurrentWeather, WeatherData} from '../../models/weather-data';
 import {WeatherService} from '../weather.service';
 import {SharedService} from '../shared.service';
-import {DateTime} from 'luxon';
 import {CommonModule} from '@angular/common';
 import {LoadingIndicatorComponent} from '../loading-indicator/loading-indicator.component';
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
@@ -285,8 +284,9 @@ export class WeatherDisplayComponent {
     if (match && match[1]) {
       const sourcesString = match[1].trim();
       return sourcesString.split(/,| and /).map(source => source.trim());
+    } else {
+      return message.split(' ').slice(-1);
     }
-    return [];
   }
 
   public prepareWeatherData() {
