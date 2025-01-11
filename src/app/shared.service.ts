@@ -50,13 +50,14 @@ export class SharedService {
       const isDarkMode = settings.darkMode === "on";
       this.darkModeSubject.next(isDarkMode);
 
+      await this.setAndroidStatusBar(isDarkMode);
+
       if (isDarkMode) {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
       }
       await SplashScreen.hide();
-      this.setAndroidStatusBar(isDarkMode);
       resolve();
     });
   }
@@ -167,19 +168,18 @@ export class SharedService {
       value: JSON.stringify(newMode),
     });
 
-    // Update localStorage
     const settings = this.loadUserSettings();
     settings.darkMode = newMode ? "on" : "off";
     this.saveUserSettings(settings);
 
-    // Apply dark mode class to the document
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-      this.setAndroidStatusBar(true);
-    } else {
-      document.documentElement.classList.remove('dark');
-      this.setAndroidStatusBar(false)
-    }
+    // Synchronize the UI and status bar changes
+    this.setAndroidStatusBar(newMode).then(() => {
+      if (newMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
   }
 
   clearOldData(): void {
