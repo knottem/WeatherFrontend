@@ -2,14 +2,9 @@ ion-searchbar.searchbar {
   --border-radius: 0.75rem;
 }
 
-.search-wrapper {
-  border-radius: 16px; /* Manually add border radius to ensure it applies */
-  overflow: hidden; /* Ensure rounded corners by hiding overflow */
-}
-
 .search-results {
   flex-grow: 1;
-  overflow-y: auto; /* Add scroll to the results */
+  overflow-y: auto;
 }
 
 .list-title {
@@ -86,7 +81,7 @@ ion-icon {
 }
 
 .fixed-width-number {
-  display: inline-block; /* Ensures it takes up the specified width */
-  width: 5ch; /* 4 character width */
-  text-align: right; /* Align numbers to the right */
+  display: inline-block;
+  width: 5ch;
+  text-align: right;
 }
