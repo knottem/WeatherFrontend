@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
-import {Platform, RefresherCustomEvent} from '@ionic/angular';
+import {Platform} from '@ionic/angular';
 import { App } from '@capacitor/app';
 import {Router} from "@angular/router";
 import { ErrorService } from './error.service';
