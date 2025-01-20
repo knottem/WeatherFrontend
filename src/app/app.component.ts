@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {Platform, RefresherCustomEvent} from '@ionic/angular';
 import { App } from '@capacitor/app';
@@ -13,7 +13,7 @@ import {Capacitor} from "@capacitor/core";
   template: `
     <ion-app id="app-root" class="content-wrapper">
       <ion-content [fullscreen]="true" class="bg-primary">
-        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh()">
           <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
         <app-header></app-header>
@@ -89,7 +89,7 @@ export class AppComponent {
     this.removeResizeListener();
   }
 
-  doRefresh(event: RefresherCustomEvent) {
+  doRefresh() {
     location.reload();
   }
 
