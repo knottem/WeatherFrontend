@@ -5,7 +5,7 @@
 :root {
   --app-width: 80%;
   --app-min-width: 600px;
-  --app-max-width: 1024px;
+  --app-max-width: 600px;
 }
 
 html, body {
@@ -78,6 +78,7 @@ html.dark .dark-filter-white {
   .content-wrapper {
     width: 100%;
     min-width: 0;
+    max-width: 100%;
     border-radius: 0;
     margin: 0;
   }
