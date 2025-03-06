@@ -4,7 +4,7 @@
 		"backendLinkDescription": "Plongez dans le code backend sur GitHub.",
     "content1-part1": "Ce projet, une application complète de prévision météorologique, a été initialement développé dans le cadre de ma thèse à",
     "content1-part2": ", et est maintenant développé davantage comme un passe-temps. L'application intègre des données provenant de plusieurs sources fiables pour fournir des mises à jour météorologiques en temps réel.",
-    "content2": "L'interface de l'application est construite à l'aide d'Angular, Tailwind CSS et Ionic car ils offrent une grande flexibilité et réactivité. Cette combinaison facilite le fonctionnement de l'application sur tous types d'appareils et de tailles d'écran. De plus, je travaille également sur une application Android comme plateforme de départ.",
+    "content2": "Le frontend de l'application est développé avec Angular, Tailwind CSS et Ionic, conçu pour privilégier les expériences mobiles. Une application Android est également en cours de développement.",
     "content3": "À l'arrière-plan, j'utilise Java avec Spring Boot. Le backend est responsable de la récupération et du traitement des données météorologiques de SMHI, YR et FMI. En combinant les données de ces sources, l'application assure une prévision météorologique plus complète et plus précise.",
 		"content4-link": "Symboles météorologiques de l'année",
 		"content4-part1": "Les images météo utilisées dans l'application proviennent de",

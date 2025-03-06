@@ -4,7 +4,7 @@
     "backendLinkDescription": "Dive into the backend code on GitHub.",
     "content1-part1": "This project, a comprehensive weather forecasting application, was originally developed as part of my thesis at",
     "content1-part2": ", and is now being further developed as a hobby. The application integrates data from multiple trusted sources to deliver real-time weather updates.",
-    "content2": "The app's frontend is made with Angular, Tailwind CSS, and Ionic because they offer great flexibility and responsiveness. This combo makes it easy for the app to work on all kinds of devices and screen sizes. Plus, I'm also working on an Android app as a starting platform.",
+    "content2": "The app's frontend is built with Angular, Tailwind CSS, and Ionic, designed to prioritize mobile experiences. An Android app is also in development.",
     "content3": "On the backend, I'm utilizing Java with Spring Boot. The backend is responsible for fetching and processing weather data from SMHI, YR and FMI. By combining data from these sources, the application ensures a more comprehensive and accurate weather forecast.",
     "content4-link": "Yr Weather Symbols",
     "content4-part1": "The Weather images used in the application are sourced from ",

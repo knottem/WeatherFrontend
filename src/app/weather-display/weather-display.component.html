@@ -36,9 +36,6 @@
           <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp, 0))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
         </div>
       </div>
-      <div class="flex items-center mt-4 sm:hidden">
-        <img class="h-24 w-24" [src]="getWeatherConditionImage(currentWeather.weatherCode, isDayTime(currentWeather.timestamp, 0))" [title]="getWeatherConditionDescription(currentWeather.weatherCode)" alt="Weather Condition">
-      </div>
 
     </div>
   </div>
@@ -56,34 +53,34 @@
       <thead class="bg-gray-100 dark:bg-[#303336]">
         <tr>
           <th class="px-4 py-2 w-2/12">
-            <div class="flex justify-center text-sm lg:text-lg">
+            <div class="flex justify-center text-sm">
               {{ 'dayOfWeek' | translate }}
             </div>
           </th>
           <th class="px-1 py-2">
-            <div class="flex justify-center text-sm lg:text-lg">
+            <div class="flex justify-center text-sm">
               <span class="block sm:hidden">H</span>
               <span class="hidden sm:block">High</span>
             </div>
           </th>
           <th class="px-1 py-2">
-            <div class="flex justify-center text-sm lg:text-lg">
+            <div class="flex justify-center text-sm">
               <span class="block sm:hidden">L</span>
               <span class="hidden sm:block">Low</span>
             </div>
           </th>
           <th class="px-4 py-2">
-            <div class="flex justify-center text-sm lg:text-lg">
+            <div class="flex justify-center text-sm">
               {{ 'night' | translate }}
             </div>
           </th>
           <th class="px-4 py-2">
-            <div class="flex justify-center text-sm lg:text-lg">
+            <div class="flex justify-center text-sm">
               {{ 'dayWeather' | translate }}
             </div>
           </th>
           <th class="px-4 py-2">
-            <div class="flex justify-center items-center text-sm lg:text-lg">
+            <div class="flex justify-center items-center text-sm">
               <span class="block sm:hidden">{{ 'precipitationShort' | translate }}</span>
               <span class="hidden sm:block">{{ 'precipitation' | translate }}</span>
             </div>
@@ -96,7 +93,7 @@
           <!-- Main row -->
           <tr (click)="toggleDay(i)" class="cursor-pointer">
             <td class="border px-4 py-2">
-              <div class="flex justify-center text-base lg:text-lg">
+              <div class="flex justify-center text-base">
                 <span class="block sm:hidden">{{ 'shortDays.' + currentDays[i] | translate }}</span>
                 <!-- Show full version for larger screens -->
                 <span class="hidden sm:block">{{ currentDays[i] | translate }}</span>
