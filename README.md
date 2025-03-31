@@ -64,9 +64,12 @@ Check out some screenshots of the app below from version 0.7.0:
 </div>
 <p align="center"><em>The settings page in light mode (left) and dark mode (right).</em></p>
 
+
+
 ### Weather Overview (Desktop)
+Newer screenshots from version 0.7.5 which affected desktop view, after we've decided to focus fully on mobile viewing:
 <div align="center">
-  <img src="./docs/images/weather-overview-desktop.jpg" alt="Weather Overview - Desktop" width="600">
+  <img src="./docs/images/weather-overview-desktop-0.7.5.jpg" alt="Weather Overview - Desktop" width="600">
 </div>
 <p align="center"><em>Weather overview on a desktop screen.</em></p>
 

@@ -5,14 +5,22 @@
 :root {
   --app-width: 80%;
   --app-min-width: 600px;
-  --app-max-width: 1400px;
-  --ion-background-color: ;
-  @apply bg-primary
+  --app-max-width: 600px;
 }
 
 html, body {
   overflow-x: hidden;
   max-width: 100%;
+}
+
+ion-content {
+  --offset-bottom: auto !important;
+  --overflow: hidden;
+  overflow: auto;
+}
+
+ion-content::-webkit-scrollbar {
+  display: none;
 }
 
 .text-primary {
@@ -43,6 +51,10 @@ html, body {
   @apply bg-white dark:bg-[#222428]
 }
 
+.button-standard {
+  @apply my-2 flex-1 px-1 sm:px-4 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl text-center;
+}
+
 html.dark .dark-filter-white {
   filter: invert(1) brightness(2);
 }
@@ -57,35 +69,17 @@ html.dark .dark-filter-white {
   width: var(--app-width);
   min-width: var(--app-min-width);
   max-width: var(--app-max-width);
-  margin: 0 auto;
+  margin: 40px auto;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 @media (max-width: 1024px) {
   .content-wrapper {
     width: 100%;
     min-width: 0;
+    max-width: 100%;
+    border-radius: 0;
     margin: 0;
   }
 }
-
-@media (max-width: 1024px) {
-  app-root,
-  app-header,
-  app-footer,
-  app-search,
-  router-outlet {
-    width: 100%;
-    min-width: 0;
-    margin: 0;
-  }
-}
-
-html {
-  overflow-y: auto;
-}
-
-.button-standard {
-  @apply my-2 flex-1 px-1 sm:px-4 pb-3.5 pt-4 text-xs uppercase leading-tight mr-2 md:mr-4 rounded-xl text-center;
-}
-
-
