@@ -13,14 +13,12 @@ html, body {
   max-width: 100%;
 }
 
-ion-content {
-  --offset-bottom: auto !important;
-  --overflow: hidden;
-  overflow: auto;
+ion-content.bg-primary {
+  --background: #ffffff;
 }
 
-ion-content::-webkit-scrollbar {
-  display: none;
+html.dark ion-content.bg-primary {
+  --background: #2e2f33;
 }
 
 .text-primary {
